@@ -5,15 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script>
 /* ======================================================================
-   إعداد الاتصال — نفس رابط ومفتاح منصة «أثر» تمامًا
+   إعداد الاتصال بمشروع Supabase الخاص بمنصة «انضباط» (منفصل عن أي منصة أخرى)
    من Supabase: Project Settings ← API ← Project URL و anon public key
    ====================================================================== */
 window.ATHAR_CONFIG = {
-url: "https://zkiphojtqjsdjhyunlbw.supabase.co",
-   anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpraXBob2p0cWpzZGpoeXVubGJ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQyOTA5NDEsImV4cCI6MjEwOTg2Njk0MX0.l5bmJWglvJ8BXlkCSgywAiOFLIa-o5Lb26VhT2Vk08Y",
+  url: "https://zkiphojtqjsdjhyunlbw.supabase.co",
+  anonKey: "YOUR-ANON-PUBLIC-KEY",
   domains: ["moe.sch.ae"]   // نطاق البريد الوزاري المسموح به للتسجيل
 };
 </script>
+<!-- المفتاح الفعلي محفوظ في config.js (لا يتغير عند تحديث المنصة) -->
+<script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <title>انضباط | الحضور والسلوك</title>
 <meta name="theme-color" content="#FFFFFF">
@@ -393,6 +395,38 @@ body[data-mode="auth"] .top{display:none}
 .chip.ck:has(input:checked){background:var(--brand-soft);border-color:var(--ink);color:var(--ink);font-weight:600}
 .cls-t td{vertical-align:middle}
 .cls-t td.ph{white-space:nowrap;font-size:13.5px}
+.deg.d1{background:var(--amber-soft);color:var(--amber)}
+.deg.d2{background:#FCE3CF;color:#B4520F}
+.deg.d3{background:var(--maroon-soft);color:var(--maroon)}
+.deg.d4{background:var(--maroon);color:#fff}
+.vq{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.vq .chip{font-size:12.5px;padding:4px 10px;cursor:pointer}
+.due{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--brand-soft)}
+.due p{margin:8px 0 0;line-height:1.75}
+.due.d1{border-inline-start:5px solid var(--amber)}.due.d2{border-inline-start:5px solid #B4520F}.due.d3,.due.d4{border-inline-start:5px solid var(--maroon)}
+.due-h{display:flex;gap:10px;align-items:flex-start}
+.due-h .grow{flex:1;min-width:0}
+.due-n{font-size:13px;color:var(--muted);margin-top:2px}
+.due-p{font-weight:700;white-space:nowrap;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:13px}
+.due-alert{display:flex;gap:8px;align-items:flex-start;margin-top:10px;background:var(--maroon-soft);border:1px solid color-mix(in srgb,var(--maroon) 35%,var(--line));color:var(--maroon);border-radius:12px;padding:10px 12px;font-size:13.5px;cursor:pointer;line-height:1.7}
+.due-alert input{margin-top:5px}
+.cs-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.cs-nav a{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:5px 10px;background:var(--surface);text-decoration:none;color:var(--text);display:inline-flex;gap:6px;align-items:center}
+.cs-cnt{font-size:11.5px;background:var(--line);border-radius:999px;padding:1px 7px;color:var(--muted);font-weight:600}
+.cs-cnt.ok{background:var(--sage-soft);color:var(--sage)}
+.cs-sec{margin-bottom:12px}
+.cs-sec>summary{display:flex;align-items:center;gap:10px;cursor:pointer;list-style:none;font-size:17px}
+.cs-sec>summary::-webkit-details-marker{display:none}
+.cs-sec[open]>summary{margin-bottom:12px}
+.cs-sec .sp{flex:1}
+.cs-no{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:13px;font-weight:700;flex:none}
+.cs-auto{display:flex;flex-wrap:wrap;gap:8px 18px;background:var(--brand-soft);border-radius:12px;padding:8px 12px;margin-bottom:10px;font-size:13.5px}
+.t.fu input,.t.fu select{width:100%;min-width:120px}
+.code-l{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.code-l li{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.code-n{min-width:44px;font-weight:700;color:var(--ink);text-align:center}
+@media (max-width:640px){.code-l li{flex-wrap:wrap}.due-h{flex-wrap:wrap}}
+.linkbtn{background:none;border:0;padding:0;font:inherit;font-size:13.5px;color:var(--ink);text-decoration:underline;cursor:pointer}
 .print-only{display:none}
 @media (max-width:700px){
   .cls-t thead{display:none}
@@ -488,6 +522,7 @@ input.otp{font-size:26px;letter-spacing:10px;text-align:center;font-family:var(-
     <a href="#take" data-nav="take"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="17" rx="2"/><path d="M8 2v4M16 2v4M4 10h16M9 15l2 2 4-4"/></svg><span>الغياب والحضور اليومي</span></a>
     <a href="#behavior" data-nav="behavior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg><span>سجل السلوك التربوي</span></a>
     <a href="#cases" data-nav="cases"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><circle cx="12" cy="11" r="2.5"/><path d="M8 17.5c.6-1.8 2.1-2.8 4-2.8s3.4 1 4 2.8"/></svg><span>دراسة الحالة</span></a>
+    <a href="#code" data-nav="code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/><path d="M9 7.5h6M9 11h6"/></svg><span>لائحة السلوك</span></a>
     <a href="#students" data-nav="students"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><circle cx="17.5" cy="9" r="2.5"/><path d="M16 14.6c2.6.2 4.6 2 5.3 5"/></svg><span>إدارة الطلبة</span></a>
     <a href="#reports" data-nav="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 17v-4M12 17V8M16 17v-6"/></svg><span>التقارير والإحصائيات</span></a>
     <a href="#charter" data-nav="charter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M9 8h6M9 12h6"/></svg><span>الميثاق الوطني للتعليم</span></a>
@@ -584,6 +619,7 @@ function acMatches(q){
 const acLabel = s => `${s.name} — ${s.school_no} — ${clsName(s.grade, s.section)}`;
 function acBox(inp){ return inp.parentElement.querySelector(".ac-list"); }
 function acRender(inp){
+  if(inp.dataset.ac === "vio") return vioRender(inp);
   const box = acBox(inp); if(!box) return;
   if(!inp.value.trim() || / — /.test(inp.value)){ box.hidden = true; inp._ac = []; return; }
   const m = acMatches(inp.value); inp._ac = m; inp._i = m.length ? 0 : -1;
@@ -595,7 +631,7 @@ function renderChips(inp){
   f.querySelector('input[type="hidden"]').value = sel.join(",");
   f.querySelector(".pick-chips").innerHTML = sel.map(id => { const s = D.byId[id]; return `<span class="pchip"><span><b>${esc(s.name)}</b><small>الرقم <span class="num">${esc(s.school_no)}</span> · الصف ${esc(clsName(s.grade, s.section))}</small></span><button type="button" data-unpick="${id}" aria-label="إزالة ${esc(s.name)}">×</button></span>`; }).join("") || '<span class="muted" style="font-size:13px">لم يُختر طلاب بعد.</span>';
 }
-function acPick(inp, s){ if(!s) return;
+function acPick(inp, s){ if(!s) return; if(inp.dataset.ac === "vio") return vioPick(inp, s);
   if(inp.dataset.acmulti){ inp._sel = inp._sel || []; if(!inp._sel.includes(s.id)) inp._sel.push(s.id); inp.value = ""; acBox(inp).hidden = true; renderChips(inp); inp.focus(); return; } inp.value = acLabel(s); acBox(inp).hidden = true; inp.dispatchEvent(new Event("change", {bubbles:true})); }
 document.addEventListener("keydown", e => {
   const inp = e.target; if(!inp.dataset || !inp.dataset.ac) return; if(inp.dataset.acmulti && e.key === "Enter" && (acBox(inp).hidden || !(inp._ac || []).length)){ e.preventDefault(); return; } const box = acBox(inp); if(!box || box.hidden || !(inp._ac || []).length) return;
@@ -623,6 +659,7 @@ function modal(title, body, foot){
 }
 function fieldHTML(f, v){
   const id = "f_" + f.name; v = v == null ? "" : v;
+  if(f.type === "html") return `<div class="field full" data-field="${f.name}">${f.html}</div>`;
   let input;
   if(f.type === "textarea") input = `<textarea id="${id}" name="${f.name}" placeholder="${esc(f.ph || "")}">${esc(v)}</textarea>`;
   else if(f.type === "select") input = `<select id="${id}" name="${f.name}">${f.options.map(o => { const [a, b] = Array.isArray(o) ? o : [o, o]; return `<option value="${esc(a)}" ${String(a) === String(v) ? "selected" : ""}>${esc(b)}</option>`; }).join("")}</select>`;
@@ -630,6 +667,7 @@ function fieldHTML(f, v){
     input = `<div class="acts" id="${id}">${f.options.map(o => `<label class="chip ck"><input type="checkbox" value="${esc(o)}" data-multi="${f.name}" ${cur.includes(o) ? "checked" : ""}>${esc(o)}</label>`).join("")}</div><input type="text" name="${f.name}" value="${esc(other)}" placeholder="${esc(f.ph || "إجراء آخر (اختياري)")}" aria-label="إجراء آخر">`; }
   else if(f.type === "students") input = `<input type="hidden" name="${f.name}" value="${esc(v)}"><div class="ac"><input type="text" id="${id}" data-ac="student" data-acmulti="1" autocomplete="off" placeholder="اكتب أول حروف الاسم أو الرقم المدرسي واختر (تقدر تضيف أكثر من طالب)"><div class="ac-list" role="listbox" hidden></div></div><div class="pick-chips"><span class="muted" style="font-size:13px">لم يُختر طلاب بعد.</span></div>`;
   else if(f.type === "student") input = `<div class="ac"><input type="text" id="${id}" name="${f.name}" value="${esc(v)}" data-ac="student" autocomplete="off" placeholder="${esc(f.ph || "اكتب أول حروف الاسم أو الرقم المدرسي")}"><div class="ac-list" role="listbox" hidden></div></div>`;
+  else if(f.type === "vio") input = `<div class="ac"><input type="text" id="${id}" name="${f.name}" value="${esc(v)}" data-ac="vio" autocomplete="off" placeholder="مثال: هاتف، تأخر، زي، شجار، تنمر، تدخين، غياب، هروب"><div class="ac-list" role="listbox" hidden></div></div><div class="vq" aria-label="المخالفات الأكثر تكرارًا">${VQUICK.map(([c, l]) => `<button type="button" class="chip" data-vq="${c}">${esc(l)}</button>`).join("")}</div>`;
   else if(f.type === "combo") input = `<input type="text" id="${id}" name="${f.name}" list="${id}_l" value="${esc(v)}" autocomplete="off" placeholder="${esc(f.ph || "")}"><datalist id="${id}_l">${(f.options || []).map(o => `<option value="${esc(o)}">`).join("")}</datalist>`;
   else input = `<input type="${f.type || "text"}" id="${id}" name="${f.name}" value="${esc(v)}" placeholder="${esc(f.ph || "")}" ${f.type === "number" ? 'inputmode="numeric"' : ""}>`;
   return `<div class="field${f.full ? " full" : ""}" data-field="${f.name}"><label for="${id}">${esc(f.label)}${f.required ? ' <span style="color:var(--maroon)">*</span>' : ""}</label>${input}${f.hint ? `<span class="hint">${esc(f.hint)}</span>` : ""}<span class="err" role="alert"></span></div>`;
@@ -663,10 +701,7 @@ const ui = {route:"home"};
 const DEF = {
   termStart:"2026-08-25", lateStart:"07:15", schoolDays:[1,2,3,4,5], warn:[5,10,15], positivePoints:2, alertAbs:5,
   degrees:{1:{label:"الدرجة الأولى", points:4}, 2:{label:"الدرجة الثانية", points:8}, 3:{label:"الدرجة الثالثة", points:12}, 4:{label:"الدرجة الرابعة", points:15}},
-  catalog:{1:["التأخير الصباحي","عدم الالتزام بالزي المدرسي","إحضار الهاتف دون إذن","النوم داخل الحصة","عدم إحضار الكتب والأدوات","الأكل أثناء الحصة"],
-    2:["التغيب عن الحصص دون إذن","استخدام ألفاظ غير لائقة","العبث بممتلكات المدرسة","الغش في الاختبارات","إثارة الفوضى في الحافلة أو الفصل"],
-    3:["التنمر بأشكاله","الشجار والاعتداء البسيط","إتلاف الممتلكات عمدًا","التدخين داخل المدرسة","تصوير الآخرين أو نشر صورهم دون إذن"],
-    4:["الاعتداء الجسيم على الآخرين","حيازة أدوات خطرة","الإساءة للرموز الدينية أو الوطنية","التزوير أو انتحال الشخصية"]},
+  catalog:{1:[], 2:[], 3:[], 4:[]},
   positive:["المبادرة بمساعدة الزملاء","الالتزام التام بالحضور والانضباط","المشاركة المتميزة في الإذاعة أو الفعاليات","التفوق والتحسن الملحوظ","الأمانة وإعادة المفقودات"],
   sign:{counselTitle:"المرشد الأكاديمي والمهني", counselName:"أ. إبراهيم الغندور", affairsTitle:"رئيس وحدة شؤون الطلبة", affairsName:"أ. بشرى عبدالسلام النقي", headTitle:"مديرة المدرسة", headName:"أ. فاطمة محمد عباس", sector:"قطاع العمليات المدرسية (دبي والإمارات الشمالية)", school:"مدرسة رأس الخيمة الحلقة الثالثة بنين"},
   classes:{"9":["متقدم","عام 1","عام 2","عام 3"], "10":["متقدم","عام 1","عام 2","عام 3","عام 4"], "11":["متقدم","عام 1","عام 2","عام 3"], "12":["متقدم","عام 1","عام 2","عام 3","عام 4"]},
@@ -676,9 +711,106 @@ const DEF = {
     2:["إشعار ولي الأمر وتعهّد خطي من الطالب، مع خصم درجات السلوك","استدعاء ولي الأمر وإنذار كتابي، وتحويل للمرشد الأكاديمي والمهني","إحالة إلى لجنة إدارة السلوك، وتُعامل المخالفة معاملة الدرجة الثالثة"],
     3:["استدعاء ولي الأمر وإنذار كتابي نهائي، وإحالة إلى لجنة إدارة السلوك ووضع خطة لتعديل السلوك","إحالة إلى لجنة إدارة السلوك لاتخاذ القرار المناسب (ومنه الإيقاف المؤقت وفق اللائحة)"],
     4:["إحالة فورية إلى لجنة إدارة السلوك وإبلاغ إدارة المدرسة، وإشعار ولي الأمر رسميًا، واتخاذ إجراءات الحماية اللازمة","رفع الحالة إلى الإدارة المختصة في الوزارة وفق اللائحة"]},
-  vioActions:["تنبيه شفهي","تنبيه كتابي","إشعار ولي الأمر","استدعاء ولي الأمر","تعهّد خطي من الطالب","خصم درجات السلوك","تحويل للمرشد الأكاديمي والمهني","تحويل لوحدة شؤون الطلبة","إحالة إلى لجنة إدارة السلوك","إيقاف مؤقت عن الدراسة"]
+  vioActions:["تنبيه شفهي","تنبيه كتابي","إشعار ولي الأمر","استدعاء ولي الأمر","تعهّد خطي من الطالب","اتفاقية تعديل سلوك","خصم درجات السلوك","تحويل للمرشد الأكاديمي والمهني","تحويل لوحدة شؤون الطلبة","فتح ملف دراسة حالة","إحالة إلى لجنة إدارة السلوك","إنذار كتابي ثانٍ","إنذار نهائي","إيقاف مؤقت عن الدراسة","طلب دعم جهة مختصة بالسلوك","تحويل لجهة تقويم السلوك","إبلاغ الشؤون القانونية والجهات المختصة","التحفظ على الأدوات المستخدمة"]
 };
 let S = JSON.parse(JSON.stringify(DEF));
+/* ---------- لائحة إدارة سلوك الطلبة في مؤسسات التعليم العام (القرار الوزاري رقم 851 لسنة 2018) ---------- */
+const DEGN = {1:"البسيطة", 2:"متوسطة الخطورة", 3:"الخطيرة", 4:"شديدة الخطورة"};
+const CODE = [
+  ["1.1","التأخر عن الطابور الصباحي أو عدم المشاركة فيه","تكرار التأخر عن الطابور الصباحي أو عدم المشاركة فيه دون عذر مقبول.","تأخير تأخر متأخر طابور الصباح"],
+  ["1.2","التأخر عن بدء الحصة الدراسية","تكرار التأخر عن الحضور في الوقت المحدد لبدء الحصة الدراسية ودون عذر مقبول.","تأخير تأخر متأخر حصة"],
+  ["1.3","عدم الالتزام بالزي المدرسي أو الرياضي","عدم الالتزام بالزي المدرسي، أو الرياضي الخاص بالمدرسة دون عذر مقبول.","زي لبس ملابس رياضي يونيفورم كندورة"],
+  ["1.4","تطويل الشعر أو القصات الغريبة","تطويل الشعر للأولاد أو القصات الغريبة للأولاد والبنات.","شعر قصة قصات حلاقة"],
+  ["1.5","عدم إحضار الكتب والأدوات المدرسية","عدم إحضار الكتب والأدوات المدرسية دون عذر مقبول.","كتب كتاب أدوات دفتر شنطة حقيبة"],
+  ["1.6","الإخلال بالهدوء والانضباط داخل الصف وخارجه","عدم اتباع قواعد السلوك الإيجابي داخل الصف وخارجه، مثل: المحافظة على الهدوء والانضباط أثناء الحصة، وإصدار أصوات غير لائقة داخل الصف أو خارجه.","إزعاج فوضى ضوضاء أصوات كلام هدوء شغب حصة"],
+  ["1.7","النوم أثناء الحصة أو الأنشطة الرسمية","النوم أثناء الحصة الدراسية أو الأنشطة المدرسية الرسمية دون مبرر (بعد التأكد من الحالة الصحية للطالب).","نوم نائم ينام"],
+  ["1.8","تناول الطعام أثناء الحصص أو الطابور","تناول الطعام أثناء الحصص وأثناء طابور الصباح دون مبرر أو إذن (وبعد التأكد من الحالة الصحية للطالب).","أكل طعام شرب علكة"],
+  ["1.9","عدم تسليم الواجبات والتكليفات في موعدها","عدم الالتزام بتسليم الواجبات والتكليفات الموكلة إليه في الوقت المحدد.","واجب واجبات تكليف إهمال مشروع"],
+  ["1.10","سوء استعمال الأجهزة الإلكترونية أثناء الحصة","سوء استعمال الأجهزة الإلكترونية كالحاسوب اللوحي وغيرها أثناء الحصة الدراسية، ويشمل ذلك ممارسة الألعاب الإلكترونية، ووضع السماعات في الصف.","ايباد آيباد لابتوب حاسوب جهاز العاب ألعاب سماعات"],
+  ["1.11","مخالفة أخرى مشابهة لمخالفات الدرجة الأولى","كل ما هو شبيه بهذه المخالفات وفق تقدير لجنة إدارة السلوك.","أخرى مشابهة"],
+  ["2.1","التغيب عن المدرسة دون عذر مقبول","التغيب عن المدرسة دون عذر مقبول في أي وقت، بما فيها قبل وبعد الإجازات والعطل ونهاية الأسبوع وقبل الامتحانات.","غياب غائب تغيب"],
+  ["2.2","دخول الفصل أو الخروج منه دون استئذان","الدخول إلى الفصل والخروج منه وقت الحصة دون استئذان.","خروج دخول استئذان تسرب"],
+  ["2.3","عدم حضور الأنشطة والفعاليات المدرسية","عدم حضور الأنشطة والفعاليات المدرسية دون عذر مقبول.","نشاط أنشطة فعالية فعاليات"],
+  ["2.4","التحريض على الشجار أو تهديد الزملاء وتخويفهم","التحريض على الشجار أو تهديد أو تخويف أي من الزملاء في المدرسة.","شجار مشاجرة تهديد تخويف تحريض خناقة عراك"],
+  ["2.5","مخالفة الآداب العامة وقيم المجتمع","إتيان ما من شأنه مخالفة الآداب العامة أو النظام العام بالمدرسة وقيم وعادات المجتمع، كالتشبه بالجنس الآخر في الملبس والمظهر، كقصات الشعر ووضع مساحيق التجميل.","آداب تشبه مكياج مساحيق"],
+  ["2.6","الكتابة على الأثاث أو العبث بجرس الإنذار والمصعد","الكتابة على الأثاث المدرسي، أو مقاعد الحافلات المدرسية، أو اللعب بجرس الإنذار أو المصعد.","كتابة طاولة كرسي أثاث جرس إنذار مصعد"],
+  ["2.7","إحضار الهاتف النقال أو إساءة استعمال وسائل الاتصال","إحضار الهاتف النقال أو إساءة استعمال أي من وسائل الاتصال.","هاتف جوال موبايل تلفون تليفون نقال"],
+  ["2.8","الإساءة اللفظية والتطاول على الآخرين","الإساءة اللفظية والتطاول على الطلبة أو العاملين أو ضيوف المدرسة.","سب شتم ألفاظ لفظية تطاول إساءة"],
+  ["2.9","التدخين داخل حرم المدرسة أو حيازة أدواته","التدخين داخل حرم المدرسة وحيازة أدواته.","تدخين سجائر سيجارة فيب ولاعة شيشة"],
+  ["2.10","رفض التجاوب مع التفتيش أو تسليم المواد الممنوعة","رفض التجاوب مع تعليمات التفتيش أو تسليم المواد الممنوعة.","تفتيش رفض ممنوعات"],
+  ["2.11","مخالفة أخرى مشابهة لمخالفات الدرجة الثانية","كل ما هو شبيه بهذه المخالفات وفق تقدير لجنة إدارة السلوك بالمدرسة.","أخرى مشابهة"],
+  ["3.1","التنمر بأنواعه وأشكاله","التنمر بأنواعه وأشكاله المختلفة.","تنمر استهزاء سخرية"],
+  ["3.2","نسخ الواجبات أو الأبحاث ونسبتها لنفسه","نقل ونسخ الواجبات والتقارير والأبحاث أو المشاريع ونسبتها لنفسه حسب (النموذج رقم 23).","نسخ نقل غش بحث تقرير"],
+  ["3.3","الخروج من المدرسة دون إذن أو الهروب منها","الخروج من المدرسة دون إذن أو الهروب منها أثناء اليوم الدراسي.","هروب هرب خروج"],
+  ["3.4","التشهير بالزملاء أو العاملين في وسائل التواصل","محاولة التشهير بالزملاء والعاملين بالمدرسة في وسائل التواصل الاجتماعي والإساءة لهم.","تشهير سوشيال تواصل انستغرام سناب تيك توك"],
+  ["3.5","انتحال صفة الغير أو تزوير الوثائق المدرسية","انتحال صفة الغير في المعاملات المدرسية، أو تزوير الوثائق الخاصة بالمدرسة.","تزوير انتحال توقيع"],
+  ["3.6","إتلاف أثاث المدرسة ومرافقها أو الاستيلاء عليها","إتلاف أو تخريب أثاث وأدوات المدرسة ومرافقها والاستيلاء عليها.","إتلاف تخريب كسر تكسير"],
+  ["3.7","العبث بالحافلات المدرسية أو إيذاء السائق والمشرف","العبث والتخريب وإتلاف الحافلات المدرسية، وإيذاء السائق أو المشرف أو مستخدمي الطريق.","حافلة باص سائق مشرف"],
+  ["3.8","الاعتداء الجسدي دون حدوث إصابات","الاعتداء على سلامة جسم الآخرين بالمدرسة وغير المؤدي إلى حدوث أي إصابات للمعتدى عليه (الاعتداء الجسدي).","ضرب اعتداء عراك شجار دفع"],
+  ["3.9","قيادة المركبة بتهور داخل الحرم المدرسي أو حوله","قيادة المركبة الخاصة بتهور داخل أو حول الحرم المدرسي وعدم اتباع تعليمات الأمن والسلامة.","سيارة قيادة تفحيط مركبة"],
+  ["3.10","تصوير العاملين أو الطلبة ونشر صورهم دون إذن","تصوير وحيازة ونشر وتداول صور العاملين بالمدرسة والطلبة دون إذن منهم.","تصوير صور فيديو نشر"],
+  ["3.11","مخالفة أخرى مشابهة لمخالفات الدرجة الثالثة","كل ما هو شبيه بهذه المخالفات وفق تقدير لجنة إدارة السلوك.","أخرى مشابهة"],
+  ["4.1","استعمال وسائل التواصل لأغراض غير قانونية أو غير أخلاقية","استعمال وسائل الاتصال أو التواصل الاجتماعي في أغراض غير قانونية أو غير أخلاقية أو فيما يسيء للمؤسسة التعليمية أو العاملين بها أو الآخرين.","تواصل اجتماعي ابتزاز"],
+  ["4.2","حيازة أو استخدام الأسلحة النارية أو البيضاء","حيازة أو استخدام الأسلحة النارية أو البيضاء، أو ما في حكمها داخل المدرسة.","سلاح سكين مسدس اداة حادة"],
+  ["4.3","الاعتداء الجنسي","الاعتداء الجنسي داخل المدرسة أو الحافلة أو خلال الأنشطة.","جنسي"],
+  ["4.4","الاعتداء الجسدي المؤدي إلى إصابات","الاعتداء على سلامة جسم الآخرين بالمدرسة المؤدي إلى حدوث إصابات للمعتدى عليه (الاعتداء الجسدي).","ضرب اعتداء إصابة جرح"],
+  ["4.5","السرقة الممنهجة أو التستر عليها","السرقة الممنهجة (المخطط لها مسبقًا) أو التستر عليها.","سرقة سرق"],
+  ["4.6","حيازة أو ترويج مواد مخالفة للقيم والآداب","جلب وحيازة وعرض وترويج مواد مادية أو إعلامية أو إلكترونية غير مرخص بها، ومخالفة للقيم والأخلاق والآداب والنظام العام، وما يخدش الحياء العام.","صور مخلة"],
+  ["4.7","التحرش الجنسي","التحرش الجنسي داخل المدرسة أو الحافلة أو خلال الأنشطة.","تحرش"],
+  ["4.8","تسريب أسئلة الامتحانات أو المشاركة فيه","تسريب أسئلة الامتحانات أو المشاركة فيه بأي شكل من الأشكال.","تسريب امتحان أسئلة غش"],
+  ["4.9","التسبب في إشعال الحرائق داخل الحرم المدرسي","التسبب في إشعال الحرائق داخل حرم المدرسة.","حريق نار إشعال"],
+  ["4.10","الإساءة للرموز السياسية أو الدينية أو الاجتماعية","التعرض بالإساءة للرموز السياسية أو الدينية أو الاجتماعية بالدولة.","رموز إساءة"],
+  ["4.11","حيازة أو تعاطي أو ترويج المخدرات والمؤثرات العقلية","حيازة أو جلب أو ترويج أو تعاطي المخدرات أو العقاقير الطبية المخدرة أو المؤثرات العقلية داخل المدرسة أو الحافلة، أو الظهور تحت تأثير مخدر أو مؤثرات عقلية أو عقاقير طبية مخدرة غير موصوفة.","مخدرات حبوب تعاطي"],
+  ["4.12","بث أو ترويج أفكار متطرفة أو تكفيرية أو إلحادية","بث أو ترويج أفكار ومعتقدات متطرفة أو تكفيرية أو إلحادية أو مسيئة لنظم المجتمع السياسية والاجتماعية.","تطرف إلحاد تكفير"],
+  ["4.13","الإساءة إلى الأديان السماوية أو إثارة الفتنة","الإساءة إلى الأديان السماوية، أو إثارة كل ما يسبب الفتنة الطائفية والمذهبية بالمدرسة.","دين أديان فتنة طائفية"],
+  ["4.14","مخالفة أخرى مشابهة تُعد في حكم الجرائم","كل ما هو شبيه بهذه المخالفات ويعتبر في حكم الجرائم التي يعاقب عليها القانون ووفق تقدير لجنة إدارة السلوك.","أخرى مشابهة جريمة"]
+].map(([code, short, full, kw]) => ({code, deg:Number(code[0]), short, full, kw}));
+const OLDCAT = ["التأخير الصباحي","عدم الالتزام بالزي المدرسي","إحضار الهاتف دون إذن","النوم داخل الحصة","عدم إحضار الكتب والأدوات","الأكل أثناء الحصة","التغيب عن الحصص دون إذن","استخدام ألفاظ غير لائقة","العبث بممتلكات المدرسة","الغش في الاختبارات","إثارة الفوضى في الحافلة أو الفصل","التنمر بأشكاله","الشجار والاعتداء البسيط","إتلاف الممتلكات عمدًا","التدخين داخل المدرسة","تصوير الآخرين أو نشر صورهم دون إذن","الاعتداء الجسيم على الآخرين","حيازة أدوات خطرة","الإساءة للرموز الدينية أو الوطنية","التزوير أو انتحال الشخصية"];
+function vioList(){ const ex = []; [1,2,3,4].forEach(g => ((S.catalog || {})[g] || []).forEach((t, i) => { if(!OLDCAT.includes(t) && !CODE.some(x => x.short === t)) ex.push({code:"س" + g + "-" + (i + 1), deg:g, short:t, full:t, kw:"", extra:true}); })); return CODE.concat(ex); }
+const vioLabel = x => x.extra ? x.short : x.code + " — " + x.short;
+const vioById = c => vioList().find(x => x.code === c) || null;
+function vioFind(txt){ txt = String(txt || "").trim(); if(!txt) return null; const L = vioList(); const m = txt.match(/^(\d\.\d{1,2})(?:\s|$)/);
+  return L.find(x => vioLabel(x) === txt) || (m && L.find(x => x.code === m[1])) || L.find(x => normAr(x.short) === normAr(txt) || normAr(x.full) === normAr(txt)) || null; }
+function vioOf(b){ return (b.code && vioById(b.code)) || vioFind(b.category); }
+function vioMatches(q){
+  q = normAr(q).replace(/\s+/g, " "); if(!q) return [];
+  const words = q.split(" ").map(w => w.length > 4 ? w.replace(/^ال/, "") : w).filter(Boolean), out = [];
+  vioList().forEach(x => { const hay = normAr(x.short + " " + x.full + " " + x.kw); let sc = -1;
+    if(x.code.startsWith(q)) sc = 0; else if(normAr(x.short).startsWith(q)) sc = 1; else if(words.every(w => hay.includes(w))) sc = 2; else if(words.some(w => w.length > 2 && hay.includes(w))) sc = 4;
+    if(sc >= 0) out.push([sc, x]); });
+  return out.sort((a, b) => a[0] - b[0] || a[1].deg - b[1].deg).slice(0, 9).map(x => x[1]);
+}
+/* التدرّج في الإجراءات حسب المادة (8) — f: نسبة الحسم من درجة المخالفة الكاملة */
+const STEP = {
+  1:[{n:"حال ارتكابها (المرة الأولى)", f:0, pen:"تنبيه شفهي وتوجيه، وتوثيق المخالفة والإجراء المتخذ حيالها (النموذج 6).", who:"المعلم أو رائد الصف وقت وقوع المخالفة، ويوثّقها بالتنسيق مع الإداري المسؤول.", acts:["تنبيه شفهي"]},
+     {n:"التكرار الأول (المرة الثانية)", f:0, pen:"تنبيه خطي وتوثيق المخالفة، وإبلاغ ولي الأمر خطيًا (النموذج 7).", who:"يوثّقها رئيس وحدة شؤون الطلبة، ويبلّغ المرشد الأكاديمي ولي الأمر حسب قنوات التواصل المعتمدة.", acts:["تنبيه كتابي","إشعار ولي الأمر"]},
+     {n:"التكرار الثاني (المرة الثالثة)", f:.5, pen:"استدعاء ولي الأمر في اليوم التالي (النموذج 8)، وتحويل الطالب للمرشد الأكاديمي، وتوقيع الطالب وولي أمره على تعهد بعدم تكرار المخالفة، وإبلاغ ولي الأمر بحسم الدرجة (النماذج 9، 10، 20).", who:"يستدعي المرشد الأكاديمي ولي الأمر، ويوقّع رئيس وحدة شؤون الطلبة الطالب وولي أمره على التعهد.", acts:["استدعاء ولي الأمر","تحويل للمرشد الأكاديمي والمهني","تعهّد خطي من الطالب"]},
+     {n:"التكرار الثالث (المرة الرابعة)", f:1, pen:"استدعاء ولي الأمر في اليوم التالي، وإصدار تنبيه خطي للطالب وولي أمره في حال عدم الاستجابة (النموذج 9).", who:"يستدعي المرشد الأكاديمي ولي الأمر، ويصدر رئيس وحدة شؤون الطلبة الإنذار.", acts:["استدعاء ولي الأمر","تنبيه كتابي"]},
+     {n:"أكثر من 3 تكرارات", f:1, note:"تُحسب الدرجة حسب تقدير اللجنة", pen:"انعقاد لجنة إدارة السلوك في اليوم التالي، وفتح ملف دراسة حالة فردية من قبل المرشد الأكاديمي (النموذج 11)، وتنفيذ مجموعة من الاستراتيجيات للحد من السلوك السلبي.", who:"تنعقد لجنة إدارة السلوك بإيعاز من مقررها وتختص بالإيقاف وحسم الدرجة، ويتابع المرشد الأكاديمي تعديل السلوك بفتح ملف دراسة الحالة.", acts:["إحالة إلى لجنة إدارة السلوك"], case:true}],
+  2:[{n:"حال ارتكابها (المرة الأولى)", f:.5, pen:"إصدار التنبيه الخطي الأول وتوقيع الطالب على تعهد بعدم تكرار المخالفة (النموذج 9)، واستكمال ملف دراسة الحالة الفردية، واستدعاء ولي الأمر في اليوم التالي وتوقيعه على اتفاقية تعديل سلوك ابنه، ومراقبة سلوك الطالب وخضوعه لجلسات توجيه.", who:"يصدر رئيس وحدة شؤون الطلبة الإنذار ويوقّع ولي الأمر والطالب على اتفاقية تعديل السلوك، ويقوم المرشد الأكاديمي بدراسة الحالة.", acts:["تنبيه كتابي","تعهّد خطي من الطالب","استدعاء ولي الأمر","اتفاقية تعديل سلوك"], case:true},
+     {n:"التكرار الأول (المرة الثانية)", f:1, pen:"العرض على لجنة إدارة السلوك، وإيقاف الطالب مؤقتًا بما لا يزيد عن يومين مع تكليفه بواجبات دراسية داخل المدرسة (النموذج 12)، وإصدار الإنذار الكتابي الثاني بحق الطالب وولي أمره، وتنفيذ استراتيجيات تعديل السلوك.", who:"تنعقد لجنة إدارة السلوك وتنفذ قراراتها في اليوم التالي وتختص بالإيقاف وحسم الدرجة، ويتابع المرشد الأكاديمي الطالب أثناء إيقافه داخل المدرسة.", acts:["إحالة إلى لجنة إدارة السلوك","إيقاف مؤقت عن الدراسة","إنذار كتابي ثانٍ"], case:true},
+     {n:"التكرار الثاني فأكثر", f:1, pen:"انعقاد فوري للجنة إدارة السلوك، وإيقاف الطالب من يوم إلى 3 أيام مع تكليفه بواجبات دراسية داخل المدرسة، وطلب دعم جهة مختصة بالسلوك لدراسة الملف (النموذج 13)، وإصدار الإنذار النهائي، ونقل الطالب تأديبيًا إلى مدرسة أخرى في حال عدم اعتدال سلوكه (النموذج 14).", who:"تختص اللجنة بالإيقاف وحسم الدرجة ومخاطبة جهة تقويم السلوك وإصدار قرار النقل، ويتابع مدراء النطاق موضوع نقل الطالب.", acts:["إحالة إلى لجنة إدارة السلوك","إيقاف مؤقت عن الدراسة","إنذار نهائي","طلب دعم جهة مختصة بالسلوك"], case:true}],
+  3:[{n:"حال ارتكابها (المرة الأولى)", f:1, pen:"إيقاف فوري للطالب عن الدراسة داخل حرم المدرسة، وانعقاد فوري للجنة إدارة السلوك، وتحويل الطالب للجهة المختصة (مثل جهات تقويم السلوك) للمرة الأولى مدة لا تزيد عن ثلاثة أسابيع (النموذج 15)، واستدعاء فوري لولي الأمر وتوقيعه على الإنذار والقرار، ومتابعة تقارير تطور حالة الطالب.", who:"تختص اللجنة بالإيقاف وحسم الدرجة وإصدار قرار التحويل، ويتولى المرشد الأكاديمي استدعاء ولي الأمر وتنفيذ القرارات والمتابعة مع جهات تقويم السلوك.", acts:["إيقاف مؤقت عن الدراسة","إحالة إلى لجنة إدارة السلوك","استدعاء ولي الأمر","تحويل لجهة تقويم السلوك"], case:true},
+     {n:"حال تكرارها", f:1, pen:"إيقاف فوري للطالب خارج حرم المدرسة لحين انتهاء التحقيق، وانعقاد فوري للجنة بشأن إيقافه حتى نهاية الفصل الدراسي وتحويله إلى جهات تقويم السلوك للمرة الثانية والأخيرة (النموذج 16)، واستدعاء فوري لولي الأمر، ونقل الطالب تأديبيًا إلى مدرسة أخرى في حال عدم اعتدال سلوكه.", who:"تختص اللجنة بالإيقاف وحسم الدرجة، ويتابع المرشد الأكاديمي التنفيذ، وتتم إجراءات النقل من خلال مدراء النطاق.", acts:["إيقاف مؤقت عن الدراسة","إحالة إلى لجنة إدارة السلوك","استدعاء ولي الأمر","تحويل لجهة تقويم السلوك"], case:true}],
+  4:[{n:"حال ارتكابها", f:1, fail:true, pen:"تبليغ إدارة الشؤون القانونية بالوزارة والجهات المختصة فورًا، وإبلاغ ولي الأمر وإيقاف الطالب فورًا لحين اكتمال التحقيق (مدة أقصاها يوما عمل)، وانعقاد فوري للجنة إدارة السلوك ورفع مذكرة شارحة مع الأدلة إلى وكيل الوزارة للشؤون الأكاديمية، والتحفظ على الأدوات المستخدمة لتسليمها للجهات الأمنية.", who:"يتولى مدير المدرسة أو نائبه أو ضابط السلوك التبليغ الفوري، وتختص لجنة إدارة السلوك بإصدار قرار الرسوب في مادة السلوك أو الفصل النهائي حسب جسامة المخالفة.", acts:["إبلاغ الشؤون القانونية والجهات المختصة","إيقاف مؤقت عن الدراسة","إحالة إلى لجنة إدارة السلوك","استدعاء ولي الأمر","التحفظ على الأدوات المستخدمة"], case:true}]
+};
+const CUM = {1:10, 2:20};
+function due(deg, n){ const L = STEP[deg] || STEP[1]; return L[Math.min(Math.max(Number(n) || 1, 1), L.length) - 1]; }
+function duePts(deg, n){ const d = due(deg, n), full = Number((S.degrees[deg] || DEF.degrees[deg]).points) || 0; return Math.round(d.f * full * 10) / 10; }
+function ptsTxt(deg, n){ const d = due(deg, n), p = duePts(deg, n); return d.fail ? "رسوب في مادة السلوك" : p ? "حسم " + p + " درجات" + (d.note ? " (" + d.note + ")" : "") : "لا يوجد حسم"; }
+/* تحليل سجل المخالفات حسب اللائحة: التكرار والحسم التراكمي ومتى يُفتح ملف دراسة الحالة */
+function codeAnalysis(vio){
+  const groups = {};
+  vio.forEach(b => { const x = vioOf(b), k = x ? x.code : "؟" + (b.category || "—"); const g = groups[k] = groups[k] || {key:k, x, cat:x ? x.short : (b.category || "—"), deg:Number(b.degree) || (x && x.deg) || 1, list:[]}; g.list.push(b); });
+  const cats = Object.values(groups).sort((a, b) => b.deg - a.deg || b.list.length - a.list.length);
+  const sum = {1:0, 2:0, 3:0, 4:0}; vio.forEach(b => { const g = Number(b.degree) || 1; sum[g] = (sum[g] || 0) + (Number(b.points) || 0); });
+  const why = [];
+  cats.filter(g => g.deg === 1 && g.list.length > 4).forEach(g => why.push("ارتكاب مخالفة «" + g.cat + "» " + g.list.length + " مرات (تكرارها أكثر من 3 مرات)"));
+  if(sum[1] >= CUM[1]) why.push("بلوغ مجموع الحسم في مخالفات الدرجة الأولى " + sum[1] + " درجات (الحد 10 درجات)");
+  if(sum[2] >= CUM[2]) why.push("بلوغ مجموع الحسم في مخالفات الدرجة الثانية " + sum[2] + " درجة (الحد 20 درجة)");
+  [2,3,4].forEach(g => { const n = vio.filter(b => (Number(b.degree) || 1) === g).length; if(n) why.push("ارتكاب " + n + " " + (n > 2 ? "مخالفات" : "مخالفة") + " من " + S.degrees[g].label + " (" + DEGN[g] + ")"); });
+  return {cats, sum, why, need:why.length > 0, max:Math.max(0, ...vio.map(b => Number(b.degree) || 1))};
+}
 const D = {students:[], byId:{}, classes:[], loadedAt:0};
 function dbErr(e){ const m = (e && (e.message || e.details)) || ""; if(/sch_cases/i.test(m)) return "جدول «دراسة الحالة» غير موجود. شغّل ملف indibat-setup.sql المحدَّث في Supabase."; if(/column/i.test(m) && /arrive_at/i.test(m)) return "عمود «وقت الوصول» غير موجود. شغّل ملف indibat-setup.sql المحدَّث في Supabase."; if(/column/i.test(m) && /job/i.test(m)) return "عمود «الصفة الوظيفية» غير موجود. شغّل ملف indibat-setup.sql المحدَّث في Supabase."; if(/column/i.test(m) && /action/i.test(m)) return "عمود «الإجراء المتخذ» غير موجود. شغّل ملف indibat-setup.sql المحدَّث في Supabase."; if(e && e.code === "23505") return "الرقم المدرسي مستخدم لطالب آخر."; if(/Failed to fetch/i.test(m)) return "لا يوجد اتصال بالإنترنت."; if(/relation .* does not exist|schema cache/i.test(m)) return "جداول «انضباط» غير موجودة. شغّل ملف indibat-setup.sql في Supabase."; if(e && e.code === "42501") return "ليست لديك صلاحية لهذا الإجراء."; return "حدث خطأ" + (m ? ": " + m : "."); }
 async function fetchAll(q){ const out = []; for(let from = 0;; from += 1000){ const {data, error} = await q().range(from, from + 999); if(error) throw error; out.push(...data); if(data.length < 1000) break; } return out; }
@@ -716,12 +848,33 @@ function showAuth(view, msg, info){
     <button class="btn primary" type="submit">تأكيد البريد</button>
     <div style="display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap"><button type="button" class="btn ghost" data-act="otp-resend">إعادة إرسال الكود</button><button type="button" class="btn ghost" data-act="auth-view" data-v="login">رجوع لتسجيل الدخول</button></div></form>
     <p class="muted" style="font-size:12.5px;margin:10px 0 0">بعد تأكيد البريد يراجع مسؤول النظام طلبك ويحدد صفتك الوظيفية، ثم يصلك إشعار بالموافقة.</p>`);
+  else if(AUTH.view === "forgot") h = card("استعادة كلمة المرور", `<p class="muted" style="margin-top:-4px">اكتب بريدك الوزاري المسجّل في المنصة، وسنرسل لك كود تحقق لتعيين كلمة مرور جديدة.</p><form id="fForgot"><div class="field"><label for="aEmail">البريد الوزاري</label><input type="email" id="aEmail" dir="ltr" autocomplete="username" value="${esc(AUTH.email || "")}" placeholder="Name${esc(DOMAINS.map(d => "@" + d)[0])}"></div><button class="btn primary" type="submit">إرسال كود الاستعادة</button><button type="button" class="btn ghost" data-act="auth-view" data-v="login">رجوع لتسجيل الدخول</button></form>`);
+  else if(AUTH.view === "reset") h = card("تعيين كلمة مرور جديدة", `<p style="margin-top:-4px">${esc(info || "أرسلنا كود تحقق إلى بريدك الوزاري.")} أدخل الكود ثم كلمة المرور الجديدة.</p><div class="note" style="margin-bottom:12px;text-align:center"><bdi dir="ltr"><b>${esc(AUTH.email || "")}</b></bdi></div>
+    ${window.__demoOtp ? `<div class="note" style="margin-bottom:12px;background:var(--brand-soft)">نسخة العرض: الكود هو <b class="num">${esc(window.__demoOtp)}</b></div>` : ""}
+    <form id="fReset"><div class="field"><label for="aOtp">كود التحقق</label><input type="text" id="aOtp" class="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="8" dir="ltr" placeholder="••••••"></div>${pwFields()}<button class="btn primary" type="submit">حفظ كلمة المرور والدخول</button>
+    <div style="display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap"><button type="button" class="btn ghost" data-act="forgot-resend">إعادة إرسال الكود</button><button type="button" class="btn ghost" data-act="auth-view" data-v="login">رجوع لتسجيل الدخول</button></div></form>
+    <p class="muted" style="font-size:12.5px;margin:10px 0 0">إذا وصلك في البريد رابط بدل الكود، اضغط الرابط وسيفتح لك صفحة تعيين كلمة المرور مباشرة.</p>`);
+  else if(AUTH.view === "newpw") h = card("تعيين كلمة مرور جديدة", `<p class="muted" style="margin-top:-4px">اكتب كلمة المرور الجديدة لحسابك في منصة «انضباط».</p><form id="fNewPw">${pwFields()}<button class="btn primary" type="submit">حفظ كلمة المرور والدخول</button></form>`);
   else if(AUTH.view === "blocked") h = card("البريد غير مسموح", `<p>الدخول إلى المنصة بالبريد الوزاري فقط (${esc(domainsTxt())}). سجّل حسابًا جديدًا ببريدك الوزاري.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" data-act="auth-view" data-v="signup">حساب جديد</button><button class="btn" data-act="auth-view" data-v="login">تسجيل الدخول</button></div>`);
   else if(AUTH.view === "signup") h = card("حساب جديد", `<div class="note" style="margin-bottom:12px">خطوات الدخول إلى المنصة:<ol class="steps"><li>سجّل ببريدك الوزاري.</li><li>يصلك كود تحقق على بريدك الوزاري، أدخله هنا لتأكيد حسابك.</li><li>يراجع مسؤول النظام طلبك ويوافق عليه، ثم تدخل.</li></ol></div><form id="fSignup"><div class="field"><label for="aName">الاسم</label><input type="text" id="aName"></div><div class="field"><label for="aEmail">البريد الوزاري</label><input type="email" id="aEmail" dir="ltr" autocomplete="username" placeholder="Name${esc(DOMAINS.map(d => "@" + d)[0])}"><span class="hint">يُقبل البريد الوزاري فقط (${esc(domainsTxt())}).</span></div><div class="field"><label for="aPw">كلمة المرور</label><input type="password" id="aPw" autocomplete="new-password"><span class="hint">8 أحرف على الأقل.</span></div><button class="btn primary" type="submit">إنشاء الحساب</button><button type="button" class="btn ghost" data-act="auth-view" data-v="login">لديّ حساب</button></form>`);
-  else h = card("تسجيل الدخول", `<p class="muted" style="margin-top:-4px">ببريدك الوزاري، وبنفس حسابك في منصة «أثر».</p><form id="fLogin"><div class="field"><label for="aEmail">البريد الوزاري</label><input type="email" id="aEmail" dir="ltr" autocomplete="username"></div><div class="field"><label for="aPw">كلمة المرور</label><input type="password" id="aPw" autocomplete="current-password"></div><button class="btn primary" type="submit">دخول</button><button type="button" class="btn ghost" data-act="auth-view" data-v="signup">ليس لديّ حساب</button></form>`);
+  else h = card("تسجيل الدخول", `<p class="muted" style="margin-top:-4px">ادخل ببريدك الوزاري وكلمة المرور الخاصة بمنصة «انضباط».</p><form id="fLogin"><div class="field"><label for="aEmail">البريد الوزاري</label><input type="email" id="aEmail" dir="ltr" autocomplete="username"></div><div class="field"><label for="aPw">كلمة المرور</label><input type="password" id="aPw" autocomplete="current-password"></div><div style="text-align:start;margin:-4px 0 4px"><button type="button" class="linkbtn" data-act="auth-view" data-v="forgot">هل نسيت كلمة المرور؟</button></div><button class="btn primary" type="submit">دخول</button><button type="button" class="btn ghost" data-act="auth-view" data-v="signup">ليس لديّ حساب</button></form>`);
   $("#view").innerHTML = h;
 }
-function authErr(e){ const m = (e && e.message) || ""; if(/Invalid login/i.test(m)) return "البريد أو كلمة المرور غير صحيحة."; if(/Token has expired|invalid.*(token|otp)|otp_expired/i.test(m)) return "الكود غير صحيح أو انتهت صلاحيته. اطلب كودًا جديدًا."; if(/rate limit|seconds/i.test(m)) return "انتظر دقيقة قبل طلب كود جديد."; if(/not confirmed/i.test(m)) return "فعّل حسابك من رسالة البريد أولًا."; if(/already registered/i.test(m)) return "البريد مسجّل بالفعل."; if(/Database error saving new user|البريد الوزاري/i.test(m)) return "يُسمح بالتسجيل بالبريد الوزاري فقط (" + domainsTxt() + ")."; if(/Failed to fetch/i.test(m)) return "لا يوجد اتصال بالإنترنت."; return m || "حدث خطأ."; }
+const pwFields = () => `<div class="field"><label for="aPw">كلمة المرور الجديدة</label><input type="password" id="aPw" autocomplete="new-password"><span class="hint">8 أحرف على الأقل.</span></div><div class="field"><label for="aPw2">تأكيد كلمة المرور</label><input type="password" id="aPw2" autocomplete="new-password"></div>`;
+function pwCheck(){ const a = $("#aPw").value, b = $("#aPw2").value; if(a.length < 8) return "كلمة المرور 8 أحرف على الأقل."; if(a !== b) return "كلمتا المرور غير متطابقتين."; return ""; }
+document.addEventListener("submit", async e => {
+  const id = e.target.id; if(!["fForgot","fReset","fNewPw"].includes(id)) return; e.preventDefault(); if(AUTH.busy) return; AUTH.busy = true;
+  try {
+    if(id === "fForgot"){ const em = $("#aEmail").value.trim().toLowerCase(); if(!isMinistry(em)) throw {message:"اكتب بريدك الوزاري (" + domainsTxt() + ")."}; AUTH.email = em;
+      const {error} = await sb.auth.resetPasswordForEmail(em, {redirectTo:location.href.split("#")[0]}); if(error) throw error; AUTH.busy = false; showAuth("reset"); return; }
+    const bad = pwCheck(); if(bad) throw {message:bad};
+    if(id === "fReset"){ const tk = String($("#aOtp").value || "").replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/\D/g, ""); if(tk.length < 6) throw {message:"أدخل الكود كاملًا كما وصلك في البريد."};
+      const {error} = await sb.auth.verifyOtp({email:AUTH.email, token:tk, type:"recovery"}); if(error) throw error; }
+    const {error} = await sb.auth.updateUser({password:$("#aPw").value}); if(error) throw error;
+    AUTH.recovery = false; AUTH.busy = false; window.__demoOtp = null; toast("تم تغيير كلمة المرور بنجاح."); await afterSignIn();
+  } catch(err){ AUTH.busy = false; const v = id === "fForgot" ? "forgot" : id === "fReset" ? "reset" : "newpw"; showAuth(v, authErr(err)); }
+});
+function authErr(e){ const m = (e && e.message) || ""; if(/Invalid login/i.test(m)) return "البريد أو كلمة المرور غير صحيحة."; if(/should be different|same as the old/i.test(m)) return "اختر كلمة مرور مختلفة عن السابقة."; if(/Password should be at least/i.test(m)) return "كلمة المرور قصيرة جدًا."; if(/Token has expired|invalid.*(token|otp)|otp_expired/i.test(m)) return "الكود غير صحيح أو انتهت صلاحيته. اطلب كودًا جديدًا."; if(/rate limit|seconds/i.test(m)) return "انتظر دقيقة قبل طلب كود جديد."; if(/not confirmed/i.test(m)) return "فعّل حسابك من رسالة البريد أولًا."; if(/already registered/i.test(m)) return "البريد مسجّل بالفعل."; if(/Database error saving new user|البريد الوزاري/i.test(m)) return "يُسمح بالتسجيل بالبريد الوزاري فقط (" + domainsTxt() + ")."; if(/Failed to fetch/i.test(m)) return "لا يوجد اتصال بالإنترنت."; return m || "حدث خطأ."; }
 document.addEventListener("submit", async e => {
   if(e.target.id !== "fOtp") return; e.preventDefault(); if(AUTH.busy) return;
   const tk = String($("#aOtp").value || "").replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/\D/g, "");
@@ -744,11 +897,12 @@ document.addEventListener("submit", async e => {
   } catch(err){ AUTH.busy = false; showAuth(null, authErr(err)); }
 });
 async function afterSignIn(){
+  if(AUTH.recovery){ showAuth("newpw"); return; }
   const {data:{user}} = await sb.auth.getUser(); if(!user){ showAuth("login"); return; }
   me.user = user;
   if(!isMinistry(user.email)){ await sb.auth.signOut(); me.user = null; me.staff = null; showAuth("blocked"); return; }
   const {data, error} = await sb.rpc("staff_hello", {p_name:(user.user_metadata && user.user_metadata.name) || ""});
-  if(error){ showAuth("login", "قاعدة البيانات غير مُعَدّة. شغّل ملف إعداد «أثر» ثم indibat-setup.sql."); return; }
+  if(error){ showAuth("login", "قاعدة البيانات غير مُعَدّة. شغّل ملف indibat-setup.sql في Supabase."); return; }
   me.staff = data;
   if(!data.approved){ showAuth("pending"); return; }
   document.body.dataset.mode = "app"; renderUser(); pendingCount();
@@ -995,6 +1149,7 @@ async function viewBehavior(t){
 function studentOptions(){ return D.students.map(s => `${s.name} — ${s.school_no} — ${clsName(s.grade, s.section)}`); }
 function findStudent(txt){ const m = String(txt || "").match(/—\s*(\S+)\s*—/); if(m) return D.students.find(s => String(s.school_no) === m[1]); const t = normAr(txt); return D.students.find(s => String(s.school_no) === String(txt).trim()) || D.students.find(s => normAr(s.name) === t); }
 function openBehaviorForm(kind, sid, rec){
+  if(kind !== "positive") return openViolationForm(sid, rec);
   const pos = kind === "positive", s0 = sid ? D.byId[sid] : null;
   const fields = [{name:"stu", label:"الطالب", type:"student", required:true, full:true, ph:"اكتب الاسم أو الرقم المدرسي واختر من القائمة"},
     {name:"date", label:"التاريخ", type:"date", required:true}];
@@ -1014,6 +1169,86 @@ function openBehaviorForm(kind, sid, rec){
       BF.cacheKey = null;
       closeModal(); toast(pos ? "سُجّل السلوك الإيجابي." : "سُجّلت المخالفة.", {label:"عرض الإشعار للطباعة", fn:() => go("notice-" + row.id)}); render();
     }});
+}
+
+/* ---------- تسجيل مخالفة: الدرجة والتكرار والإجراء المستحق تلقائيًا حسب اللائحة ---------- */
+const VQUICK = [["1.1","التأخر عن الطابور"],["1.3","الزي المدرسي"],["1.5","عدم إحضار الكتب"],["1.6","إزعاج داخل الصف"],["1.7","النوم في الحصة"],["1.9","عدم تسليم الواجبات"],["1.10","سوء استخدام الأجهزة"],["2.1","غياب بدون عذر"],["2.2","خروج دون استئذان"],["2.4","تهديد أو تحريض على شجار"],["2.7","الهاتف النقال"],["2.8","الإساءة اللفظية"],["2.9","التدخين"],["3.1","التنمر"],["3.3","الهروب من المدرسة"],["3.8","اعتداء جسدي"]];
+function vioRender(inp){
+  const box = acBox(inp); if(!box) return;
+  if(!inp.value.trim() || inp._picked === inp.value){ box.hidden = true; inp._ac = []; return; }
+  const m = vioMatches(inp.value); inp._ac = m; inp._i = m.length ? 0 : -1;
+  box.innerHTML = m.length ? m.map((x, i) => `<button type="button" role="option" class="ac-o${i === inp._i ? " on" : ""}" data-i="${i}" tabindex="-1"><span class="deg d${x.deg}">${x.deg}</span><span class="ac-t"><b>${esc(x.short)}</b><small>${x.extra ? "مخالفة مضافة من المدرسة" : "رقم المخالفة <span class=\"num\">" + x.code + "</span>"} · ${esc(S.degrees[x.deg].label)} (${DEGN[x.deg]})</small></span></button>`).join("")
+    : '<div class="ac-none">لا توجد مخالفة مطابقة في اللائحة. جرّب كلمة أخرى، أو اختر «مخالفة أخرى مشابهة» للدرجة المناسبة.</div>';
+  box.hidden = false;
+}
+function vioPick(inp, x){ if(!x) return; inp.value = vioLabel(x); inp._picked = inp.value; acBox(inp).hidden = true; inp.dispatchEvent(new Event("change", {bubbles:true})); }
+const sameVio = (b, x, txt) => x ? (b.code ? b.code === x.code : (vioOf(b) || {}).code === x.code) : normAr(b.category) === normAr(txt);
+function openViolationForm(sid, rec, code){
+  const s0 = sid ? D.byId[sid] : rec ? D.byId[rec.student_id] : null, x0 = rec ? vioOf(rec) : code ? vioById(code) : null;
+  const acts = [...new Set([...DEF.vioActions, ...(S.vioActions || [])])];
+  const fields = [
+    {name:"stu", label:"الطالب", type:"student", required:true, full:true, ph:"اكتب الاسم أو الرقم المدرسي واختر من القائمة"},
+    {name:"vio", label:"المخالفة: اكتب كلمة منها أو اختر من الأكثر تكرارًا", type:"vio", required:true, full:true},
+    {name:"date", label:"تاريخ المخالفة", type:"date", required:true},
+    {name:"rep", label:"رقم مرة ارتكاب المخالفة", type:"number", hint:"تُحسب تلقائيًا من سجل الطالب منذ بداية الفصل، ويمكنك تعديلها."},
+    {name:"degree", label:"درجة المخالفة (تُحدَّد تلقائيًا حسب اللائحة)", type:"select", full:true, options:[1,2,3,4].map(g => [String(g), S.degrees[g].label + " (" + DEGN[g] + ")"])},
+    {name:"due", type:"html", html:'<div id="vioDue" class="due" aria-live="polite"><p class="muted" style="margin:0">اختر الطالب والمخالفة ليظهر لك الإجراء المستحق حسب لائحة إدارة سلوك الطلبة.</p></div>'},
+    {name:"description", label:"وصف ما حدث بالتفصيل", type:"textarea", full:true, ph:"المكان والوقت والأطراف والشهود…"},
+    {name:"action", label:"الإجراءات المتخذة (تُختار تلقائيًا حسب اللائحة ويمكنك التعديل)", type:"multi", options:acts, full:true}];
+  const H = {sid:null, rows:[]};
+  openForm({title:rec ? "تعديل المخالفة" : "تسجيل مخالفة سلوكية", fields, submitLabel:"حفظ المخالفة",
+    values:{stu:s0 ? acLabel(s0) : "", vio:x0 ? vioLabel(x0) : rec ? rec.category : "", date:rec ? rec.date : today(), rep:rec && rec.rep ? String(rec.rep) : "", degree:String((rec && rec.degree) || (x0 && x0.deg) || 1), description:rec ? rec.description : "", action:rec ? rec.action : ""},
+    onInput:(v, form, e) => { const nm = e.target.name;
+      if(nm === "rep") form._repManual = true;
+      if(e.target.dataset && e.target.dataset.multi) form._actsManual = true;
+      if(nm === "vio"){ const x = vioFind(v.vio); if(x) form.elements.degree.value = String(x.deg); }
+      if(nm === "stu" || nm === "vio" || nm === "date") vioRecalc(form, H, rec); else if(nm === "degree" || nm === "rep") vioCard(form, H, rec);
+    },
+    validate:v => { const er = {}; if(!findStudent(v.stu)) er.stu = "اختر الطالب من القائمة."; if(v.rep && !(Number(v.rep) >= 1)) er.rep = "أدخل رقمًا صحيحًا (1 أو أكثر)."; return er; },
+    onSave: async v => {
+      const s = findStudent(v.stu), x = vioFind(v.vio), deg = Number(v.degree) || (x && x.deg) || 1, rep = Math.max(1, Math.round(Number(v.rep) || 1));
+      const row = {id:rec ? rec.id : newId(), student_id:s.id, date:v.date, kind:"violation", degree:deg, category:x ? x.short : v.vio, code:x && !x.extra ? x.code : null, rep, description:v.description, action:v.action, points:duePts(deg, rep), recorded_by_name:(me.staff && me.staff.name) || ""};
+      let {error} = await sb.from("sch_behavior").upsert(row);
+      if(error && /code|rep/.test((error.message || "") + (error.details || "")) && /column|schema/i.test(error.message || "")){ delete row.code; delete row.rep; ({error} = await sb.from("sch_behavior").upsert(row)); }
+      if(error){ toast(dbErr(error)); return; }
+      const openCase = !!($("#vioCase") && $("#vioCase").checked);
+      BF.cacheKey = null; closeModal();
+      if(openCase){ toast("سُجّلت المخالفة. استكمل ملف دراسة الحالة للطالب.", {label:"إشعار المخالفة للطباعة", fn:() => go("notice-" + row.id)}); go("case-" + s.id); }
+      else { toast("سُجّلت المخالفة.", {label:"عرض الإشعار للطباعة", fn:() => go("notice-" + row.id)}); render(); }
+    }});
+  const form = $("#mForm"), vi = form.querySelector('[data-ac="vio"]'); if(vi && vi.value) vi._picked = vi.value; if(rec){ form._actsManual = true; if(rec.rep) form._repManual = true; }
+  form.addEventListener("click", e => { const q = e.target.closest("[data-vq]"); if(!q) return; const inp = form.querySelector('[data-ac="vio"]'); vioPick(inp, vioById(q.dataset.vq)); });
+  vioRecalc(form, H, rec);
+}
+async function vioRecalc(form, H, rec){
+  const s = findStudent(form.elements.stu.value);
+  if(s && H.sid !== s.id){ H.sid = s.id; H.rows = []; vioCard(form, H, rec, true);
+    try { H.rows = await fetchAll(() => sb.from("sch_behavior").select("*").eq("student_id", s.id).eq("kind", "violation").gte("date", S.termStart)); } catch(e){ H.rows = []; }
+    if(H.sid !== s.id) return; }
+  if(!s){ H.sid = null; H.rows = []; }
+  const v = form.elements.vio.value, x = vioFind(v), date = form.elements.date.value || today();
+  if(s && v.trim() && !form._repManual){ const prior = H.rows.filter(b => (!rec || b.id !== rec.id) && b.date <= date && sameVio(b, x, v)).length; form.elements.rep.value = String(prior + 1); }
+  vioCard(form, H, rec);
+}
+function vioCard(form, H, rec, loading){
+  const box = form.querySelector("#vioDue"); if(!box) return;
+  const s = findStudent(form.elements.stu.value), v = form.elements.vio.value.trim(), x = vioFind(v);
+  if(!s || !v){ box.className = "due"; box.innerHTML = '<p class="muted" style="margin:0">اختر الطالب والمخالفة ليظهر لك الإجراء المستحق حسب لائحة إدارة سلوك الطلبة.</p>'; return; }
+  if(loading){ box.innerHTML = '<p class="muted" style="margin:0">جارٍ فحص سجل الطالب…</p>'; return; }
+  const deg = Number(form.elements.degree.value) || 1, rep = Math.max(1, Math.round(Number(form.elements.rep.value) || 1)), d = due(deg, rep), pts = duePts(deg, rep);
+  const others = H.rows.filter(b => !rec || b.id !== rec.id), prior = others.filter(b => sameVio(b, x, v)).length;
+  const cum = others.filter(b => (Number(b.degree) || 1) === deg).reduce((a, b) => a + (Number(b.points) || 0), 0) + pts;
+  const why = [];
+  if(d.case) why.push(deg === 1 ? "تكرار المخالفة أكثر من 3 مرات" : "حسب إجراءات " + S.degrees[deg].label);
+  if(CUM[deg] && cum >= CUM[deg]) why.push("بلوغ مجموع الحسم في " + S.degrees[deg].label + " " + cum + " درجة (الحد " + CUM[deg] + ")");
+  box.className = "due d" + deg;
+  box.innerHTML = `<div class="due-h"><span class="deg d${deg}">${deg}</span><div class="grow"><b>${esc(S.degrees[deg].label)} (${DEGN[deg]})</b>${x && !x.extra ? ` <span class="muted num" style="font-size:12.5px">· المخالفة رقم ${x.code} في اللائحة</span>` : x ? "" : ' <span class="muted" style="font-size:12.5px">· غير موجودة في اللائحة، حدّد الدرجة يدويًا</span>'}<div class="due-n">${esc(d.n)}</div></div><span class="due-p">${esc(ptsTxt(deg, rep))}</span></div>
+    <p><b>الإجراء المستحق حسب اللائحة:</b> ${esc(d.pen)}</p>
+    <p class="muted" style="font-size:13px"><b>المسؤولية:</b> ${esc(d.who)}</p>
+    <p class="muted" style="font-size:13px">سجل الطالب منذ بداية الفصل: ${prior ? `هذه المخالفة مسجلة له <b class="num">${prior}</b> ${prior > 2 ? "مرات" : "مرة"} سابقًا` : "لم تُسجَّل له هذه المخالفة من قبل"} · مجموع الحسم في ${esc(S.degrees[deg].label)} بعد هذه المخالفة: <b class="num">${cum}</b>${CUM[deg] ? " من " + CUM[deg] : ""}</p>
+    ${why.length ? `<label class="due-alert"><input type="checkbox" id="vioCase" checked><span><b>يستوجب فتح ملف دراسة حالة فردية</b> (${esc(why.join("، "))}). فتح ملف دراسة الحالة بعد الحفظ</span></label>` : ""}`;
+  if(!form._actsManual){ const want = new Set([...(d.acts || []), ...(pts > 0 ? ["خصم درجات السلوك"] : []), ...(why.length ? ["فتح ملف دراسة حالة"] : [])]);
+    $$('.modal input[data-multi="action"]').forEach(c => { c.checked = want.has(c.value); }); }
 }
 
 /* ---------- students ---------- */
@@ -1113,10 +1348,10 @@ async function viewNotice(id, t){
   if(!b || !s){ v.innerHTML = '<div class="panel empty">السجل غير موجود.</div>'; return; }
   const pos = b.kind === "positive";
   const msg = pos ? `السلام عليكم ولي أمر الطالب ${s.name}،\nيسعدنا إبلاغكم بتميّز ابنكم: ${b.category}${b.description ? " — " + b.description : ""}.\nشكرًا لكم على حسن المتابعة.\n${S.sign.school}`
-    : `السلام عليكم ولي أمر الطالب ${s.name}،\nنحيطكم علمًا بتسجيل مخالفة سلوكية (${S.degrees[b.degree].label}) بتاريخ ${fmt(b.date)}: ${b.category}.\n${b.action ? "الإجراء المتخذ: " + b.action + "\n" : ""}نرجو التواصل مع وحدة شؤون الطلبة بالمدرسة.\n${S.sign.school}`;
+    : `السلام عليكم ولي أمر الطالب ${s.name}،\nنحيطكم علمًا بتسجيل مخالفة سلوكية (${S.degrees[b.degree].label} - ${DEGN[b.degree] || ""}) بتاريخ ${fmt(b.date)}: ${b.category}.\n${b.action ? "الإجراء المتخذ: " + b.action + "\n" : ""}نرجو التواصل مع وحدة شؤون الطلبة بالمدرسة.\n${S.sign.school}`;
   v.innerHTML = tools("#st-" + s.id) + `<div class="print-tools">${waLinks(s, msg, "")}</div>` + paper(pos ? "إشعار سلوك إيجابي" : "إشعار مخالفة سلوكية", esc(fmt(b.date)) + " · " + esc(hijri(b.date)),
     `<table><tr><th style="width:22%">اسم الطالب</th><td>${esc(s.name)}</td><th style="width:16%">الرقم المدرسي</th><td>${esc(s.school_no)}</td></tr><tr><th>الصف والشعبة</th><td>${esc(clsName(s.grade, s.section))}</td><th>التاريخ</th><td>${DAYS[dOf(b.date).getDay()]} ${esc(fmt(b.date))}</td></tr></table>
-     <table><tr><th style="width:22%">${pos ? "السلوك" : "المخالفة"}</th><td>${esc(b.category || "")}</td></tr>${pos ? "" : `<tr><th>الدرجة</th><td>${esc(S.degrees[b.degree].label)} · خصم ${esc(b.points)} درجات من درجة السلوك</td></tr>`}
+     <table><tr><th style="width:22%">${pos ? "السلوك" : "المخالفة"}</th><td>${esc(b.category || "")}</td></tr>${pos ? "" : (() => { const x = vioOf(b), n = Number(b.rep) || 0, d = n ? due(b.degree, n) : null; return `${x && !x.extra ? `<tr><th>رقم المخالفة في اللائحة</th><td class="num">${x.code} · ${esc(x.full)}</td></tr>` : ""}<tr><th>الدرجة</th><td>${esc(S.degrees[b.degree].label)} (${DEGN[b.degree] || ""})${n ? " · " + esc(d.n) : ""} · ${Number(b.points) ? "حسم " + esc(b.points) + " درجات من درجة السلوك" : "لا يوجد حسم"}</td></tr>${d ? `<tr><th>الإجراء المستحق حسب اللائحة</th><td style="font-size:13px">${esc(d.pen)}</td></tr>` : ""}`; })()}
        <tr><th>الوصف</th><td style="height:70px">${esc(b.description || "")}</td></tr><tr><th>${pos ? "التعزيز" : "الإجراء المتخذ"}</th><td style="height:60px">${esc(b.action || "")}</td></tr><tr><th>سجّله</th><td>${esc(b.recorded_by_name || "")}</td></tr></table>
      ${pos ? "" : `<p style="font-size:13.5px">أُحيط ولي الأمر علمًا بالمخالفة والإجراء المتخذ، ونأمل تعاونه مع المدرسة في متابعة سلوك الطالب.</p><table><tr><th style="width:22%">توقيع الطالب</th><td></td><th style="width:22%">توقيع ولي الأمر</th><td></td></tr></table>`}
      ${signs("counsel", "affairs", "head")}`);
@@ -1235,10 +1470,10 @@ function viewSettings(){
     <div class="field"><label for="sWarn">حدود إنذارات الغياب (أيام بدون عذر)</label><input type="text" id="sWarn" name="warn" dir="ltr" value="${esc(S.warn.join(", "))}"><span class="hint">مثال: 5, 10, 15 للإنذار الأول والثاني والثالث. اضبطها حسب اللائحة المعتمدة.</span></div>
     <div class="field"><label for="sLate">بداية احتساب التأخير الصباحي</label><input type="time" id="sLate" name="lateStart" value="${esc(S.lateStart || "07:15")}"><span class="hint">يُحسب التأخير بالدقائق من بعد هذا الوقت (الافتراضي 7:15 صباحًا).</span></div>
     <div class="field"><label for="sAlert">تحذير التقارير: عدد أيام الغياب بدون عذر</label><input type="number" id="sAlert" name="alertAbs" min="1" value="${esc(S.alertAbs || 5)}"><span class="hint">يظهر تحذير في التقارير لكل طالب غاب أكثر من هذا العدد منذ بداية الفصل.</span></div></div></section>
-  <section class="panel" style="margin-top:14px"><h2>درجات المخالفات</h2><p class="muted" style="margin-top:-4px">درجة السلوك تبدأ من 100، وتُخصم منها درجات المخالفة. القيم والقوائم التالية قابلة للتعديل لتطابق لائحة إدارة السلوك المعتمدة لديكم.</p>
+  <section class="panel" style="margin-top:14px"><h2>درجات المخالفات</h2><p class="muted" style="margin-top:-4px">درجة السلوك تبدأ من 100. قائمة المخالفات ودرجاتها وإجراءاتها مأخوذة من لائحة إدارة سلوك الطلبة (القرار الوزاري 851 لسنة 2018) وتُطبق تلقائيًا حسب التكرار، والحسم الكامل لكل درجة أدناه (يُحسم نصفه أو كله حسب التكرار). يمكنك إضافة مخالفات خاصة بالمدرسة غير واردة في اللائحة (سطر لكل مخالفة).</p>
     <div class="grid2">${[1,2,3,4].map(g => `<div class="field"><label for="sP${g}">${esc(S.degrees[g].label)}: الدرجات المخصومة</label><input type="number" id="sP${g}" name="p${g}" min="0" value="${esc(S.degrees[g].points)}"></div>`).join("")}
       <div class="field"><label for="sPos">درجات السلوك الإيجابي (تعويض)</label><input type="number" id="sPos" name="pos" min="0" value="${esc(S.positivePoints)}"></div></div>
-    <div class="grid2" style="margin-top:12px">${[1,2,3,4].map(g => `<div class="field"><label for="sC${g}">مخالفات ${esc(S.degrees[g].label)} (سطر لكل مخالفة)</label><textarea id="sC${g}" name="c${g}" rows="5">${esc((S.catalog[g] || []).join("\n"))}</textarea></div>`).join("")}
+    <div class="grid2" style="margin-top:12px">${[1,2,3,4].map(g => `<div class="field"><label for="sC${g}">مخالفات إضافية خاصة بالمدرسة: ${esc(S.degrees[g].label)}</label><textarea id="sC${g}" name="c${g}" rows="5">${esc((S.catalog[g] || []).join("\n"))}</textarea></div>`).join("")}
       <div class="field"><label for="sCp">قائمة السلوك الإيجابي</label><textarea id="sCp" name="cp" rows="5">${esc(S.positive.join("\n"))}</textarea></div></div></section>
   <section class="panel" style="margin-top:14px"><h2>التوقيعات والترويسة</h2><div class="grid2">
     ${[["headTitle","مسمّى مدير المدرسة"],["headName","اسم مدير المدرسة"],["affairsTitle","مسمّى رئيس وحدة شؤون الطلبة"],["affairsName","اسم رئيس وحدة شؤون الطلبة"],["counselTitle","مسمّى المرشد الأكاديمي والمهني"],["counselName","اسم المرشد الأكاديمي والمهني"],["school","اسم المدرسة في الترويسة"],["sector","القطاع"]].map(([k, l]) => `<div class="field"><label for="sg_${k}">${l}</label><input type="text" id="sg_${k}" name="sg_${k}" value="${esc(S.sign[k] || "")}"></div>`).join("")}</div></section>
@@ -1246,7 +1481,7 @@ function viewSettings(){
   <section class="panel" style="margin-top:14px"><h2>قوائم الإجراءات المتخذة</h2><p class="muted" style="margin-top:-4px">تظهر كخيارات عند تسجيل الإجراء مع الطالب (سطر لكل إجراء).</p><div class="grid2">
     <div class="field"><label for="sAa">إجراءات الغياب والتأخير</label><textarea id="sAa" name="absActions" rows="9">${esc(S.absActions.join("\n"))}</textarea></div>
     <div class="field"><label for="sVa">إجراءات المخالفات السلوكية</label><textarea id="sVa" name="vioActions" rows="9">${esc(S.vioActions.join("\n"))}</textarea></div></div></section>
-  <section class="panel" style="margin-top:14px"><h2>تدرّج الإجراءات حسب تكرار المخالفة (دراسة الحالة)</h2><p class="muted" style="margin-top:-4px">لكل درجة: السطر الأول للمرة الأولى، والثاني للمرة الثانية، وهكذا. السطر الأخير يُطبق على ما بعده. عدّلها لتطابق لائحة إدارة سلوك الطلبة المعتمدة.</p><div class="grid2">${[1,2,3,4].map(g => `<div class="field"><label for="ld${g}">${esc(S.degrees[g].label)}</label><textarea id="ld${g}" name="ld${g}" rows="6">${esc(((S.ladder || DEF.ladder)[g] || []).join("\n"))}</textarea></div>`).join("")}</div></section>
+  <section class="panel" style="margin-top:14px"><h2>تدرّج الإجراءات حسب تكرار المخالفة</h2><p class="muted" style="margin:-4px 0 0">تُطبق تلقائيًا من لائحة إدارة سلوك الطلبة. <a href="#code">عرض اللائحة والإجراءات</a></p></section>
   <div class="savebar"><span>تُطبَّق الإعدادات على كل المستخدمين.</span><span class="sp"></span><button class="btn brass" type="submit">حفظ الإعدادات</button></div></form>`;
 }
 async function saveSettings(form){
@@ -1336,81 +1571,192 @@ function openAttAction(id){
     values:{action:a.action || "", reason:a.reason || ""},
     onSave: async v => { const {error} = await sb.from("sch_attendance").update({action:v.action, reason:v.reason}).eq("id", a.id); if(error){ toast(dbErr(error)); return; } closeModal(); toast("حُفظ الإجراء."); render(); }});
 }
-/* ---------- case study (دراسة الحالة) ---------- */
+/* ---------- دراسة الحالة (حسب نموذج «ملف دراسة حالة فردية خاصة») ---------- */
 const CASE_DEF = {pod:"no", disability:"", iep:"", linked:"", linkNote:"", problem:"", causes:"", plan:"", recs:"", meetDate:"", team:""};
-const ladderFor = (deg, n) => { const L = ((S.ladder || DEF.ladder)[deg] || DEF.ladder[deg] || []); return n ? L[Math.min(n, L.length) - 1] || "" : ""; };
 const ordTxt = n => ["", "الأولى", "الثانية", "الثالثة", "الرابعة", "الخامسة", "السادسة"][n] || ("رقم " + n);
+const CSO = {
+  src:["لجنة إدارة السلوك المدرسية","مدير المدرسة","نائب المدير","عضو هيئة إدارية","معلم","الاختصاصيون المهنيون","مشرف حافلة","ضابط أمن وسلامة","مرشد أكاديمي","مشرف أنشطة","الطالب","الأصدقاء أو الزملاء","ولي الأمر (الأب)","ولي الأمر (الأم)","ولي الأمر (أحد الأقارب)","السجلات المدرسية والأخرى المحولة"],
+  cls:["قيد جديد","كبار السن","باقٍ للإعادة","إعادة قيد","دمج تعليمي"],
+  state:["جديدة","مستمرة من العام الدراسي السابق","محولة من مدرسة أخرى","محولة من مرشد طلابي","محولة من وحدة حماية الطفل","محولة من الدعم الاجتماعي"],
+  type:["تربوية","اجتماعية","اقتصادية","صحية","نفسية","تربية خاصة"],
+  reason:["اعتداء على طالب","اعتداء على إداري","اعتداء على معلم","غياب متكرر","انقطاع عن الدراسة","تنمر على الزملاء الطلاب","الغش أو تسريب أسئلة في الامتحانات","الهروب من المدرسة","التسرب من الحصص الدراسية","مشاجرة طلابية","الإهمال أو عدم أداء الفروض والواجبات","إحضار الهاتف النقال وإساءة استخدامه","الإساءة اللفظية والتطاول على الآخرين","التدخين واستخدام مواد مخدرة ممنوعة","التشهير من خلال وسائل التواصل التقنية","تشكيل مجموعات غير رسمية في التعلم عن بعد","السرقة أو التستر عليها","التحرش أو الاعتداءات الجنسية","الاعتداء والإساءة في الحافلة المدرسية","تكرار مخالفات سلوكية أخرى"],
+  gender:["ذكر","أنثى"],
+  rel:["الأب","الأم","الجد","الجدة","الأخ","الأخت","العم","الخال","قريب آخر"],
+  lives:["الأب والأم","الأب","الأم","الجد","الجدة","الأخ","الأخت","العم","الخال","قريب آخر"],
+  parents:["يعيشان معًا","طلاق","انفصال","الأب متوفى","الأم متوفاة","الأب متزوج بأخرى","الأم متزوجة بآخر"],
+  edu:["يقرأ ويكتب","ابتدائية","ثانوية","جامعي","ماجستير","دكتوراه"],
+  house:["فيلا","شقة","بيت شعبي","أخرى"], own:["ملك","إيجار","هبة","أخرى"],
+  income:["دون المستوى","محدود","مقبول","ملائم","عالي المستوى"],
+  sick:["ضعف بصر","ضعف سمع","ضغط الدم","سكر الدم","فقر الدم","أمراض القلب","إعاقة جسدية","ربو شعبي","أمراض الكلى","سرطان","إعاقة عقلية","صرع وتشنجات عصبية","أخرى"],
+  health:["لائق","مريض","احتياجات خاصة"], aids:["لا يوجد","نظارة","سماعة","كرسي متحرك","عكاز طبي","أخرى"],
+  psy:["لا يوجد","الإعاقة الذهنية","اضطرابات التواصل","اضطرابات طيف التوحد","اضطرابات قصور الانتباه والنشاط الزائد","صعوبات التعلم المحددة","الإعاقة البصرية","الإعاقة السمعية","الإعاقة السمعية - البصرية","الإعاقة الجسدية","الاضطرابات النفسية - الانفعالية","الإعاقات المتعددة"],
+  tests:["ستانفورد بينيه 5","وكسلر المختصر","وكسلر 4","بيتا III","المصفوفات العادية","المصفوفات الملونة","لايتر آر","السلوك التكيفي","مقياس القلق","المشكلات السلوكية","مقياس التوحد"],
+  goals:["مساعدة الحالة على حل المشكلة وصنع واتخاذ القرار.","مساعدة الحالة على تجاوز المشكلات التي يعاني منها.","مساعدة الحالة على التأقلم والتعايش مع البيئة والمشكلات.","الرفع من مستوى الدافعية للعمل والإنجاز والتحصيل الدراسي.","مساعدة الحالة على تعديل الأفكار الخاطئة وتحقيق الصحة النفسية."],
+  follow:["مقابلة شخصية","مقابلة فنية","مقابلة معلم","مقابلة ولي أمر","مكالمة هاتفية","زيارة ميدانية","حضور حصة","اتصالات بالمسؤولين","مراجعة سجلات","مراسلات رسمية"],
+  end:["انتقال الطالب إلى مدرسة أخرى","تحويل الحالة إلى جهة رسمية خارج المدرسة","تحويل الحالة إلى الأخصائي النفسي","التحويل إلى وحدة حماية الطفل","تحويل الحالة إلى قسم التربية الخاصة","تحسن الحالة بتطوير القدرات الذاتية والبيئية وتجاوز المشكلة"],
+  pod:[["no","لا"],["yes","نعم"]], linked:[["","— لم يُحدَّد —"],["yes","نعم، مرتبط بالمشكلة السلوكية"],["no","لا، غير مرتبط"],["study","قيد الدراسة"]]
+};
+const CS = [
+  {k:"ref", n:1, t:"بيانات الإحالة", f:[["no","رقم الحالة","text"],["found","تاريخ اكتشاف الحالة","date"],["start","تاريخ البدء بالحالة","date"],["src","مصدر الإحالة","select","src"],["cls","التصنيف","select","cls"],["state","وضع الحالة","select","state"],["type","نوع الحالة","select","type"],["reason","سبب الاكتشاف","select","reason"],["summary","الملخص الأولي عن الحالة عند اكتشافها","textarea"]]},
+  {k:"basic", n:2, t:"البيانات الأولية", note:"اسم الطالب والصف والشعبة ورقم الطالب تُؤخذ تلقائيًا من ملف الطالب.", f:[["dob","تاريخ الميلاد","date"],["age","العمر","number"],["gender","النوع","select","gender"],["nat","الجنسية","text"],["guardian","اسم ولي الأمر","text"],["rel","صلة ولي الأمر","select","rel"],["phones","أرقام الاتصال","text"],["address","عنوان الإقامة","text"]]},
+  {k:"family", n:3, t:"الوضع الأسري", f:[["sib","عدد الإخوة","number"],["sibM","عدد الذكور","number"],["sibF","عدد الإناث","number"],["order","ترتيب الحالة بين إخوته","number"],["lives","يعيش الطالب مع","select","lives"],["parents","حالة الوالدين الاجتماعية","select","parents"],["fEdu","المستوى التعليمي للأب","select","edu"],["mEdu","المستوى التعليمي للأم","select","edu"],["fJob","مهنة الأب أو ولي الأمر والجهة","text"],["mJob","مهنة الأم والجهة","text"],["house","نوع السكن","select","house"],["own","نوع الملكية","select","own"],["income","دخل الأسرة","select","income"],["need","حاجة الحالة","select","income"],["famNote","أوضاع خاصة بالطالب والأسرة","textarea"]]},
+  {k:"study", n:4, t:"الوضع الدراسي", auto:true, f:[["studyNote","اتجاهات الطالب نحو المدرسة، وصعوبات الدراسة، والقدرة على التكيف مع البيئة المدرسية، ومستوى التحصيل والمشاركات","textarea"]]},
+  {k:"health", n:5, t:"الوضع الصحي", f:[["sick","أعراض مرضية للطالب","multi","sick"],["health","الوضع الصحي العام","select","health"],["aids","أجهزة تعويضية","select","aids"],["healthNote","أوضاع صحية بالطالب والأسرة","textarea"]]},
+  {k:"psy", n:6, t:"الوضع النفسي وأصحاب الهمم", f:[["psy","تصنيف الأعراض النفسية أو الإعاقة","select","psy"],["tests","الاختبارات والمقاييس المستخدمة","multi","tests"],["psyDate","تاريخ التحويل للأخصائي النفسي","date"],["psyName","اسم الأخصائي النفسي","text"],["psyNote","أوضاع نفسية للطالب والأسرة","textarea"],["psyReport","ملخص تقرير الأخصائي النفسي","textarea"],["pod","هل الطالب من أصحاب الهمم؟","select","pod"],["linked","هل الإعاقة أو الاضطراب مرتبط بالمشكلة السلوكية؟","select","linked"],["iep","نوع الخطة (مواءمة / تعديل / خطة سلوكية)","text"],["linkNote","مبررات قرار الارتباط (ملاحظات فريق التربية الخاصة)","textarea"]]},
+  {k:"diag", n:7, t:"التشخيص", f:[["intro","المقدمة","textarea"],["core","جوهر الحالة","textarea"],["outro","الخاتمة","textarea"]]},
+  {k:"plan", n:8, t:"الخطة العلاجية", f:[["goals","الأهداف العلاجية","multi","goals"],["selfTx","العلاج الذاتي","textarea"],["envTx","العلاج البيئي المباشر وغير المباشر","textarea"]]},
+  {k:"follow", n:9, t:"المتابعات المهنية", f:[["follow","المتابعات","follow"]]},
+  {k:"end", n:10, t:"تحويل أو إنهاء الحالة والتوصيات", f:[["endDate","تاريخ التحويل أو الإنهاء","date"],["endReason","سبب التحويل أو الإنهاء","select","end"],["final","الرأي الختامي","textarea"],["recs","توصيات فريق الدراسة / لجنة إدارة السلوك","textarea"],["team","أعضاء فريق الدراسة","text"],["meetDate","تاريخ اجتماع الفريق","date"]]}
+];
+const REASON_BY_CODE = {"2.1":"غياب متكرر","3.3":"الهروب من المدرسة","2.2":"التسرب من الحصص الدراسية","3.1":"تنمر على الزملاء الطلاب","3.2":"الغش أو تسريب أسئلة في الامتحانات","4.8":"الغش أو تسريب أسئلة في الامتحانات","2.4":"مشاجرة طلابية","3.8":"اعتداء على طالب","4.4":"اعتداء على طالب","1.9":"الإهمال أو عدم أداء الفروض والواجبات","1.5":"الإهمال أو عدم أداء الفروض والواجبات","2.7":"إحضار الهاتف النقال وإساءة استخدامه","1.10":"إحضار الهاتف النقال وإساءة استخدامه","2.8":"الإساءة اللفظية والتطاول على الآخرين","2.9":"التدخين واستخدام مواد مخدرة ممنوعة","4.11":"التدخين واستخدام مواد مخدرة ممنوعة","3.4":"التشهير من خلال وسائل التواصل التقنية","4.1":"التشهير من خلال وسائل التواصل التقنية","4.5":"السرقة أو التستر عليها","4.3":"التحرش أو الاعتداءات الجنسية","4.7":"التحرش أو الاعتداءات الجنسية","3.7":"الاعتداء والإساءة في الحافلة المدرسية"};
+function ageOf(dob){ if(!dob) return ""; const b = dOf(dob), n = dOf(today()); let a = n.getFullYear() - b.getFullYear(); if(n.getMonth() < b.getMonth() || (n.getMonth() === b.getMonth() && n.getDate() < b.getDate())) a--; return a > 0 && a < 30 ? String(a) : ""; }
+function caseDefaults(s, an, vio, nAbs, nLate){
+  const top = an.cats[0], first = vio[0];
+  const reason = (top && top.x && REASON_BY_CODE[top.x.code]) || (nAbs >= (S.alertAbs || 5) ? "غياب متكرر" : vio.length ? "تكرار مخالفات سلوكية أخرى" : "");
+  const parts = an.cats.slice(0, 4).map(g => g.cat + " (" + S.degrees[g.deg].label + "، " + g.list.length + " " + (g.list.length > 2 ? "مرات" : g.list.length === 2 ? "مرتان" : "مرة") + ")");
+  const summary = vio.length || nAbs || nLate ? "سُجّل للطالب منذ بداية الفصل " + vio.length + " " + (vio.length > 2 ? "مخالفات" : "مخالفة") + " سلوكية" + (parts.length ? "، أبرزها: " + parts.join("، ") : "") + "، وغياب بدون عذر " + nAbs + " " + (nAbs > 2 ? "أيام" : "يوم") + "، وتأخير صباحي " + nLate + " " + (nLate > 2 ? "مرات" : "مرة") + "." + (an.why.length ? " ويستوجب فتح ملف دراسة حالة حسب لائحة إدارة سلوك الطلبة بسبب: " + an.why.join("، ") + "." : "") : "";
+  return {found:first ? first.date : today(), start:today(), src:"لجنة إدارة السلوك المدرسية", cls:"قيد جديد", state:"جديدة", type:"تربوية", reason, summary,
+    gender:"ذكر", nat:"الإمارات العربية المتحدة", guardian:s.guardian || "", rel:"الأب", phones:[s.phone, s.phone2].filter(Boolean).join(" / "),
+    follow:[{d:today(), t:"مقابلة شخصية", s:"التعرف على الطالب وجمع المعلومات منه", a:""}, {d:today(), t:"مراجعة سجلات", s:"مراجعة سجل الحضور والمخالفات السلوكية للطالب في المنصة", a:""}]};
+}
+const csOpts = o => Array.isArray(o) ? o : (CSO[o] || []);
+const csVal = (c, k) => c[k] == null ? "" : c[k];
+function csFilled(c, sec){ let n = 0; sec.f.forEach(([k, , t]) => { const v = c[k]; if(t === "follow" ? (v || []).some(r => r.s || r.a) : Array.isArray(v) ? v.length : String(v == null ? "" : v).trim()) n++; }); return n; }
+function csField(c, [k, label, type, opt]){
+  const id = "cs_" + k, v = csVal(c, k);
+  if(type === "select"){ const os = csOpts(opt); const pairs = os.map(o => Array.isArray(o) ? o : [o, o]); const has = pairs.some(([a]) => a === "");
+    return `<div class="field"><label for="${id}">${label}</label><select id="${id}" name="${k}">${has ? "" : '<option value="">— اختر —</option>'}${pairs.map(([a, b]) => `<option value="${esc(a)}" ${String(v) === a ? "selected" : ""}>${esc(b)}</option>`).join("")}${v && !pairs.some(([a]) => a === v) ? `<option selected>${esc(v)}</option>` : ""}</select></div>`; }
+  if(type === "multi"){ const cur = Array.isArray(v) ? v : String(v).split(/\s*[،,]\s*/).filter(Boolean);
+    return `<div class="field full"><span class="lab">${label}</span><div class="acts">${csOpts(opt).map(o => `<label class="chip ck"><input type="checkbox" name="${k}" value="${esc(o)}" ${cur.includes(o) ? "checked" : ""}>${esc(o)}</label>`).join("")}</div></div>`; }
+  if(type === "textarea") return `<div class="field full"><label for="${id}">${label}</label><textarea id="${id}" name="${k}" rows="3">${esc(v)}</textarea></div>`;
+  if(type === "follow"){ const rows = (Array.isArray(v) && v.length ? v : [{d:today(), t:"", s:"", a:""}]);
+    return `<div class="field full"><div class="tbl"><table class="t fu"><thead><tr><th style="width:150px">التاريخ</th><th style="width:170px">نوع المتابعة</th><th>ملخص المتابعة</th><th>الإجراء</th><th style="width:40px"></th></tr></thead><tbody id="fuBody">${rows.map(fuRow).join("")}</tbody></table></div><button type="button" class="btn sm" data-fu="add" style="margin-top:8px">${ICON.plus}إضافة متابعة</button></div>`; }
+  return `<div class="field"><label for="${id}">${label}</label><input type="${type}" id="${id}" name="${k}" value="${esc(v)}" ${type === "number" ? 'inputmode="numeric" min="0"' : ""}></div>`;
+}
+const fuRow = r => `<tr><td><input type="date" name="fu_d" value="${esc(r.d || "")}" aria-label="التاريخ"></td><td><select name="fu_t" aria-label="نوع المتابعة"><option value="">— اختر —</option>${CSO.follow.map(o => `<option ${r.t === o ? "selected" : ""}>${esc(o)}</option>`).join("")}</select></td><td><input type="text" name="fu_s" value="${esc(r.s || "")}" aria-label="ملخص المتابعة"></td><td><input type="text" name="fu_a" value="${esc(r.a || "")}" aria-label="الإجراء"></td><td><button type="button" class="btn sm ghost" data-fu="del" aria-label="حذف المتابعة">×</button></td></tr>`;
 async function viewCases(t){
   const v = $("#view");
-  const [beh, cs] = await Promise.all([fetchAll(() => sb.from("sch_behavior").select("student_id,degree,kind,points,date").eq("kind", "violation").gte("date", S.termStart)), fetchAll(() => sb.from("sch_cases").select("student_id,updated_at"))]);
+  const [beh, cs] = await Promise.all([fetchAll(() => sb.from("sch_behavior").select("*").eq("kind", "violation").gte("date", S.termStart)), fetchAll(() => sb.from("sch_cases").select("student_id,updated_at"))]);
   if(t !== tok) return;
   const has = new Set(cs.map(c => c.student_id)); const by = {};
-  beh.forEach(b => { if(!D.byId[b.student_id]) return; const o = by[b.student_id] = by[b.student_id] || {n:0, max:0, pts:0}; o.n++; o.max = Math.max(o.max, Number(b.degree) || 1); o.pts += Number(b.points) || 0; });
-  const rows = Object.entries(by).map(([id, o]) => ({s:D.byId[id], ...o})).sort((a, b) => b.max - a.max || b.n - a.n);
-  v.innerHTML = `<div class="sec-h" style="margin-top:0"><div><h1 style="margin:0">دراسة الحالة</h1><p class="muted" style="margin:4px 0 0">ملف لكل طالب يجمع مخالفاته وعدد تكرار كل مخالفة، والإجراءات المتخذة، والإجراء المستحق حسب التدرّج المعتمد، ومدى ارتباط الإعاقة أو الاضطراب بالسلوك لطلبة أصحاب الهمم.</p></div></div>
+  beh.forEach(b => { if(!D.byId[b.student_id]) return; (by[b.student_id] = by[b.student_id] || []).push(b); });
+  const rows = Object.entries(by).map(([id, l]) => { const an = codeAnalysis(l); return {s:D.byId[id], n:l.length, an, pts:l.reduce((a, b) => a + (Number(b.points) || 0), 0)}; })
+    .sort((a, b) => (b.an.need - a.an.need) || b.an.max - a.an.max || b.n - a.n);
+  const need = rows.filter(r => r.an.need && !has.has(r.s.id)).length;
+  v.innerHTML = `<div class="sec-h" style="margin-top:0"><div><h1 style="margin:0">دراسة الحالة</h1><p class="muted" style="margin:4px 0 0">ملف دراسة حالة فردية لكل طالب حسب النموذج المعتمد، مع تحديد تلقائي للطلبة الذين يستوجب وضعهم فتح ملف حسب لائحة إدارة سلوك الطلبة.</p></div><a class="btn" href="#code">لائحة السلوك</a></div>
+  ${need ? `<div class="alert" style="margin-bottom:14px"><b>${need}</b> ${need > 2 ? "طلاب يستوجب" : "طالب يستوجب"} وضعهم فتح ملف دراسة حالة حسب اللائحة ولم يُفتح لهم ملف بعد.</div>` : ""}
   <section class="panel" style="margin-bottom:14px"><div class="field"><label for="caseQ">فتح دراسة حالة لأي طالب</label><div class="ac"><input type="text" id="caseQ" data-ac="student" autocomplete="off" placeholder="اكتب أول حروف الاسم أو الرقم المدرسي"><div class="ac-list" role="listbox" hidden></div></div></div></section>
   <section class="panel tbl"><div class="ph"><h2>طلاب لديهم مخالفات منذ بداية الفصل</h2><span class="muted" style="font-size:13px">${rows.length} طالب</span></div>
-  ${rows.length ? `<table class="t"><thead><tr><th>الطالب</th><th>الصف</th><th>عدد المخالفات</th><th>أعلى درجة</th><th>الدرجات المخصومة</th><th>دراسة الحالة</th><th></th></tr></thead><tbody>${rows.map(r => `<tr><td><a href="#case-${r.s.id}">${esc(r.s.name)}</a></td><td style="white-space:nowrap">${esc(clsName(r.s.grade, r.s.section))}</td><td class="num"><b>${r.n}</b></td><td><span class="tag ab">${esc(S.degrees[r.max].label)}</span></td><td class="num">${r.pts}</td><td>${has.has(r.s.id) ? '<span class="tag ok">موثّقة</span>' : '<span class="tag la">لم تُعدّ بعد</span>'}</td><td><a class="btn sm" href="#case-${r.s.id}">فتح</a></td></tr>`).join("")}</tbody></table>` : '<div class="empty">لا توجد مخالفات مسجلة منذ بداية الفصل.</div>'}</section>`;
+  ${rows.length ? `<table class="t"><thead><tr><th>الطالب</th><th>الصف</th><th>المخالفات</th><th>أعلى درجة</th><th>الحسم</th><th>حسب اللائحة</th><th>الملف</th><th></th></tr></thead><tbody>${rows.map(r => `<tr><td><a href="#case-${r.s.id}">${esc(r.s.name)}</a></td><td style="white-space:nowrap">${esc(clsName(r.s.grade, r.s.section))}</td><td class="num"><b>${r.n}</b></td><td><span class="tag ab">${esc(S.degrees[r.an.max || 1].label)}</span></td><td class="num">${r.pts}</td><td style="font-size:12.5px">${r.an.need ? `<span class="tag ab" title="${esc(r.an.why.join("، "))}">يستوجب فتح ملف</span>` : '<span class="muted">متابعة فقط</span>'}</td><td>${has.has(r.s.id) ? '<span class="tag ok">مفتوح</span>' : '<span class="tag la">لم يُفتح</span>'}</td><td><a class="btn sm" href="#case-${r.s.id}">فتح</a></td></tr>`).join("")}</tbody></table>` : '<div class="empty">لا توجد مخالفات مسجلة منذ بداية الفصل.</div>'}</section>`;
 }
 async function viewCase(id, t){
   const v = $("#view"), s = D.byId[id]; if(!s){ v.innerHTML = '<div class="panel empty">الطالب غير موجود.</div>'; return; }
-  const [beh, att, cr] = await Promise.all([fetchAll(() => sb.from("sch_behavior").select("*").eq("student_id", id).gte("date", S.termStart).order("date")), fetchAll(() => sb.from("sch_attendance").select("status").eq("student_id", id).gte("date", S.termStart)), sb.from("sch_cases").select("*").eq("student_id", id).maybeSingle()]);
+  const [beh, att, cr, allc] = await Promise.all([fetchAll(() => sb.from("sch_behavior").select("*").eq("student_id", id).gte("date", S.termStart).order("date")), fetchAll(() => sb.from("sch_attendance").select("status").eq("student_id", id).gte("date", S.termStart)), sb.from("sch_cases").select("*").eq("student_id", id).maybeSingle(), fetchAll(() => sb.from("sch_cases").select("student_id"))]);
   if(t !== tok) return;
   if(cr && cr.error && !/0 rows/i.test(cr.error.message || "")) throw cr.error;
-  const c = Object.assign({}, CASE_DEF, (cr && cr.data && cr.data.data) || {});
   const vio = beh.filter(b => b.kind === "violation"), pos = beh.filter(b => b.kind === "positive");
-  const groups = {}; vio.forEach(b => { const k = b.category || "—"; const g = groups[k] = groups[k] || {cat:k, deg:1, list:[]}; g.list.push(b); g.deg = Math.max(g.deg, Number(b.degree) || 1); });
-  const cats = Object.values(groups).sort((a, b) => b.deg - a.deg || b.list.length - a.list.length);
-  const byDeg = [1,2,3,4].map(g => vio.filter(b => (Number(b.degree) || 1) === g));
-  const acts = l => [...new Set(l.flatMap(b => splitActs(b.action)))];
-  const n = k => att.filter(a => a.status === k).length;
-  const score = behaviorScore(beh);
+  const n = k => att.filter(a => a.status === k).length, an = codeAnalysis(vio), score = behaviorScore(beh);
+  const saved = (cr && cr.data && cr.data.data) || null;
+  const c = Object.assign({}, CASE_DEF, caseDefaults(s, an, vio, n("absent"), n("late")), {no:String(saved ? "" : allc.length + 1)}, saved || {});
+  if(saved){ if(!c.summary && c.problem) c.summary = c.problem; if(!c.core && c.causes) c.core = c.causes; if(!c.selfTx && c.plan) c.selfTx = c.plan; if(!c.no) c.no = ""; }
+  if(!c.age && c.dob) c.age = ageOf(c.dob);
   const pod = c.pod === "yes";
-  const linkTxt = {yes:"نعم، مرتبط بالمشكلة السلوكية", no:"لا، غير مرتبط بالمشكلة السلوكية", study:"قيد الدراسة"}[c.linked] || "لم يُحدَّد بعد";
   const linkGuide = c.linked === "yes" ? "بما أن السلوك مرتبط بالإعاقة أو الاضطراب: يُكيَّف الإجراء بما يناسب حالة الطالب وخطته التربوية الفردية، ويُقدَّم الدعم وتعديل السلوك على العقوبة الاعتيادية، بالتنسيق مع فريق التربية الخاصة وولي الأمر."
     : c.linked === "no" ? "بما أن السلوك غير مرتبط بالإعاقة أو الاضطراب: تُطبّق الإجراءات المعتادة حسب درجة المخالفة وتكرارها، مع مراعاة التيسيرات المعتمدة للطالب في خطته الفردية."
     : "يُحدِّد فريق الدراسة (بمشاركة فريق التربية الخاصة) مدى ارتباط الإعاقة أو الاضطراب بالسلوك قبل تطبيق الإجراء.";
-  const box = on => on ? "☑" : "☐";
-  const f = (k, label, type, opts) => type === "select" ? `<div class="field"><label for="cs_${k}">${label}</label><select id="cs_${k}" name="${k}">${opts.map(([a, b]) => `<option value="${a}" ${c[k] === a ? "selected" : ""}>${b}</option>`).join("")}</select></div>`
-    : type === "textarea" ? `<div class="field full"><label for="cs_${k}">${label}</label><textarea id="cs_${k}" name="${k}" rows="3">${esc(c[k])}</textarea></div>`
-    : `<div class="field"><label for="cs_${k}">${label}</label><input type="${type || "text"}" id="cs_${k}" name="${k}" value="${esc(c[k])}"></div>`;
+  const acts = l => [...new Set(l.flatMap(b => splitActs(b.action)))];
+  const gn = g => Math.max(g.list.length, ...g.list.map(b => Number(b.rep) || 0));
+  const vioTable = `<table><thead><tr><th>المخالفة</th><th>الدرجة</th><th>التكرار</th><th>التواريخ</th><th>الإجراءات المتخذة</th><th>الإجراء المستحق حسب اللائحة</th></tr></thead><tbody>
+      ${an.cats.map(g => `<tr><td>${g.x && !g.x.extra ? `<span class="num" style="font-size:11.5px">${g.x.code}</span> ` : ""}${esc(g.cat)}</td><td style="white-space:nowrap">${esc(S.degrees[g.deg].label)}</td><td class="num"><b>${gn(g)}</b></td><td class="num" style="font-size:12px">${g.list.map(b => esc(fmtS(b.date))).join("، ")}</td><td style="font-size:12.5px">${esc(acts(g.list).join("، ") || "—")}</td><td style="font-size:12.5px"><b>${esc(due(g.deg, gn(g)).n)} · ${esc(ptsTxt(g.deg, gn(g)))}:</b> ${esc(due(g.deg, gn(g)).pen)}</td></tr>`).join("") || '<tr><td colspan="6">لا توجد مخالفات مسجلة منذ بداية الفصل.</td></tr>'}</tbody></table>`;
+  const sumTable = `<table><tr><th>غياب بدون عذر</th><th>غياب بعذر</th><th>تأخير صباحي</th><th>المخالفات</th><th>حسم الدرجة الأولى</th><th>حسم الدرجة الثانية</th><th>سلوك إيجابي</th><th>درجة السلوك</th></tr><tr class="num"><td>${n("absent")}</td><td>${n("excused")}</td><td>${n("late")}</td><td>${vio.length}</td><td>${an.sum[1]} من 10</td><td>${an.sum[2]} من 20</td><td>${pos.length}</td><td>${score} من 100</td></tr></table>`;
+  const prog = sec => { const k = csFilled(c, sec); return `<span class="cs-cnt${k === sec.f.length ? " ok" : ""}" data-cnt="${sec.k}">${k} من ${sec.f.length}</span>`; };
+  const fmtV = (k, type, opt) => { const val = c[k]; if(Array.isArray(val)) return val.join("، "); if(type === "date") return val ? fmt(val) : ""; if(type === "select"){ const p = csOpts(opt).find(o => Array.isArray(o) && o[0] === val); return p ? p[1] : val; } return val == null ? "" : val; };
+  const secPrint = sec => { const f = sec.f.filter(x => x[2] !== "follow"); const short = f.filter(x => !["textarea","multi"].includes(x[2])), long = f.filter(x => ["textarea","multi"].includes(x[2])); const rows = [];
+    for(let i = 0; i < short.length; i += 2) rows.push(`<tr>${short.slice(i, i + 2).map(([k, l, ty, o]) => `<th style="width:20%">${esc(l)}</th><td>${esc(fmtV(k, ty, o))}</td>`).join("")}${i + 1 >= short.length ? "<th></th><td></td>" : ""}</tr>`);
+    long.forEach(([k, l, ty, o]) => rows.push(`<tr><th>${esc(l)}</th><td colspan="3" style="height:${ty === "textarea" ? 46 : 24}px">${esc(fmtV(k, ty, o))}</td></tr>`));
+    return rows.length ? `<table>${rows.join("")}</table>` : ""; };
+  const fu = (c.follow || []).filter(r => r.d || r.t || r.s || r.a);
   v.innerHTML = `<div class="no-print"><div class="crumbs"><a href="#cases">دراسة الحالة</a> / ${esc(s.name)}</div>
-  <div class="sec-h" style="margin-top:0"><div><h1 style="margin:0">دراسة حالة: ${esc(s.name)}</h1><span class="muted num">${esc(s.school_no)} · الصف ${esc(clsName(s.grade, s.section))}</span></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="beh-new" data-kind="violation" data-sid="${s.id}">${ICON.plus}مخالفة</button><a class="btn" href="#st-${s.id}">ملف الطالب</a><button class="btn primary" data-act="print">${ICON.print}طباعة دراسة الحالة</button></div></div>
-  <form id="fCase" class="panel" style="margin-bottom:16px" data-sid="${s.id}"><h2 style="margin-top:0">بيانات دراسة الحالة</h2><div class="grid2">
-    ${f("pod", "هل الطالب من أصحاب الهمم؟", "select", [["no","لا"],["yes","نعم"]])}
-    ${f("disability", "نوع الإعاقة أو الاضطراب", "text")}
-    ${f("linked", "هل الإعاقة أو الاضطراب مرتبط بالمشكلة السلوكية؟", "select", [["","— لم يُحدَّد —"],["yes","نعم، مرتبط"],["no","لا، غير مرتبط"],["study","قيد الدراسة"]])}
-    ${f("iep", "نوع الخطة (مواءمة / تعديل / خطة سلوكية)", "text")}
-    ${f("linkNote", "مبررات قرار الارتباط (ملاحظات فريق التربية الخاصة)", "textarea")}
-    ${f("problem", "وصف المشكلة السلوكية", "textarea")}
-    ${f("causes", "الأسباب والعوامل المؤثرة (أسرية، دراسية، صحية، اجتماعية…)", "textarea")}
-    ${f("plan", "خطة العلاج وتعديل السلوك", "textarea")}
-    ${f("recs", "توصيات فريق الدراسة", "textarea")}
-    ${f("team", "أعضاء فريق الدراسة", "text")}
-    ${f("meetDate", "تاريخ اجتماع الفريق", "date")}
-  </div><div style="margin-top:12px"><button class="btn primary" type="submit">حفظ دراسة الحالة</button></div></form></div>
-  ${paper("دراسة حالة سلوكية", "الفصل الدراسي منذ " + esc(fmt(S.termStart)) + " · " + esc(fmt(today())),
-    `<table><tr><th>اسم الطالب</th><td>${esc(s.name)}</td><th>الرقم المدرسي</th><td>${esc(s.school_no)}</td></tr><tr><th>الصف</th><td>${esc(clsName(s.grade, s.section))}</td><th>ولي الأمر</th><td>${esc(s.guardian || "")} <bdi dir="ltr">${esc(s.phone || "")}</bdi></td></tr>
-      <tr><th>من أصحاب الهمم</th><td>${box(pod)} نعم &nbsp; ${box(!pod)} لا</td><th>نوع الإعاقة/الاضطراب</th><td>${esc(pod ? c.disability : "—")}</td></tr></table>
-    <h3>ملخص الوضع</h3><table><tr><th>غياب بدون عذر</th><th>غياب بعذر</th><th>تأخير صباحي</th><th>عدد المخالفات</th><th>سلوك إيجابي</th><th>درجة السلوك</th></tr><tr class="num"><td>${n("absent")}</td><td>${n("excused")}</td><td>${n("late")}</td><td>${vio.length}</td><td>${pos.length}</td><td>${score} / 100</td></tr></table>
-    <h3>المخالفات وعدد التكرار والإجراء المستحق</h3>
-    <table><thead><tr><th>المخالفة</th><th>الدرجة</th><th>عدد التكرار</th><th>التواريخ</th><th>الإجراءات المتخذة</th><th>الإجراء المستحق حسب التكرار</th></tr></thead><tbody>
-      ${cats.map(g => `<tr><td>${esc(g.cat)}</td><td style="white-space:nowrap">${esc(S.degrees[g.deg].label)}</td><td class="num"><b>${g.list.length}</b></td><td class="num" style="font-size:12px">${g.list.map(b => esc(fmtS(b.date))).join("، ")}</td><td style="font-size:12.5px">${esc(acts(g.list).join("، ") || "—")}</td><td style="font-size:12.5px"><b>المرة ${ordTxt(g.list.length)}:</b> ${esc(ladderFor(g.deg, g.list.length))}</td></tr>`).join("") || '<tr><td colspan="6">لا توجد مخالفات مسجلة منذ بداية الفصل.</td></tr>'}</tbody></table>
-    <h3>حسب درجة المخالفة</h3>
-    <table><thead><tr><th>الدرجة</th><th>العدد</th><th>الإجراء المستحق حسب اللائحة</th></tr></thead><tbody>${[1,2,3,4].map(g => `<tr><td style="white-space:nowrap">${esc(S.degrees[g].label)}</td><td class="num">${byDeg[g - 1].length}</td><td style="font-size:12.5px">${byDeg[g - 1].length ? `<b>المرة ${ordTxt(byDeg[g - 1].length)}:</b> ${esc(ladderFor(g, byDeg[g - 1].length))}` : "—"}</td></tr>`).join("")}</tbody></table>
-    ${pod ? `<h3>طلبة أصحاب الهمم: ارتباط الإعاقة أو الاضطراب بالسلوك</h3><table><tr><th style="width:38%">هل الإعاقة أو الاضطراب مرتبط بالمشكلة؟</th><td>${box(c.linked === "yes")} نعم &nbsp; ${box(c.linked === "no")} لا &nbsp; ${box(c.linked === "study" || !c.linked)} قيد الدراسة</td></tr>
-      ${c.iep ? `<tr><th>نوع الخطة</th><td>${esc(c.iep)}</td></tr>` : ""}<tr><th>مبررات القرار</th><td style="height:50px">${esc(c.linkNote)}</td></tr><tr><th>أثر ذلك على الإجراء</th><td style="font-size:12.5px">${esc(linkGuide)}</td></tr></table>` : ""}
-    <h3>دراسة الحالة</h3><table><tr><th style="width:24%">وصف المشكلة</th><td style="height:56px">${esc(c.problem)}</td></tr><tr><th>الأسباب والعوامل</th><td style="height:56px">${esc(c.causes)}</td></tr><tr><th>خطة العلاج</th><td style="height:56px">${esc(c.plan)}</td></tr><tr><th>التوصيات</th><td style="height:56px">${esc(c.recs)}</td></tr><tr><th>فريق الدراسة</th><td>${esc(c.team)}${c.meetDate ? " · بتاريخ " + esc(fmt(c.meetDate)) : ""}</td></tr></table>
+  <div class="sec-h" style="margin-top:0"><div><h1 style="margin:0">ملف دراسة حالة: ${esc(s.name)}</h1><span class="muted num">${esc(s.school_no)} · الصف ${esc(clsName(s.grade, s.section))}${saved ? "" : " · ملف جديد (البيانات المقترحة معبأة تلقائيًا)"}</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="beh-new" data-kind="violation" data-sid="${s.id}">${ICON.plus}مخالفة</button><a class="btn" href="#st-${s.id}">ملف الطالب</a><button class="btn primary" data-act="case-print">${ICON.print}حفظ وطباعة</button></div></div>
+  <section class="panel" style="margin-bottom:14px"><h2 style="margin-top:0">الوضع حسب لائحة إدارة سلوك الطلبة</h2>
+    ${an.need ? `<div class="alert" style="margin-bottom:10px"><b>يستوجب فتح ملف دراسة حالة فردية</b> بسبب: ${esc(an.why.join("، "))}.</div>` : '<p class="muted" style="margin-top:0">لم يصل الطالب بعد إلى حد فتح ملف دراسة حالة حسب اللائحة، ويمكنك فتحه للمتابعة الوقائية.</p>'}
+    <div class="tbl">${sumTable.replace("<table>", '<table class="t">')}</div><div class="tbl" style="margin-top:10px">${vioTable.replace("<table>", '<table class="t">')}</div></section>
+  <form id="fCase" data-sid="${s.id}">
+    <div class="cs-nav">${CS.map(sec => `<a href="#" data-cs="${sec.k}">${sec.n}. ${esc(sec.t)} ${prog(sec)}</a>`).join("")}</div>
+    ${CS.map(sec => `<details class="panel cs-sec" id="sec_${sec.k}" ${sec.n <= 2 && !saved ? "open" : sec.n === 1 ? "open" : ""}><summary><span class="cs-no">${sec.n}</span><b>${esc(sec.t)}</b><span class="sp"></span>${prog(sec)}</summary>
+      ${sec.note ? `<p class="muted" style="margin:0 0 8px;font-size:13px">${esc(sec.note)}</p>` : ""}
+      ${sec.auto ? `<div class="tbl" style="margin-bottom:10px">${sumTable.replace("<table>", '<table class="t">')}</div>` : ""}
+      ${sec.k === "basic" ? `<div class="cs-auto"><span>الطالب: <b>${esc(s.name)}</b></span><span>الصف والشعبة: <b>${esc(clsName(s.grade, s.section))}</b></span><span>رقم الطالب: <b class="num">${esc(s.school_no)}</b></span></div>` : ""}
+      <div class="grid2">${sec.f.map(f => csField(c, f)).join("")}</div>
+      ${sec.k === "psy" ? `<p class="muted" style="font-size:13px;margin:8px 0 0">${esc(linkGuide)}</p>` : ""}</details>`).join("")}
+    <div class="savebar"><span>البيانات سرية وتُستخدم لأغراض العمل المدرسي فقط.</span><span class="sp"></span><button class="btn" type="button" data-act="cs-open">فتح كل الأقسام</button><button class="btn brass" type="submit">حفظ ملف دراسة الحالة</button></div>
+  </form></div>
+  <div class="print-only">${paper("ملف دراسة حالة فردية خاصة", "رقم الحالة " + esc(c.no || "—") + " · " + esc(fmt(today())),
+    `<p style="font-size:12px;border:1px dashed #999;padding:6px 10px;border-radius:6px">هذه الوثيقة ذات طابع من الأهمية والسرية والخصوصية لبيانات ومعلومات شخصية للطالب في الإطار الرسمي ومتطلبات العمل المدرسية الضرورية، ولا يتم الكشف عنها إلا ضمن حدود وأطر القواعد واللوائح المعتمدة.</p>
+    <table><tr><th style="width:20%">المدرسة</th><td>${esc(S.sign.school)}</td><th style="width:20%">الإمارة - المدينة</th><td>رأس الخيمة</td></tr></table>
+    <h3>1. بيانات الإحالة</h3>${secPrint(CS[0])}
+    <h3>2. البيانات الأولية</h3><table><tr><th style="width:20%">اسم الطالب</th><td>${esc(s.name)}</td><th style="width:20%">الصف والشعبة</th><td>${esc(clsName(s.grade, s.section))}</td></tr><tr><th>رقم الطالب</th><td class="num">${esc(s.school_no)}</td><th></th><td></td></tr></table>${secPrint(CS[1])}
+    <h3>3. الوضع الأسري</h3>${secPrint(CS[2])}
+    <h3>4. الوضع الدراسي</h3>${sumTable}${secPrint(CS[3])}
+    <h3>المخالفات السلوكية وتكرارها والإجراء المستحق حسب اللائحة</h3>${vioTable}
+    ${an.need ? `<p style="font-size:12.5px"><b>مبررات فتح الملف حسب اللائحة:</b> ${esc(an.why.join("، "))}.</p>` : ""}
+    <h3>5. الوضع الصحي</h3>${secPrint(CS[4])}
+    <h3>6. الوضع النفسي وأصحاب الهمم</h3>${secPrint(CS[5])}${pod ? `<p style="font-size:12.5px"><b>أثر ارتباط الإعاقة بالسلوك على الإجراء:</b> ${esc(linkGuide)}</p>` : ""}
+    <h3>7. التشخيص</h3>${secPrint(CS[6])}
+    <h3>8. الخطة العلاجية</h3>${secPrint(CS[7])}
+    <h3>9. المتابعات المهنية</h3><table><thead><tr><th style="width:16%">التاريخ</th><th style="width:20%">نوع المتابعة</th><th>ملخص المتابعة</th><th>الإجراء</th></tr></thead><tbody>${(fu.length ? fu : [{}, {}, {}]).map(r => `<tr><td class="num">${esc(r.d ? fmt(r.d) : "")}</td><td>${esc(r.t || "")}</td><td style="height:22px">${esc(r.s || "")}</td><td>${esc(r.a || "")}</td></tr>`).join("")}</tbody></table>
+    <h3>10. تحويل أو إنهاء الحالة</h3>${secPrint(CS[9])}
     <table><tr><th style="width:24%">توقيع ولي الأمر</th><td></td><th style="width:16%">توقيع الطالب</th><td></td></tr></table>
-    ${signs("counsel", "affairs", "head")}`)}`;
+    ${signs("counsel", "affairs", "head")}`)}</div>`;
+  const fc = $("#fCase");
+  const upd = () => { const d = caseRead(fc); CS.forEach(sec => { const k = csFilled(d, sec); $$(`[data-cnt="${sec.k}"]`).forEach(x => { x.textContent = k + " من " + sec.f.length; x.classList.toggle("ok", k === sec.f.length); }); }); };
+  fc.addEventListener("input", e => { if(e.target.name === "dob"){ const a = ageOf(e.target.value); if(a) fc.elements.age.value = a; } upd(); });
+  fc.addEventListener("change", upd);
+  fc.addEventListener("click", e => {
+    const fb = e.target.closest("[data-fu]"); if(fb){ e.preventDefault(); const body = $("#fuBody"); if(fb.dataset.fu === "add"){ body.insertAdjacentHTML("beforeend", fuRow({d:today()})); body.lastElementChild.querySelector("select").focus(); } else { const tr = fb.closest("tr"); if(body.children.length > 1) tr.remove(); else tr.querySelectorAll("input,select").forEach(x => x.value = ""); } upd(); return; }
+    const nv = e.target.closest("[data-cs]"); if(nv){ e.preventDefault(); const d = $("#sec_" + nv.dataset.cs); d.open = true; d.scrollIntoView({behavior:"smooth", block:"start"}); return; }
+    const op = e.target.closest('[data-act="cs-open"]'); if(op){ e.preventDefault(); e.stopPropagation(); const all = $$(".cs-sec"), anyClosed = all.some(d => !d.open); all.forEach(d => d.open = anyClosed); op.textContent = anyClosed ? "طيّ كل الأقسام" : "فتح كل الأقسام"; }
+  });
 }
-async function saveCase(form){
-  const sid = form.dataset.sid, fd = new FormData(form), data = {};
-  Object.keys(CASE_DEF).forEach(k => data[k] = String(fd.get(k) || "").trim());
+function caseRead(form){
+  const fd = new FormData(form), data = {};
+  CS.forEach(sec => sec.f.forEach(([k, , type]) => {
+    if(type === "multi") data[k] = fd.getAll(k).map(String);
+    else if(type === "follow"){ const d = fd.getAll("fu_d"), tt = fd.getAll("fu_t"), ss = fd.getAll("fu_s"), aa = fd.getAll("fu_a"); data.follow = d.map((x, i) => ({d:String(x), t:String(tt[i] || ""), s:String(ss[i] || "").trim(), a:String(aa[i] || "").trim()})).filter(r => r.t || r.s || r.a); }
+    else data[k] = String(fd.get(k) || "").trim();
+  }));
+  return data;
+}
+async function saveCase(form, thenPrint){
+  const sid = form.dataset.sid, data = caseRead(form);
   const {error} = await sb.from("sch_cases").upsert({student_id:sid, data, updated_by_name:(me.staff && me.staff.name) || "", updated_at:new Date().toISOString()}, {onConflict:"student_id"});
   if(error){ toast(dbErr(error)); return; }
-  toast("حُفظت دراسة الحالة."); render();
+  toast("حُفظ ملف دراسة الحالة.");
+  const y = window.scrollY, open = $$(".cs-sec").filter(d => d.open).map(d => d.id);
+  await viewCase(sid, tok);
+  $$(".cs-sec").forEach(d => d.open = open.includes(d.id)); window.scrollTo(0, y);
+  if(thenPrint) setTimeout(() => window.print(), 250);
+}
+/* ---------- صفحة «لائحة السلوك» المرجعية ---------- */
+const CF = {q:""};
+function viewCode(){
+  const q = CF.q.trim(), L = q ? vioMatches(q).concat(vioList().filter(x => normAr(x.full).includes(normAr(q)))).filter((x, i, a) => a.indexOf(x) === i) : vioList();
+  const card = g => { const items = L.filter(x => x.deg === g); if(!items.length) return "";
+    return `<section class="panel code-deg d${g}" style="margin-bottom:14px"><div class="ph"><h2 style="margin:0"><span class="deg d${g}">${g}</span> مخالفات ${esc(S.degrees[g].label)} (${DEGN[g]})</h2><span class="muted" style="font-size:13px">${g === 4 ? "رسوب في مادة السلوك أو الفصل النهائي" : "الحسم الكامل " + S.degrees[g].points + " درجات"}</span></div>
+      <ul class="code-l">${items.map(x => `<li><span class="num code-n">${x.extra ? "مدرسة" : x.code}</span><div class="grow"><b>${esc(x.short)}</b>${x.full !== x.short ? `<div class="muted" style="font-size:13px">${esc(x.full)}</div>` : ""}</div><button class="btn sm" data-act="code-rec" data-code="${esc(x.code)}">${ICON.plus}تسجيل</button></li>`).join("")}</ul>
+      <details style="margin-top:10px"><summary style="cursor:pointer;font-weight:700">الإجراءات حسب التكرار (المادة 8)</summary><div class="tbl" style="margin-top:8px"><table class="t"><thead><tr><th>التكرار</th><th>الحسم</th><th>الإجراءات</th><th>المسؤوليات</th></tr></thead><tbody>${STEP[g].map((d, i) => `<tr><td style="white-space:nowrap"><b>${esc(d.n)}</b></td><td style="white-space:nowrap">${esc(ptsTxt(g, i + 1))}</td><td style="font-size:13px">${esc(d.pen)}</td><td style="font-size:13px">${esc(d.who)}</td></tr>`).join("")}</tbody></table></div>
+      ${CUM[g] ? `<p class="muted" style="font-size:13px;margin:8px 0 0">إذا وصل إجمالي الحسم المتراكم بسبب تكرار مخالفات ${esc(S.degrees[g].label)} (من نوع أو أكثر) إلى ${CUM[g]} درجة أو أكثر، يُفتح ملف دراسة حالة للطالب ويُتابع حسب توصيات لجنة إدارة السلوك.</p>` : ""}</details></section>`; };
+  return `<div class="sec-h" style="margin-top:0"><div><h1 style="margin:0">لائحة إدارة سلوك الطلبة</h1><p class="muted" style="margin:4px 0 0">القرار الوزاري رقم (851) لسنة 2018 بشأن لائحة إدارة سلوك الطلبة في مؤسسات التعليم العام. عند تسجيل أي مخالفة تُحدَّد درجتها والحسم والإجراء المستحق تلقائيًا من هذه اللائحة حسب عدد مرات تكرارها.</p></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" data-act="beh-new" data-kind="violation">${ICON.plus}تسجيل مخالفة</button><a class="btn" href="https://www.moe.gov.ae/Ar/Legislation/Documents/851.pdf" target="_blank" rel="noopener">${ICON.down}نص اللائحة (PDF)</a></div></div>
+  <div class="panel" style="margin-bottom:14px"><input type="search" id="cfQ" placeholder="ابحث عن مخالفة: هاتف، تأخر، زي، تنمر، تدخين، غياب، هروب…" value="${esc(CF.q)}" aria-label="بحث في اللائحة"></div>
+  ${[1,2,3,4].map(card).join("") || '<div class="panel empty">لا توجد مخالفة مطابقة.</div>'}
+  <section class="panel"><h2 style="margin-top:0">ملخص الإجراءات</h2><div class="tbl"><table class="t"><thead><tr><th>درجة المخالفة</th><th>حال ارتكابها</th><th>التكرار الأول</th><th>التكرار الثاني</th><th>التكرار الثالث</th></tr></thead><tbody>
+    <tr><td>${esc(S.degrees[1].label)} (البسيطة)</td><td>تنبيه شفهي</td><td>تنبيه خطي</td><td>حسم نصف الدرجة</td><td>حسم الدرجة كاملة وأخذ تعهد من الطالب وولي الأمر</td></tr>
+    <tr><td>${esc(S.degrees[2].label)} (متوسطة الخطورة)</td><td>تنبيه خطي وحسم نصف الدرجة</td><td>حسم الدرجة كاملة</td><td colspan="2">حسم الدرجة كاملة وأخذ تعهد من الطالب وولي الأمر</td></tr>
+    <tr><td>${esc(S.degrees[3].label)} (الخطيرة)</td><td colspan="4">حسم الدرجة كاملة واتخاذ الإجراءات الواردة بالمادة (8)</td></tr>
+    <tr><td>${esc(S.degrees[4].label)} (شديدة الخطورة)</td><td colspan="4">اتخاذ الإجراءات الواردة بالمادة (8): الرسوب في مادة السلوك أو الفصل النهائي حسب جسامة المخالفة</td></tr></tbody></table></div>
+    <p class="muted" style="font-size:13px;margin-bottom:0">قبل تطبيق الإجراءات تُدرس الأسباب المؤدية للمخالفة، مع مراعاة ظروف الطالب الاجتماعية والتربوية والنفسية والصحية والمادية وملابسات المخالفة ومدى تكرارها (المادة 9). ويُراعى لطلبة أصحاب الهمم مدى ارتباط الإعاقة أو الاضطراب بالسلوك.</p></section>`;
 }
 /* ---------- National Charter for Education (من منصة أثر) ---------- */
 const CHARTER = {
@@ -1545,10 +1891,11 @@ function parseHash(){
   if((m = h.match(/^warning-([\w-]+)$/))) return {route:"warning", id:m[1]};
   if((m = h.match(/^case-([\w-]+)$/))) return {route:"case", id:m[1]};
   if((m = h.match(/^sreport-([\w-]+)(?:~(\d{4}-\d{2}-\d{2})~(\d{4}-\d{2}-\d{2}))?$/))) return {route:"sreport", id:m[1], from:m[2] || null, to:m[3] || null};
-  if(["home","take","behavior","students","reports","settings","charter","users","cases"].includes(h)) return {route:h};
+  if(["home","take","behavior","students","reports","settings","charter","users","cases","code"].includes(h)) return {route:h};
   return {route:"home"};
 }
 function go(h){ if(location.hash === "#" + h) render(); else location.hash = h; }
+function docCheck(){ $$("a[data-doc]").forEach(a => fetch(a.getAttribute("href"), {method:"HEAD", cache:"no-store"}).then(r => { if(!r.ok) throw 0; }).catch(() => { a.removeAttribute("href"); a.classList.add("ghost"); a.title = "الملف غير مرفوع بعد إلى المنصة"; a.setAttribute("aria-disabled", "true"); })); }
 function render(){
   if(!sb || !(me.staff && me.staff.approved)) return;
   document.body.dataset.mode = "app";
@@ -1572,9 +1919,10 @@ function render(){
   else if(r === "users") run(() => viewUsers(t));
   else if(r === "cases") run(() => viewCases(t));
   else if(r === "case") run(() => viewCase(ui.id, t));
+  else if(r === "code"){ v.innerHTML = viewCode(); docCheck(); }
   const nk = {takec:"take", notify:"take", student:"students", sreport:"students", cls:"students", case:"cases", warning:"students", notice:"behavior"}[r] || r;
   $$("[data-nav]").forEach(a => a.setAttribute("aria-current", a.dataset.nav === nk ? "page" : "false"));
-  const TT = {home:"لوحة المتابعة اليومية", take:"الغياب والحضور اليومي", takec:"رصد الحضور", notify:"إشعار أولياء الأمور", behavior:"سجل السلوك التربوي", students:"إدارة الطلبة", student:"ملف الطالب", cls:"بيانات الصف والتقارير", notice:"إشعار سلوكي", warning:"إنذار غياب", sreport:"تقرير الطالب", reports:"التقارير والإحصائيات", charter:"الميثاق الوطني للتعليم", users:"المستخدمون والموافقات", cases:"دراسة الحالة", case:"دراسة حالة طالب", settings:"إعدادات المنصة"};
+  const TT = {code:"لائحة إدارة سلوك الطلبة", home:"لوحة المتابعة اليومية", take:"الغياب والحضور اليومي", takec:"رصد الحضور", notify:"إشعار أولياء الأمور", behavior:"سجل السلوك التربوي", students:"إدارة الطلبة", student:"ملف الطالب", cls:"بيانات الصف والتقارير", notice:"إشعار سلوكي", warning:"إنذار غياب", sreport:"تقرير الطالب", reports:"التقارير والإحصائيات", charter:"الميثاق الوطني للتعليم", users:"المستخدمون والموافقات", cases:"دراسة الحالة", case:"دراسة حالة طالب", settings:"إعدادات المنصة"};
   const pt = $("#pgTitle"), ps = $("#pgSub"); if(pt) pt.textContent = r === "notify" && ui.kind === "late" ? "التأخير الصباحي" : r === "notify" && ui.kind === "absent" ? "الغياب بدون عذر" : (TT[r] || "منصة انضباط");
   if(ps) ps.textContent = S.sign.school + " · " + DAYS[dOf(today()).getDay()] + " " + fmt(today()) + " · " + hijri(today());
 }
@@ -1594,6 +1942,7 @@ document.addEventListener("click", e => {
     case "logout": sb.auth.signOut().then(() => { me.user = null; me.staff = null; showAuth("login"); }); break;
     case "auth-view": showAuth(t.dataset.v); break;
     case "auth-recheck": afterSignIn(); break;
+    case "forgot-resend": sb.auth.resetPasswordForEmail(AUTH.email, {redirectTo:location.href.split("#")[0]}).then(r => { if(r && r.error) showAuth("reset", authErr(r.error)); else showAuth("reset", "", "أُرسل كود جديد إلى بريدك."); }); break;
     case "otp-resend": sb.auth.resend({type:"signup", email:AUTH.email}).then(r => { if(r && r.error) showAuth("otp", authErr(r.error)); else showAuth("otp", "", "أُرسل كود جديد إلى بريدك."); }); break;
     case "usr": usrSet(t.dataset.id, t.dataset.f, t.dataset.v); break;
     case "rerender": render(); break;
@@ -1614,6 +1963,8 @@ document.addEventListener("click", e => {
     case "csv": downloadCSV(); break;
     case "cp": CP.mode = t.dataset.v; render(); break;
     case "att-act": openAttAction(t.dataset.id); break;
+    case "case-print": { const f = $("#fCase"); if(f) saveCase(f, true); break; }
+    case "code-rec": openViolationForm(null, null, t.dataset.code); break;
   }
 });
 document.addEventListener("input", e => {
@@ -1621,6 +1972,7 @@ document.addEventListener("input", e => {
   const tg = e.target;
   if(tg.dataset && tg.dataset.x){ const o = REG.extra[tg.dataset.sid] = REG.extra[tg.dataset.sid] || {}; o[tg.dataset.x] = tg.value; if(tg.dataset.x === "arrive"){ o.minutes = lateMin(tg.value); const l = document.getElementById("lm-" + tg.dataset.sid); if(l) l.textContent = o.minutes ? "متأخر " + o.minutes + " دقيقة" : "في الموعد"; } return; }
   if(tg.id === "sfQ"){ SF.q = tg.value; const pos = tg.selectionStart; render(); const n = $("#sfQ"); n.focus(); n.setSelectionRange(pos, pos); }
+  if(tg.id === "cfQ"){ CF.q = tg.value; const pos = tg.selectionStart; render(); const n = $("#cfQ"); if(n){ n.focus(); n.setSelectionRange(pos, pos); } }
   if(tg.id === "bfQ"){ BF.q = tg.value; render(); setTimeout(() => { const n = $("#bfQ"); if(n){ n.focus(); n.setSelectionRange(n.value.length, n.value.length); } }, 0); }
 });
 document.addEventListener("change", e => {
@@ -1645,9 +1997,11 @@ Object.assign(ui, parseHash());
 paintLetterhead();
 (async function boot(){
   const v = $("#view");
-  if(!CONFIG.url || !CONFIG.anonKey || /YOUR-/.test(CONFIG.url + CONFIG.anonKey)){ document.body.dataset.mode = "auth"; v.innerHTML = '<div class="auth"><div class="panel"><h1>المنصة غير مُعَدّة بعد</h1><p>افتح الملف وضع رابط Supabase والمفتاح العام في <b dir="ltr">ATHAR_CONFIG</b> أعلى الملف: نفس القيم المستخدمة في منصة «أثر».</p></div></div>'; return; }
+  if(!CONFIG.url || !CONFIG.anonKey || /YOUR-/.test(CONFIG.url + CONFIG.anonKey)){ document.body.dataset.mode = "auth"; v.innerHTML = '<div class="auth"><div class="panel"><h1>المنصة غير مُعَدّة بعد</h1><p>افتح الملف وضع رابط Supabase والمفتاح العام في <b dir="ltr">ATHAR_CONFIG</b> أعلى الملف.</p></div></div>'; return; }
   if(!window.supabase || !window.supabase.createClient){ document.body.dataset.mode = "auth"; v.innerHTML = '<div class="auth"><div class="panel"><h1>تعذّر التحميل</h1><p>تحقّق من الإنترنت ثم أعد تحميل الصفحة.</p></div></div>'; return; }
   sb = window.supabase.createClient(CONFIG.url, CONFIG.anonKey, {auth:{persistSession:true, autoRefreshToken:true}});
+  if(/type=recovery/.test(location.hash + location.search)) AUTH.recovery = true;
+  sb.auth.onAuthStateChange(ev => { if(ev === "PASSWORD_RECOVERY"){ AUTH.recovery = true; showAuth("newpw"); } });
   const {data:{session}} = await sb.auth.getSession();
   if(session) await afterSignIn(); else showAuth("login");
 })();
