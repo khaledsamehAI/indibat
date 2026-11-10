@@ -8,7 +8,7 @@
 /* ===== نسخة عرض: بيانات وهمية تُحفظ في هذا المتصفح فقط ===== */
 window.ATHAR_CONFIG = {url:"https://demo.local", anonKey:"demo"};
 (function(){
-  try { if(localStorage.getItem("mockdb-v") === "11") return; } catch(e){ return; }
+  try { if(localStorage.getItem("mockdb-v") === "12") return; } catch(e){ return; }
   const ST = (function(){ const F = ["خالد","سالم","علي","ناصر","سيف","حمد","عيسى","مبارك","سعيد","راشد","حمدان","يوسف","فيصل","محمد","أحمد","سلطان","عبدالله","ماجد","منصور","عمر"], L = ["الشحي","الظهوري","الكعبي","الحبسي","المهيري","الشامسي","المزروعي","الطنيجي","النقبي","الزعابي"];
     const C = {"9":["متقدم","عام 1","عام 2","عام 3"], "10":["متقدم","عام 1","عام 2","عام 3","عام 4"], "11":["متقدم","عام 1","عام 2","عام 3"], "12":["متقدم","عام 1","عام 2","عام 3","عام 4"]};
     const out = []; let n = 1001;
@@ -16,7 +16,7 @@ window.ATHAR_CONFIG = {url:"https://demo.local", anonKey:"demo"};
       out.push({id:"d" + n, school_no:"2026" + n, name:a + " " + b + " " + l, grade:g, section:sec, guardian:b + " " + l, phone:"05" + String(10000000 + n * 731).slice(-8), phone2:n % 4 === 0 ? "" : "05" + String(20000000 + n * 919).slice(-8), notes:"", active:true}); n++; } }));
     return out; })();
   const pad = n => String(n).padStart(2,"0"), iso = d => d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
-  const db = {t:{sch_students:ST, sch_registers:[], sch_attendance:[], sch_behavior:[], staff:[{user_id:"u-demo", name:"وحدة شؤون الطلبة", email:"admin@moe.sch.ae", role:"admin", approved:true, job:"رئيس وحدة شؤون الطلبة", created_at:"2026-08-20"}, {user_id:"u-p1", name:"أ. معلم تجريبي", email:"teacher.demo@moe.sch.ae", role:"teacher", approved:false, created_at:"2026-11-09"}, {user_id:"u-p2", name:"حساب خارجي", email:"someone@gmail.com", role:"teacher", approved:false, created_at:"2026-11-10"}],
+  const db = {t:{sch_students:ST, sch_registers:[], sch_attendance:[], sch_behavior:[], sch_cases:[], staff:[{user_id:"u-demo", name:"وحدة شؤون الطلبة", email:"admin@moe.sch.ae", role:"admin", approved:true, job:"رئيس وحدة شؤون الطلبة", created_at:"2026-08-20"}, {user_id:"u-p1", name:"أ. معلم تجريبي", email:"teacher.demo@moe.sch.ae", role:"teacher", approved:false, created_at:"2026-11-09"}, {user_id:"u-p2", name:"حساب خارجي", email:"someone@gmail.com", role:"teacher", approved:false, created_at:"2026-11-10"}],
     app_settings:[]}, users:[{id:"u-demo", email:"admin@moe.sch.ae", pw:"demo1234"}], pins:{}, sessions:{}, cur:{id:"u-demo", email:"admin@moe.sch.ae"}};
   const cls = [...new Set(ST.map(s => s.grade+"|"+s.section))]; let k = 0;
   const t0 = new Date(); const term = new Date(); term.setDate(term.getDate()-45);
@@ -36,7 +36,7 @@ window.ATHAR_CONFIG = {url:"https://demo.local", anonKey:"demo"};
     const s = ST[(i*17) % ST.length];
     if(i % 3 === 2) db.t.sch_behavior.push({id:"b"+i, student_id:s.id, date:iso(d), kind:"positive", degree:null, category:P[i % 3], description:"", action:"شهادة شكر", points:2, recorded_by_name:"وحدة شؤون الطلبة"});
     else { const v = V[i % V.length]; db.t.sch_behavior.push({id:"b"+i, student_id:s.id, date:iso(d), kind:"violation", degree:v[0], category:v[1], description:"", action:v[0] > 2 ? "استدعاء ولي الأمر" : "تنبيه شفهي", points:v[2], recorded_by_name:"وحدة شؤون الطلبة"}); } }
-  localStorage.setItem("mockdb", JSON.stringify(db)); localStorage.setItem("mockdb-v", "11");
+  localStorage.setItem("mockdb", JSON.stringify(db)); localStorage.setItem("mockdb-v", "12");
 })();
 </script>
 <script>(function(){
@@ -633,6 +633,7 @@ input.otp{font-size:26px;letter-spacing:10px;text-align:center;font-family:var(-
     <a href="#home" data-nav="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg><span>لوحة المتابعة</span></a>
     <a href="#take" data-nav="take"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="17" rx="2"/><path d="M8 2v4M16 2v4M4 10h16M9 15l2 2 4-4"/></svg><span>الغياب والحضور اليومي</span></a>
     <a href="#behavior" data-nav="behavior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg><span>سجل السلوك التربوي</span></a>
+    <a href="#cases" data-nav="cases"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><circle cx="12" cy="11" r="2.5"/><path d="M8 17.5c.6-1.8 2.1-2.8 4-2.8s3.4 1 4 2.8"/></svg><span>دراسة الحالة</span></a>
     <a href="#students" data-nav="students"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><circle cx="17.5" cy="9" r="2.5"/><path d="M16 14.6c2.6.2 4.6 2 5.3 5"/></svg><span>إدارة الطلبة</span></a>
     <a href="#reports" data-nav="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 17v-4M12 17V8M16 17v-6"/></svg><span>التقارير والإحصائيات</span></a>
     <a href="#charter" data-nav="charter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M9 8h6M9 12h6"/></svg><span>الميثاق الوطني للتعليم</span></a>
@@ -816,13 +817,18 @@ const DEF = {
   sign:{counselTitle:"المرشد الأكاديمي والمهني", counselName:"أ. إبراهيم الغندور", affairsTitle:"رئيس وحدة شؤون الطلبة", affairsName:"أ. بشرى عبدالسلام النقي", headTitle:"مديرة المدرسة", headName:"أ. فاطمة محمد عباس", sector:"قطاع العمليات المدرسية (دبي والإمارات الشمالية)", school:"مدرسة رأس الخيمة الحلقة الثالثة بنين"},
   classes:{"9":["متقدم","عام 1","عام 2","عام 3"], "10":["متقدم","عام 1","عام 2","عام 3","عام 4"], "11":["متقدم","عام 1","عام 2","عام 3"], "12":["متقدم","عام 1","عام 2","عام 3","عام 4"]},
   absActions:["تواصل هاتفي مع ولي الأمر","إرسال رسالة واتساب لولي الأمر","استدعاء ولي الأمر","استلام عذر مقبول","الإنذار الأول","الإنذار الثاني","الإنذار الثالث","تعهّد خطي من الطالب","تحويل للمرشد الأكاديمي والمهني","تحويل لوحدة شؤون الطلبة"],
+  ladder:{
+    1:["تنبيه شفهي وتوجيه الطالب، وتوثيق المخالفة","تنبيه كتابي وإشعار ولي الأمر","استدعاء ولي الأمر وتعهّد خطي من الطالب، مع خصم درجات السلوك","تحويل للمرشد الأكاديمي والمهني، وتُعامل المخالفة معاملة الدرجة الثانية"],
+    2:["إشعار ولي الأمر وتعهّد خطي من الطالب، مع خصم درجات السلوك","استدعاء ولي الأمر وإنذار كتابي، وتحويل للمرشد الأكاديمي والمهني","إحالة إلى لجنة إدارة السلوك، وتُعامل المخالفة معاملة الدرجة الثالثة"],
+    3:["استدعاء ولي الأمر وإنذار كتابي نهائي، وإحالة إلى لجنة إدارة السلوك ووضع خطة لتعديل السلوك","إحالة إلى لجنة إدارة السلوك لاتخاذ القرار المناسب (ومنه الإيقاف المؤقت وفق اللائحة)"],
+    4:["إحالة فورية إلى لجنة إدارة السلوك وإبلاغ إدارة المدرسة، وإشعار ولي الأمر رسميًا، واتخاذ إجراءات الحماية اللازمة","رفع الحالة إلى الإدارة المختصة في الوزارة وفق اللائحة"]},
   vioActions:["تنبيه شفهي","تنبيه كتابي","إشعار ولي الأمر","استدعاء ولي الأمر","تعهّد خطي من الطالب","خصم درجات السلوك","تحويل للمرشد الأكاديمي والمهني","تحويل لوحدة شؤون الطلبة","إحالة إلى لجنة إدارة السلوك","إيقاف مؤقت عن الدراسة"]
 };
 let S = JSON.parse(JSON.stringify(DEF));
 const D = {students:[], byId:{}, classes:[], loadedAt:0};
-function dbErr(e){ const m = (e && (e.message || e.details)) || ""; if(/column/i.test(m) && /arrive_at/i.test(m)) return "عمود «وقت الوصول» غير موجود. شغّل ملف indibat-setup.sql المحدَّث في Supabase."; if(/column/i.test(m) && /job/i.test(m)) return "عمود «الصفة الوظيفية» غير موجود. شغّل ملف indibat-setup.sql المحدَّث في Supabase."; if(/column/i.test(m) && /action/i.test(m)) return "عمود «الإجراء المتخذ» غير موجود. شغّل ملف indibat-setup.sql المحدَّث في Supabase."; if(e && e.code === "23505") return "الرقم المدرسي مستخدم لطالب آخر."; if(/Failed to fetch/i.test(m)) return "لا يوجد اتصال بالإنترنت."; if(/relation .* does not exist|schema cache/i.test(m)) return "جداول «انضباط» غير موجودة. شغّل ملف indibat-setup.sql في Supabase."; if(e && e.code === "42501") return "ليست لديك صلاحية لهذا الإجراء."; return "حدث خطأ" + (m ? ": " + m : "."); }
+function dbErr(e){ const m = (e && (e.message || e.details)) || ""; if(/sch_cases/i.test(m)) return "جدول «دراسة الحالة» غير موجود. شغّل ملف indibat-setup.sql المحدَّث في Supabase."; if(/column/i.test(m) && /arrive_at/i.test(m)) return "عمود «وقت الوصول» غير موجود. شغّل ملف indibat-setup.sql المحدَّث في Supabase."; if(/column/i.test(m) && /job/i.test(m)) return "عمود «الصفة الوظيفية» غير موجود. شغّل ملف indibat-setup.sql المحدَّث في Supabase."; if(/column/i.test(m) && /action/i.test(m)) return "عمود «الإجراء المتخذ» غير موجود. شغّل ملف indibat-setup.sql المحدَّث في Supabase."; if(e && e.code === "23505") return "الرقم المدرسي مستخدم لطالب آخر."; if(/Failed to fetch/i.test(m)) return "لا يوجد اتصال بالإنترنت."; if(/relation .* does not exist|schema cache/i.test(m)) return "جداول «انضباط» غير موجودة. شغّل ملف indibat-setup.sql في Supabase."; if(e && e.code === "42501") return "ليست لديك صلاحية لهذا الإجراء."; return "حدث خطأ" + (m ? ": " + m : "."); }
 async function fetchAll(q){ const out = []; for(let from = 0;; from += 1000){ const {data, error} = await q().range(from, from + 999); if(error) throw error; out.push(...data); if(data.length < 1000) break; } return out; }
-async function loadSettings(){ const {data} = await sb.from("app_settings").select("value").eq("key", "indibat").maybeSingle(); S = JSON.parse(JSON.stringify(DEF)); if(data && data.value){ const v = data.value; Object.assign(S, v); S.sign = Object.assign({}, DEF.sign); const OLD = ["مدير المدرسة","الأخصائي الاجتماعي","نائب المدير","رئيسة وحدة شؤون الطلبة"]; Object.entries(v.sign || {}).forEach(([k, x]) => { if(x && !(/Title$/.test(k) && OLD.includes(x))) S.sign[k] = x; }); if(!(v.classes && Object.keys(v.classes).length)) S.classes = JSON.parse(JSON.stringify(DEF.classes)); if(!(v.absActions || []).length) S.absActions = DEF.absActions.slice(); if(!(v.vioActions || []).length) S.vioActions = DEF.vioActions.slice(); S.degrees = Object.assign({}, DEF.degrees, v.degrees || {}); S.catalog = Object.assign({}, DEF.catalog, v.catalog || {}); } paintLetterhead(); }
+async function loadSettings(){ const {data} = await sb.from("app_settings").select("value").eq("key", "indibat").maybeSingle(); S = JSON.parse(JSON.stringify(DEF)); if(data && data.value){ const v = data.value; Object.assign(S, v); S.sign = Object.assign({}, DEF.sign); const OLD = ["مدير المدرسة","الأخصائي الاجتماعي","نائب المدير","رئيسة وحدة شؤون الطلبة"]; Object.entries(v.sign || {}).forEach(([k, x]) => { if(x && !(/Title$/.test(k) && OLD.includes(x))) S.sign[k] = x; }); if(!(v.classes && Object.keys(v.classes).length)) S.classes = JSON.parse(JSON.stringify(DEF.classes)); if(!(v.absActions || []).length) S.absActions = DEF.absActions.slice(); if(!(v.vioActions || []).length) S.vioActions = DEF.vioActions.slice(); S.ladder = Object.assign({}, DEF.ladder, v.ladder || {}); [1,2,3,4].forEach(g => { if(!(S.ladder[g] || []).length) S.ladder[g] = DEF.ladder[g]; }); S.degrees = Object.assign({}, DEF.degrees, v.degrees || {}); S.catalog = Object.assign({}, DEF.catalog, v.catalog || {}); } paintLetterhead(); }
 function paintLetterhead(){
   const sc = (S.sign && S.sign.school) || DEF.sign.school, se = (S.sign && S.sign.sector) || DEF.sign.sector;
   const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
@@ -1125,7 +1131,7 @@ async function viewBehavior(t){
   const q = normAr(BF.q);
   const list = rows.filter(b => { const s = D.byId[b.student_id]; if(!s) return false; if(BF.kind !== "all" && b.kind !== BF.kind) return false; if(BF.deg !== "all" && String(b.degree) !== BF.deg) return false; if(q && !normAr(s.name + " " + s.school_no + " " + clsName(s.grade, s.section)).includes(q)) return false; return true; });
   const chip = (k, val, l) => `<button type="button" class="chip" aria-pressed="${BF[k] === val}" data-act="bf" data-k="${k}" data-v="${val}">${l}</button>`;
-  v.innerHTML = `<div class="sec-h" style="margin-top:0"><h1 style="margin:0">سجل السلوك</h1><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" data-act="beh-new" data-kind="violation">${ICON.plus}تسجيل مخالفة</button><button class="btn" data-act="beh-new" data-kind="positive">${ICON.plus}سلوك إيجابي</button></div></div>
+  v.innerHTML = `<div class="sec-h" style="margin-top:0"><h1 style="margin:0">سجل السلوك</h1><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" data-act="beh-new" data-kind="violation">${ICON.plus}تسجيل مخالفة</button><a class="btn" href="#cases">دراسة الحالة</a><button class="btn" data-act="beh-new" data-kind="positive">${ICON.plus}سلوك إيجابي</button></div></div>
   <div class="panel" style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px">
     <div class="chips">${chip("range","week","آخر 7 أيام")}${chip("range","month","آخر 30 يومًا")}${chip("range","term","منذ بداية الفصل")}</div>
     <div class="chips">${chip("kind","all","الكل")}${chip("kind","violation","المخالفات")}${chip("kind","positive","الإيجابي")}<span style="width:12px"></span>${chip("deg","all","كل الدرجات")}${[1,2,3,4].map(g => chip("deg", String(g), S.degrees[g].label)).join("")}</div>
@@ -1230,7 +1236,7 @@ async function viewStudent(id, t){
   for(let w = isoOf(start); w <= today(); w = addDays(w, 7)){ const col = []; for(let i = 0; i < 5; i++){ const d = addDays(w, i); col.push(d < S.termStart || d > today() ? '<i class="x"></i>' : !isSchoolDay(d) ? '<i class="x"></i>' : `<i class="${({absent:"a", late:"l", excused:"e", early:"o"})[byDate[d]] || "p"}" title="${fmt(d)}: ${byDate[d] ? STATUS[byDate[d]][0] : "حاضر"}"></i>`); } weeks.push(`<div class="wk">${col.join("")}</div>`); }
   v.innerHTML = `<div class="crumbs"><a href="#students">الطلاب</a> / ${esc(s.name)}</div>
   <div class="shead"><span class="av">${esc(initials(s.name))}</span><div style="flex:1;min-width:220px"><h1 style="margin:0">${esc(s.name)}</h1><div class="muted num">الرقم المدرسي ${esc(s.school_no)} · الصف ${esc(clsName(s.grade, s.section))}${s.guardian ? " · ولي الأمر " + esc(s.guardian) : ""}</div></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" data-act="beh-new" data-kind="violation" data-sid="${s.id}">${ICON.plus}مخالفة</button><button class="btn" data-act="beh-new" data-kind="positive" data-sid="${s.id}">${ICON.plus}إيجابي</button><a class="btn" href="#sreport-${s.id}">${ICON.print}تقرير الطالب</a>${lvl ? `<a class="btn danger" href="#warning-${s.id}">${ICON.print}الإنذار ${["الأول","الثاني","الثالث"][lvl - 1] || lvl}</a>` : ""}</div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" data-act="beh-new" data-kind="violation" data-sid="${s.id}">${ICON.plus}مخالفة</button><button class="btn" data-act="beh-new" data-kind="positive" data-sid="${s.id}">${ICON.plus}إيجابي</button><a class="btn" href="#sreport-${s.id}">${ICON.print}تقرير الطالب</a><a class="btn" href="#case-${s.id}">دراسة الحالة</a>${lvl ? `<a class="btn danger" href="#warning-${s.id}">${ICON.print}الإنذار ${["الأول","الثاني","الثالث"][lvl - 1] || lvl}</a>` : ""}</div></div>
   <div class="kpis num"><div class="kpi ok"><b>${rate}%</b><span>نسبة الحضور (${days} يومًا مرصودًا)</span></div><div class="kpi ab"><b>${absent}</b><span>غياب بدون عذر</span></div><div class="kpi ex"><b>${exc}</b><span>غياب بعذر</span></div><div class="kpi la"><b>${n("late")}</b><span>تأخير صباحي</span></div><div class="kpi br"><b>${score}</b><span>درجة السلوك من 100</span></div></div>
   <section class="panel"><div class="sec-h" style="margin-top:0"><h2>سجل الحضور منذ ${esc(fmt(S.termStart))}</h2><div class="legend"><span><i style="background:var(--sage-soft)"></i>حاضر</span><span><i style="background:var(--maroon)"></i>بدون عذر</span><span><i style="background:var(--sky)"></i>بعذر</span><span><i style="background:var(--amber)"></i>تأخير صباحي</span><span><i style="background:var(--ink)"></i>انصراف مبكر</span></div></div>
     <div class="cal" aria-label="تقويم الحضور، كل عمود أسبوع">${weeks.join("")}</div>
@@ -1386,6 +1392,7 @@ function viewSettings(){
   <section class="panel" style="margin-top:14px"><h2>قوائم الإجراءات المتخذة</h2><p class="muted" style="margin-top:-4px">تظهر كخيارات عند تسجيل الإجراء مع الطالب (سطر لكل إجراء).</p><div class="grid2">
     <div class="field"><label for="sAa">إجراءات الغياب والتأخير</label><textarea id="sAa" name="absActions" rows="9">${esc(S.absActions.join("\n"))}</textarea></div>
     <div class="field"><label for="sVa">إجراءات المخالفات السلوكية</label><textarea id="sVa" name="vioActions" rows="9">${esc(S.vioActions.join("\n"))}</textarea></div></div></section>
+  <section class="panel" style="margin-top:14px"><h2>تدرّج الإجراءات حسب تكرار المخالفة (دراسة الحالة)</h2><p class="muted" style="margin-top:-4px">لكل درجة: السطر الأول للمرة الأولى، والثاني للمرة الثانية، وهكذا. السطر الأخير يُطبق على ما بعده. عدّلها لتطابق لائحة إدارة سلوك الطلبة المعتمدة.</p><div class="grid2">${[1,2,3,4].map(g => `<div class="field"><label for="ld${g}">${esc(S.degrees[g].label)}</label><textarea id="ld${g}" name="ld${g}" rows="6">${esc(((S.ladder || DEF.ladder)[g] || []).join("\n"))}</textarea></div>`).join("")}</div></section>
   <div class="savebar"><span>تُطبَّق الإعدادات على كل المستخدمين.</span><span class="sp"></span><button class="btn brass" type="submit">حفظ الإعدادات</button></div></form>`;
 }
 async function saveSettings(form){
@@ -1396,7 +1403,7 @@ async function saveSettings(form){
   Object.keys(DEF.sign).forEach(k => v.sign[k] = String(fd.get("sg_" + k) || "").trim());
   const lines = k => String(fd.get(k) || "").split("\n").map(x => x.trim()).filter(Boolean);
   v.classes = {}; Object.keys(S.classes).forEach(g => { const l = lines("cl_" + g).map(normSec); if(l.length) v.classes[g] = l; });
-  v.absActions = lines("absActions"); v.vioActions = lines("vioActions");
+  v.absActions = lines("absActions"); v.vioActions = lines("vioActions"); v.ladder = {}; [1,2,3,4].forEach(g => { const l = lines("ld" + g); if(l.length) v.ladder[g] = l; });
   if(!v.warn.length) v.warn = DEF.warn; if(!v.schoolDays.length) v.schoolDays = DEF.schoolDays;
   const {error} = await sb.from("app_settings").upsert({key:"indibat", value:v, updated_at:new Date().toISOString()});
   if(error){ toast(dbErr(error)); return; }
@@ -1474,6 +1481,82 @@ function openAttAction(id){
     fields:[{name:"action", label:"الإجراءات المتخذة مع الطالب" + (s ? " " + s.name : ""), type:"multi", options:S.absActions, full:true}, {name:"reason", label:"السبب أو العذر", full:true}],
     values:{action:a.action || "", reason:a.reason || ""},
     onSave: async v => { const {error} = await sb.from("sch_attendance").update({action:v.action, reason:v.reason}).eq("id", a.id); if(error){ toast(dbErr(error)); return; } closeModal(); toast("حُفظ الإجراء."); render(); }});
+}
+/* ---------- case study (دراسة الحالة) ---------- */
+const CASE_DEF = {pod:"no", disability:"", iep:"", linked:"", linkNote:"", problem:"", causes:"", plan:"", recs:"", meetDate:"", team:""};
+const ladderFor = (deg, n) => { const L = ((S.ladder || DEF.ladder)[deg] || DEF.ladder[deg] || []); return n ? L[Math.min(n, L.length) - 1] || "" : ""; };
+const ordTxt = n => ["", "الأولى", "الثانية", "الثالثة", "الرابعة", "الخامسة", "السادسة"][n] || ("رقم " + n);
+async function viewCases(t){
+  const v = $("#view");
+  const [beh, cs] = await Promise.all([fetchAll(() => sb.from("sch_behavior").select("student_id,degree,kind,points,date").eq("kind", "violation").gte("date", S.termStart)), fetchAll(() => sb.from("sch_cases").select("student_id,updated_at"))]);
+  if(t !== tok) return;
+  const has = new Set(cs.map(c => c.student_id)); const by = {};
+  beh.forEach(b => { if(!D.byId[b.student_id]) return; const o = by[b.student_id] = by[b.student_id] || {n:0, max:0, pts:0}; o.n++; o.max = Math.max(o.max, Number(b.degree) || 1); o.pts += Number(b.points) || 0; });
+  const rows = Object.entries(by).map(([id, o]) => ({s:D.byId[id], ...o})).sort((a, b) => b.max - a.max || b.n - a.n);
+  v.innerHTML = `<div class="sec-h" style="margin-top:0"><div><h1 style="margin:0">دراسة الحالة</h1><p class="muted" style="margin:4px 0 0">ملف لكل طالب يجمع مخالفاته وعدد تكرار كل مخالفة، والإجراءات المتخذة، والإجراء المستحق حسب التدرّج المعتمد، ومدى ارتباط الإعاقة أو الاضطراب بالسلوك لطلبة أصحاب الهمم.</p></div></div>
+  <section class="panel" style="margin-bottom:14px"><div class="field"><label for="caseQ">فتح دراسة حالة لأي طالب</label><div class="ac"><input type="text" id="caseQ" data-ac="student" autocomplete="off" placeholder="اكتب أول حروف الاسم أو الرقم المدرسي"><div class="ac-list" role="listbox" hidden></div></div></div></section>
+  <section class="panel tbl"><div class="ph"><h2>طلاب لديهم مخالفات منذ بداية الفصل</h2><span class="muted" style="font-size:13px">${rows.length} طالب</span></div>
+  ${rows.length ? `<table class="t"><thead><tr><th>الطالب</th><th>الصف</th><th>عدد المخالفات</th><th>أعلى درجة</th><th>الدرجات المخصومة</th><th>دراسة الحالة</th><th></th></tr></thead><tbody>${rows.map(r => `<tr><td><a href="#case-${r.s.id}">${esc(r.s.name)}</a></td><td style="white-space:nowrap">${esc(clsName(r.s.grade, r.s.section))}</td><td class="num"><b>${r.n}</b></td><td><span class="tag ab">${esc(S.degrees[r.max].label)}</span></td><td class="num">${r.pts}</td><td>${has.has(r.s.id) ? '<span class="tag ok">موثّقة</span>' : '<span class="tag la">لم تُعدّ بعد</span>'}</td><td><a class="btn sm" href="#case-${r.s.id}">فتح</a></td></tr>`).join("")}</tbody></table>` : '<div class="empty">لا توجد مخالفات مسجلة منذ بداية الفصل.</div>'}</section>`;
+}
+async function viewCase(id, t){
+  const v = $("#view"), s = D.byId[id]; if(!s){ v.innerHTML = '<div class="panel empty">الطالب غير موجود.</div>'; return; }
+  const [beh, att, cr] = await Promise.all([fetchAll(() => sb.from("sch_behavior").select("*").eq("student_id", id).gte("date", S.termStart).order("date")), fetchAll(() => sb.from("sch_attendance").select("status").eq("student_id", id).gte("date", S.termStart)), sb.from("sch_cases").select("*").eq("student_id", id).maybeSingle()]);
+  if(t !== tok) return;
+  if(cr && cr.error && !/0 rows/i.test(cr.error.message || "")) throw cr.error;
+  const c = Object.assign({}, CASE_DEF, (cr && cr.data && cr.data.data) || {});
+  const vio = beh.filter(b => b.kind === "violation"), pos = beh.filter(b => b.kind === "positive");
+  const groups = {}; vio.forEach(b => { const k = b.category || "—"; const g = groups[k] = groups[k] || {cat:k, deg:1, list:[]}; g.list.push(b); g.deg = Math.max(g.deg, Number(b.degree) || 1); });
+  const cats = Object.values(groups).sort((a, b) => b.deg - a.deg || b.list.length - a.list.length);
+  const byDeg = [1,2,3,4].map(g => vio.filter(b => (Number(b.degree) || 1) === g));
+  const acts = l => [...new Set(l.flatMap(b => splitActs(b.action)))];
+  const n = k => att.filter(a => a.status === k).length;
+  const score = behaviorScore(beh);
+  const pod = c.pod === "yes";
+  const linkTxt = {yes:"نعم، مرتبط بالمشكلة السلوكية", no:"لا، غير مرتبط بالمشكلة السلوكية", study:"قيد الدراسة"}[c.linked] || "لم يُحدَّد بعد";
+  const linkGuide = c.linked === "yes" ? "بما أن السلوك مرتبط بالإعاقة أو الاضطراب: يُكيَّف الإجراء بما يناسب حالة الطالب وخطته التربوية الفردية، ويُقدَّم الدعم وتعديل السلوك على العقوبة الاعتيادية، بالتنسيق مع فريق التربية الخاصة وولي الأمر."
+    : c.linked === "no" ? "بما أن السلوك غير مرتبط بالإعاقة أو الاضطراب: تُطبّق الإجراءات المعتادة حسب درجة المخالفة وتكرارها، مع مراعاة التيسيرات المعتمدة للطالب في خطته الفردية."
+    : "يُحدِّد فريق الدراسة (بمشاركة فريق التربية الخاصة) مدى ارتباط الإعاقة أو الاضطراب بالسلوك قبل تطبيق الإجراء.";
+  const box = on => on ? "☑" : "☐";
+  const f = (k, label, type, opts) => type === "select" ? `<div class="field"><label for="cs_${k}">${label}</label><select id="cs_${k}" name="${k}">${opts.map(([a, b]) => `<option value="${a}" ${c[k] === a ? "selected" : ""}>${b}</option>`).join("")}</select></div>`
+    : type === "textarea" ? `<div class="field full"><label for="cs_${k}">${label}</label><textarea id="cs_${k}" name="${k}" rows="3">${esc(c[k])}</textarea></div>`
+    : `<div class="field"><label for="cs_${k}">${label}</label><input type="${type || "text"}" id="cs_${k}" name="${k}" value="${esc(c[k])}"></div>`;
+  v.innerHTML = `<div class="no-print"><div class="crumbs"><a href="#cases">دراسة الحالة</a> / ${esc(s.name)}</div>
+  <div class="sec-h" style="margin-top:0"><div><h1 style="margin:0">دراسة حالة: ${esc(s.name)}</h1><span class="muted num">${esc(s.school_no)} · الصف ${esc(clsName(s.grade, s.section))}</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="beh-new" data-kind="violation" data-sid="${s.id}">${ICON.plus}مخالفة</button><a class="btn" href="#st-${s.id}">ملف الطالب</a><button class="btn primary" data-act="print">${ICON.print}طباعة دراسة الحالة</button></div></div>
+  <form id="fCase" class="panel" style="margin-bottom:16px" data-sid="${s.id}"><h2 style="margin-top:0">بيانات دراسة الحالة</h2><div class="grid2">
+    ${f("pod", "هل الطالب من أصحاب الهمم؟", "select", [["no","لا"],["yes","نعم"]])}
+    ${f("disability", "نوع الإعاقة أو الاضطراب", "text")}
+    ${f("linked", "هل الإعاقة أو الاضطراب مرتبط بالمشكلة السلوكية؟", "select", [["","— لم يُحدَّد —"],["yes","نعم، مرتبط"],["no","لا، غير مرتبط"],["study","قيد الدراسة"]])}
+    ${f("iep", "نوع الخطة (مواءمة / تعديل / خطة سلوكية)", "text")}
+    ${f("linkNote", "مبررات قرار الارتباط (ملاحظات فريق التربية الخاصة)", "textarea")}
+    ${f("problem", "وصف المشكلة السلوكية", "textarea")}
+    ${f("causes", "الأسباب والعوامل المؤثرة (أسرية، دراسية، صحية، اجتماعية…)", "textarea")}
+    ${f("plan", "خطة العلاج وتعديل السلوك", "textarea")}
+    ${f("recs", "توصيات فريق الدراسة", "textarea")}
+    ${f("team", "أعضاء فريق الدراسة", "text")}
+    ${f("meetDate", "تاريخ اجتماع الفريق", "date")}
+  </div><div style="margin-top:12px"><button class="btn primary" type="submit">حفظ دراسة الحالة</button></div></form></div>
+  ${paper("دراسة حالة سلوكية", "الفصل الدراسي منذ " + esc(fmt(S.termStart)) + " · " + esc(fmt(today())),
+    `<table><tr><th>اسم الطالب</th><td>${esc(s.name)}</td><th>الرقم المدرسي</th><td>${esc(s.school_no)}</td></tr><tr><th>الصف</th><td>${esc(clsName(s.grade, s.section))}</td><th>ولي الأمر</th><td>${esc(s.guardian || "")} <bdi dir="ltr">${esc(s.phone || "")}</bdi></td></tr>
+      <tr><th>من أصحاب الهمم</th><td>${box(pod)} نعم &nbsp; ${box(!pod)} لا</td><th>نوع الإعاقة/الاضطراب</th><td>${esc(pod ? c.disability : "—")}</td></tr></table>
+    <h3>ملخص الوضع</h3><table><tr><th>غياب بدون عذر</th><th>غياب بعذر</th><th>تأخير صباحي</th><th>عدد المخالفات</th><th>سلوك إيجابي</th><th>درجة السلوك</th></tr><tr class="num"><td>${n("absent")}</td><td>${n("excused")}</td><td>${n("late")}</td><td>${vio.length}</td><td>${pos.length}</td><td>${score} / 100</td></tr></table>
+    <h3>المخالفات وعدد التكرار والإجراء المستحق</h3>
+    <table><thead><tr><th>المخالفة</th><th>الدرجة</th><th>عدد التكرار</th><th>التواريخ</th><th>الإجراءات المتخذة</th><th>الإجراء المستحق حسب التكرار</th></tr></thead><tbody>
+      ${cats.map(g => `<tr><td>${esc(g.cat)}</td><td style="white-space:nowrap">${esc(S.degrees[g.deg].label)}</td><td class="num"><b>${g.list.length}</b></td><td class="num" style="font-size:12px">${g.list.map(b => esc(fmtS(b.date))).join("، ")}</td><td style="font-size:12.5px">${esc(acts(g.list).join("، ") || "—")}</td><td style="font-size:12.5px"><b>المرة ${ordTxt(g.list.length)}:</b> ${esc(ladderFor(g.deg, g.list.length))}</td></tr>`).join("") || '<tr><td colspan="6">لا توجد مخالفات مسجلة منذ بداية الفصل.</td></tr>'}</tbody></table>
+    <h3>حسب درجة المخالفة</h3>
+    <table><thead><tr><th>الدرجة</th><th>العدد</th><th>الإجراء المستحق حسب اللائحة</th></tr></thead><tbody>${[1,2,3,4].map(g => `<tr><td style="white-space:nowrap">${esc(S.degrees[g].label)}</td><td class="num">${byDeg[g - 1].length}</td><td style="font-size:12.5px">${byDeg[g - 1].length ? `<b>المرة ${ordTxt(byDeg[g - 1].length)}:</b> ${esc(ladderFor(g, byDeg[g - 1].length))}` : "—"}</td></tr>`).join("")}</tbody></table>
+    ${pod ? `<h3>طلبة أصحاب الهمم: ارتباط الإعاقة أو الاضطراب بالسلوك</h3><table><tr><th style="width:38%">هل الإعاقة أو الاضطراب مرتبط بالمشكلة؟</th><td>${box(c.linked === "yes")} نعم &nbsp; ${box(c.linked === "no")} لا &nbsp; ${box(c.linked === "study" || !c.linked)} قيد الدراسة</td></tr>
+      ${c.iep ? `<tr><th>نوع الخطة</th><td>${esc(c.iep)}</td></tr>` : ""}<tr><th>مبررات القرار</th><td style="height:50px">${esc(c.linkNote)}</td></tr><tr><th>أثر ذلك على الإجراء</th><td style="font-size:12.5px">${esc(linkGuide)}</td></tr></table>` : ""}
+    <h3>دراسة الحالة</h3><table><tr><th style="width:24%">وصف المشكلة</th><td style="height:56px">${esc(c.problem)}</td></tr><tr><th>الأسباب والعوامل</th><td style="height:56px">${esc(c.causes)}</td></tr><tr><th>خطة العلاج</th><td style="height:56px">${esc(c.plan)}</td></tr><tr><th>التوصيات</th><td style="height:56px">${esc(c.recs)}</td></tr><tr><th>فريق الدراسة</th><td>${esc(c.team)}${c.meetDate ? " · بتاريخ " + esc(fmt(c.meetDate)) : ""}</td></tr></table>
+    <table><tr><th style="width:24%">توقيع ولي الأمر</th><td></td><th style="width:16%">توقيع الطالب</th><td></td></tr></table>
+    ${signs("counsel", "affairs", "head")}`)}`;
+}
+async function saveCase(form){
+  const sid = form.dataset.sid, fd = new FormData(form), data = {};
+  Object.keys(CASE_DEF).forEach(k => data[k] = String(fd.get(k) || "").trim());
+  const {error} = await sb.from("sch_cases").upsert({student_id:sid, data, updated_by_name:(me.staff && me.staff.name) || "", updated_at:new Date().toISOString()}, {onConflict:"student_id"});
+  if(error){ toast(dbErr(error)); return; }
+  toast("حُفظت دراسة الحالة."); render();
 }
 /* ---------- National Charter for Education (من منصة أثر) ---------- */
 const CHARTER = {
@@ -1606,8 +1689,9 @@ function parseHash(){
   if((m = h.match(/^st-([\w-]+)$/))) return {route:"student", id:m[1]};
   if((m = h.match(/^notice-([\w-]+)$/))) return {route:"notice", id:m[1]};
   if((m = h.match(/^warning-([\w-]+)$/))) return {route:"warning", id:m[1]};
+  if((m = h.match(/^case-([\w-]+)$/))) return {route:"case", id:m[1]};
   if((m = h.match(/^sreport-([\w-]+)(?:~(\d{4}-\d{2}-\d{2})~(\d{4}-\d{2}-\d{2}))?$/))) return {route:"sreport", id:m[1], from:m[2] || null, to:m[3] || null};
-  if(["home","take","behavior","students","reports","settings","charter","users"].includes(h)) return {route:h};
+  if(["home","take","behavior","students","reports","settings","charter","users","cases"].includes(h)) return {route:h};
   return {route:"home"};
 }
 function go(h){ if(location.hash === "#" + h) render(); else location.hash = h; }
@@ -1632,9 +1716,11 @@ function render(){
   else if(r === "charter") run(() => viewCharter(t));
   else if(r === "cls") run(() => viewClass(ui.key, t));
   else if(r === "users") run(() => viewUsers(t));
-  const nk = {takec:"take", notify:"take", student:"students", sreport:"students", cls:"students", warning:"students", notice:"behavior"}[r] || r;
+  else if(r === "cases") run(() => viewCases(t));
+  else if(r === "case") run(() => viewCase(ui.id, t));
+  const nk = {takec:"take", notify:"take", student:"students", sreport:"students", cls:"students", case:"cases", warning:"students", notice:"behavior"}[r] || r;
   $$("[data-nav]").forEach(a => a.setAttribute("aria-current", a.dataset.nav === nk ? "page" : "false"));
-  const TT = {home:"لوحة المتابعة اليومية", take:"الغياب والحضور اليومي", takec:"رصد الحضور", notify:"إشعار أولياء الأمور", behavior:"سجل السلوك التربوي", students:"إدارة الطلبة", student:"ملف الطالب", cls:"بيانات الصف والتقارير", notice:"إشعار سلوكي", warning:"إنذار غياب", sreport:"تقرير الطالب", reports:"التقارير والإحصائيات", charter:"الميثاق الوطني للتعليم", users:"المستخدمون والموافقات", settings:"إعدادات المنصة"};
+  const TT = {home:"لوحة المتابعة اليومية", take:"الغياب والحضور اليومي", takec:"رصد الحضور", notify:"إشعار أولياء الأمور", behavior:"سجل السلوك التربوي", students:"إدارة الطلبة", student:"ملف الطالب", cls:"بيانات الصف والتقارير", notice:"إشعار سلوكي", warning:"إنذار غياب", sreport:"تقرير الطالب", reports:"التقارير والإحصائيات", charter:"الميثاق الوطني للتعليم", users:"المستخدمون والموافقات", cases:"دراسة الحالة", case:"دراسة حالة طالب", settings:"إعدادات المنصة"};
   const pt = $("#pgTitle"), ps = $("#pgSub"); if(pt) pt.textContent = r === "notify" && ui.kind === "late" ? "التأخير الصباحي" : r === "notify" && ui.kind === "absent" ? "الغياب بدون عذر" : (TT[r] || "منصة انضباط");
   if(ps) ps.textContent = S.sign.school + " · " + DAYS[dOf(today()).getDay()] + " " + fmt(today()) + " · " + hijri(today());
 }
@@ -1691,12 +1777,13 @@ document.addEventListener("change", e => {
   if(tg.id === "cpTo" && tg.value){ CP.to = tg.value; render(); }
   if(tg.id === "cpOnly"){ CP.only = tg.checked; render(); }
   if(tg.dataset && tg.dataset.job){ setJob(tg.dataset.job, tg.value, tg); }
+  if(tg.id === "caseQ" && tg.value){ const st = findStudent(tg.value); if(st){ tg.value = ""; go("case-" + st.id); } }
   if(tg.id === "gq" && tg.value){ const st = findStudent(tg.value); if(st){ tg.value = ""; tg.blur(); go("st-" + st.id); } }
   if(tg.id === "rpDate"){ RP.date = tg.value; render(); }
   if(tg.id === "rpFrom"){ RP.from = tg.value; render(); }
   if(tg.id === "rpTo"){ RP.to = tg.value; render(); }
 });
-document.addEventListener("submit", e => { if(e.target.id === "fSet"){ e.preventDefault(); saveSettings(e.target); } });
+document.addEventListener("submit", e => { if(e.target.id === "fCase"){ e.preventDefault(); saveCase(e.target); return; } if(e.target.id === "fSet"){ e.preventDefault(); saveSettings(e.target); } });
 window.addEventListener("beforeunload", e => { if(ui.route === "takec" && REG.dirty){ e.preventDefault(); e.returnValue = ""; } });
 
 /* ---------- boot ---------- */

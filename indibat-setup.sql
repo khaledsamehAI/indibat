@@ -97,3 +97,14 @@ drop policy if exists notices_self_read on public.sch_notices;
 create policy notices_self_read on public.sch_notices for select to authenticated using (user_id = auth.uid());
 drop policy if exists notices_self_update on public.sch_notices;
 create policy notices_self_update on public.sch_notices for update to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+
+-- دراسة الحالة (ملف لكل طالب: أصحاب الهمم، ارتباط الإعاقة بالسلوك، خطة العلاج، التوصيات)
+create table if not exists public.sch_cases (
+  student_id text primary key references public.sch_students(id) on delete cascade,
+  data jsonb not null default '{}',
+  updated_by_name text,
+  updated_at timestamptz not null default now()
+);
+alter table public.sch_cases enable row level security;
+drop policy if exists staff_all on public.sch_cases;
+create policy staff_all on public.sch_cases for all to authenticated using (public.is_staff()) with check (public.is_staff());
