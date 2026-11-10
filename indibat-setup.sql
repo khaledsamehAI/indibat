@@ -79,3 +79,19 @@ create policy staff_admin_delete on public.staff for delete to authenticated usi
 
 -- الصفة الوظيفية للمستخدم (المديرة، رئيس وحدة شؤون الطلبة، المرشد الأكاديمي والمهني…)
 alter table public.staff add column if not exists job text;
+
+-- إشعارات المستخدمين (الموافقة على الحساب، التعيين بصفة وظيفية…)
+create table if not exists public.sch_notices (
+  id text primary key default gen_random_uuid()::text,
+  user_id uuid not null,
+  title text, body text,
+  read boolean not null default false,
+  created_at timestamptz not null default now()
+);
+alter table public.sch_notices enable row level security;
+drop policy if exists notices_admin on public.sch_notices;
+create policy notices_admin on public.sch_notices for all to authenticated using (public.is_admin()) with check (public.is_admin());
+drop policy if exists notices_self_read on public.sch_notices;
+create policy notices_self_read on public.sch_notices for select to authenticated using (user_id = auth.uid());
+drop policy if exists notices_self_update on public.sch_notices;
+create policy notices_self_update on public.sch_notices for update to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
