@@ -803,9 +803,9 @@ async function viewHome(t){
   v.innerHTML = `
   <section class="kgrid" aria-label="مؤشرات اليوم">
     ${kc("t1", "#take", "", "نسبة الحضور اليومي", rate === null ? "—" : rate + "%", "", pending ? `لم يُرصد <b>${pending}</b> من ${live.length} صفًا` : "رُصدت كل الصفوف", `<span class="mring" style="--p:${rate || 0}"></span>`)}
-    ${kc("t2", "#notify-" + day, HI.user, "الغياب بدون عذر اليوم", cnt("absent"), "طالبًا", "عرض وإضافة ←")}
+    ${kc("t2", "#notify-" + day + "~absent", HI.user, "الغياب بدون عذر اليوم", cnt("absent"), "طالبًا", "عرض وإضافة ←")}
     ${kc("t3", "#reports", HI.doc, "الغياب بعذر اليوم", cnt("excused"), "طالبًا", "عرض التقرير ←")}
-    ${kc("t4", "#notify-" + day, HI.clock, "التأخير الصباحي", cnt("late"), "طالبًا", "عرض وإضافة ←")}
+    ${kc("t4", "#notify-" + day + "~late", HI.clock, "التأخير الصباحي", cnt("late"), "طالبًا", "عرض وإضافة ←")}
     ${kc("t5", "#behavior", HI.flag, "مخالفات هذا الأسبوع", vioW.length, "حالات", "سجل السلوك ←")}
     ${kc("t6", "#behavior", HI.star, "الطلبة المتميزون سلوكيًا", stars, "طالبًا", "منذ بداية الفصل")}
   </section>
@@ -922,36 +922,43 @@ function regByNumbers(){
 
 /* ---------- add absent / late students by name ---------- */
 function openAbsForm(status, date){
-  openForm({title:status === "late" ? "إضافة تأخير صباحي" : "إضافة طالب غائب", submitLabel:"حفظ",
-    fields:[{name:"sids", label:"الطلاب", type:"students", full:true},
-      {name:"status", label:"الحالة", type:"select", options:[["absent","غياب بدون عذر"],["excused","غياب بعذر"],["late","تأخير صباحي"],["early","انصراف مبكر"]]},
-      {name:"date", label:"التاريخ", type:"date", required:true},
-      {name:"arrive", label:"وقت الوصول (للتأخير الصباحي)", type:"time", hint:"يظهر الوقت الحالي تلقائيًا، وعدّله إن لزم."}, {name:"minutes", label:"دقائق التأخير", type:"number", hint:`تُحسب تلقائيًا من بعد ${fmtT(S.lateStart || "07:15")}. للانصراف المبكر اكتب الدقائق يدويًا.`},
-      {name:"reason", label:"السبب أو العذر (اختياري)", full:true}],
-    values:{status:status || "absent", date:date || today(), arrive:nowHM(), minutes:(status === "late" ? lateMin(nowHM()) : "") || ""},
-    onInput:(v, form, e) => { if((e.target.name === "arrive" || e.target.name === "status") && v.status === "late"){ form.elements.minutes.value = lateMin(v.arrive) || 0; } },
+  const late = status === "late";
+  const fields = late
+    ? [{name:"sids", label:"الطلاب المتأخرون", type:"students", full:true},
+       {name:"date", label:"التاريخ", type:"date", required:true},
+       {name:"arrive", label:"وصل الساعة", type:"time", required:true, hint:"يظهر الوقت الحالي تلقائيًا، وعدّله إن لزم."},
+       {name:"minutes", label:"دقائق التأخير", type:"number", hint:`تُحسب تلقائيًا من بعد ${fmtT(S.lateStart || "07:15")}.`},
+       {name:"reason", label:"سبب التأخير (اختياري)", full:true}]
+    : [{name:"sids", label:"الطلاب الغائبون", type:"students", full:true},
+       {name:"status", label:"نوع الغياب", type:"select", options:[["absent","غياب بدون عذر"],["excused","غياب بعذر"]]},
+       {name:"date", label:"التاريخ", type:"date", required:true},
+       {name:"reason", label:"السبب أو العذر (اختياري)", full:true}];
+  openForm({title:late ? "إضافة تأخير صباحي" : "إضافة طالب غائب", submitLabel:"حفظ", fields,
+    values:late ? {date:date || today(), arrive:nowHM(), minutes:lateMin(nowHM()) || 0} : {status:status === "excused" ? "excused" : "absent", date:date || today()},
+    onInput:(v, form, e) => { if(late && e.target.name === "arrive") form.elements.minutes.value = lateMin(v.arrive) || 0; },
     validate:v => v.sids ? {} : {sids:"أضف طالبًا واحدًا على الأقل."},
     onSave: async v => {
-      const ids = v.sids.split(",").filter(Boolean);
-      const rows = ids.map(id => ({student_id:id, date:v.date, status:v.status, minutes:Number(v.minutes) || null, arrive_at:v.status === "late" ? (v.arrive || null) : null, reason:v.reason || ""}));
+      const ids = v.sids.split(",").filter(Boolean), st = late ? "late" : v.status;
+      const rows = ids.map(id => ({student_id:id, date:v.date, status:st, minutes:late ? (Number(v.minutes) || lateMin(v.arrive) || null) : null, arrive_at:late ? (v.arrive || null) : null, reason:v.reason || ""}));
       const {error} = await sb.from("sch_attendance").upsert(rows, {onConflict:"student_id,date"}); if(error){ toast(dbErr(error)); return; }
       closeModal(); REG.key = null;
-      toast("سُجّل " + (ids.length === 1 ? "طالب واحد" : ids.length === 2 ? "طالبان" : ids.length + (ids.length < 11 ? " طلاب" : " طالبًا")) + ": " + STATUS[v.status][0] + ".", v.status === "absent" || v.status === "late" ? {label:"إشعار أولياء الأمور", fn:() => go("notify-" + v.date)} : null);
+      toast("سُجّل " + (ids.length === 1 ? "طالب واحد" : ids.length === 2 ? "طالبان" : ids.length + (ids.length < 11 ? " طلاب" : " طالبًا")) + ": " + STATUS[st][0] + ".", st !== "excused" ? {label:"إشعار أولياء الأمور", fn:() => go("notify-" + v.date + "~" + (late ? "late" : "absent"))} : null);
       render();
     }});
 }
 /* ---------- notify parents ---------- */
-async function viewNotify(date, t){
+async function viewNotify(date, t, kind){
   const v = $("#view");
   const rows = await fetchAll(() => sb.from("sch_attendance").select("*").eq("date", date).in("status", ["absent","late"]));
   if(t !== tok) return;
-  const list = rows.filter(r => D.byId[r.student_id]).sort((a, b) => a.status.localeCompare(b.status) || D.byId[a.student_id].grade.localeCompare(D.byId[b.student_id].grade));
+  const list = rows.filter(r => D.byId[r.student_id] && (!kind || r.status === kind)).sort((a, b) => a.status.localeCompare(b.status) || D.byId[a.student_id].grade.localeCompare(D.byId[b.student_id].grade));
   const msg = (s, r) => r.status === "absent"
     ? `السلام عليكم ولي أمر الطالب ${s.name}،\nنحيطكم علمًا بأن ابنكم تغيّب عن المدرسة اليوم ${DAYS[dOf(date).getDay()]} ${fmt(date)}.\nنرجو التواصل مع المدرسة لتوضيح سبب الغياب، وتقديم العذر إن وُجد.\n${S.sign.school}`
     : `السلام عليكم ولي أمر الطالب ${s.name}،\nنحيطكم علمًا بأن ابنكم تأخّر عن الحضور اليوم ${fmt(date)}${r.minutes ? " بمقدار " + r.minutes + " دقيقة" : ""}${r.arrive_at ? "، حيث وصل الساعة " + fmtT(r.arrive_at) : ""}.\nنأمل الحرص على الحضور في الموعد.\n${S.sign.school}`;
-  v.innerHTML = `<div class="crumbs"><a href="#take">رصد الحضور</a> / إشعار أولياء الأمور</div><div class="sec-h" style="margin-top:0"><h1 style="margin:0">إشعار أولياء الأمور</h1><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="abs-new" data-st="absent" data-date="${date}">${ICON.plus}إضافة طالب غائب</button><button class="btn" data-act="abs-new" data-st="late" data-date="${date}">${ICON.plus}إضافة تأخير صباحي</button></div></div>
-  <p class="muted">${DAYS[dOf(date).getDay()]} ${esc(fmt(date))} · ${list.filter(r => r.status === "absent").length} غائب بدون عذر · ${list.filter(r => r.status === "late").length} تأخير صباحي. يفتح كل زر واتساب برسالة جاهزة، وتُعلَّم الرسالة «أُرسلت».</p>
-  <div class="panel"><ul class="list">${list.map(r => { const s = D.byId[r.student_id]; return `<li><span class="av">${esc(initials(s.name))}</span><div class="grow"><div class="who">${esc(s.name)}</div><div class="what">${esc(clsName(s.grade, s.section))} · <span class="tag ${STATUS[r.status][1]}">${STATUS[r.status][0]}</span>${r.status === "late" && lateTxt(r) ? ` <span class="muted" style="font-size:12.5px">${esc(lateTxt(r))}</span>` : ""}${r.notified ? ' <span class="tag ok">أُرسلت</span>' : ""}</div></div><div style="display:flex;gap:6px;flex-wrap:wrap" data-row="${r.id}">${waLinks(s, msg(s, r))}</div></li>`; }).join("") || '<li class="empty">لا يوجد غائبون أو متأخرون في هذا اليوم.</li>'}</ul></div>`;
+  v.innerHTML = `<div class="crumbs"><a href="#take">رصد الحضور</a> / ${kind === "late" ? "التأخير الصباحي" : kind === "absent" ? "الغياب بدون عذر" : "إشعار أولياء الأمور"}</div><div class="sec-h" style="margin-top:0"><h1 style="margin:0">${kind === "late" ? "التأخير الصباحي" : kind === "absent" ? "الغياب بدون عذر" : "إشعار أولياء الأمور"}</h1><div style="display:flex;gap:8px;flex-wrap:wrap">${kind !== "late" ? `<button class="btn${kind === "absent" ? " primary" : ""}" data-act="abs-new" data-st="absent" data-date="${date}">${ICON.plus}إضافة طالب غائب</button>` : ""}${kind !== "absent" ? `<button class="btn${kind === "late" ? " primary" : ""}" data-act="abs-new" data-st="late" data-date="${date}">${ICON.plus}إضافة تأخير صباحي</button>` : ""}</div></div>
+  <div class="chips" style="margin-bottom:10px"><a class="chip" aria-pressed="${!kind}" href="#notify-${date}" style="text-decoration:none">الكل</a><a class="chip" aria-pressed="${kind === "absent"}" href="#notify-${date}~absent" style="text-decoration:none">الغياب بدون عذر</a><a class="chip" aria-pressed="${kind === "late"}" href="#notify-${date}~late" style="text-decoration:none">التأخير الصباحي</a></div>
+  <p class="muted">${DAYS[dOf(date).getDay()]} ${esc(fmt(date))} · ${kind !== "late" ? list.filter(r => r.status === "absent").length + " غياب بدون عذر" : ""}${!kind ? " · " : ""}${kind !== "absent" ? list.filter(r => r.status === "late").length + " تأخير صباحي" : ""}. يفتح كل زر واتساب برسالة جاهزة، وتُعلَّم الرسالة «أُرسلت».</p>
+  <div class="panel"><ul class="list">${list.map(r => { const s = D.byId[r.student_id]; return `<li><span class="av">${esc(initials(s.name))}</span><div class="grow"><div class="who">${esc(s.name)}</div><div class="what">${esc(clsName(s.grade, s.section))} · <span class="tag ${STATUS[r.status][1]}">${STATUS[r.status][0]}</span>${r.status === "late" && lateTxt(r) ? ` <span class="muted" style="font-size:12.5px">${esc(lateTxt(r))}</span>` : ""}${r.notified ? ' <span class="tag ok">أُرسلت</span>' : ""}</div></div><div style="display:flex;gap:6px;flex-wrap:wrap" data-row="${r.id}">${waLinks(s, msg(s, r))}</div></li>`; }).join("") || `<li class="empty">${kind === "late" ? "لا يوجد تأخير صباحي في هذا اليوم." : kind === "absent" ? "لا يوجد غياب بدون عذر في هذا اليوم." : "لا يوجد غائبون أو متأخرون في هذا اليوم."}</li>`}</ul></div>`;
 }
 /* ---------- behavior ---------- */
 const BF = {range:"week", kind:"all", deg:"all", q:""};
@@ -1442,7 +1449,7 @@ function parseHash(){
   const h = decodeURIComponent(location.hash.slice(1) || "home"); let m;
   if((m = h.match(/^cls-(.+)$/))) return {route:"cls", key:m[1]};
   if((m = h.match(/^take-(.+)$/))) return {route:"takec", key:m[1]};
-  if((m = h.match(/^notify-(\d{4}-\d{2}-\d{2})$/))) return {route:"notify", date:m[1]};
+  if((m = h.match(/^notify-(\d{4}-\d{2}-\d{2})(?:~(late|absent))?$/))) return {route:"notify", date:m[1], kind:m[2] || ""};
   if((m = h.match(/^st-([\w-]+)$/))) return {route:"student", id:m[1]};
   if((m = h.match(/^notice-([\w-]+)$/))) return {route:"notice", id:m[1]};
   if((m = h.match(/^warning-([\w-]+)$/))) return {route:"warning", id:m[1]};
@@ -1460,7 +1467,7 @@ function render(){
   if(r === "home") run(() => viewHome(t));
   else if(r === "take") run(() => viewTakePicker(t));
   else if(r === "takec") run(() => viewTakeClass(ui.key, t));
-  else if(r === "notify") run(() => viewNotify(ui.date, t));
+  else if(r === "notify") run(() => viewNotify(ui.date, t, ui.kind));
   else if(r === "behavior") run(() => viewBehavior(t));
   else if(r === "students") v.innerHTML = viewStudents();
   else if(r === "student") run(() => viewStudent(ui.id, t));
@@ -1475,7 +1482,7 @@ function render(){
   const nk = {takec:"take", notify:"take", student:"students", sreport:"students", cls:"students", warning:"students", notice:"behavior"}[r] || r;
   $$("[data-nav]").forEach(a => a.setAttribute("aria-current", a.dataset.nav === nk ? "page" : "false"));
   const TT = {home:"لوحة المتابعة اليومية", take:"الغياب والحضور اليومي", takec:"رصد الحضور", notify:"إشعار أولياء الأمور", behavior:"سجل السلوك التربوي", students:"إدارة الطلبة", student:"ملف الطالب", cls:"بيانات الصف والتقارير", notice:"إشعار سلوكي", warning:"إنذار غياب", sreport:"تقرير الطالب", reports:"التقارير والإحصائيات", charter:"الميثاق الوطني للتعليم", users:"المستخدمون والموافقات", settings:"إعدادات المنصة"};
-  const pt = $("#pgTitle"), ps = $("#pgSub"); if(pt) pt.textContent = TT[r] || "منصة انضباط";
+  const pt = $("#pgTitle"), ps = $("#pgSub"); if(pt) pt.textContent = r === "notify" && ui.kind === "late" ? "التأخير الصباحي" : r === "notify" && ui.kind === "absent" ? "الغياب بدون عذر" : (TT[r] || "منصة انضباط");
   if(ps) ps.textContent = S.sign.school + " · " + DAYS[dOf(today()).getDay()] + " " + fmt(today()) + " · " + hijri(today());
 }
 window.addEventListener("hashchange", () => { Object.assign(ui, parseHash()); if(ui.route === "behavior") BF.cacheKey = null; render(); window.scrollTo(0, 0); const v = $("#view"); if(v) v.focus({preventScroll:true}); });
