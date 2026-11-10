@@ -34,6 +34,8 @@ create table if not exists public.sch_attendance (
 create index if not exists sch_att_date_idx on public.sch_attendance("date");
 -- تحديث: خانة «الإجراء المتخذ» مع الطالب في الغياب والتأخير
 alter table public.sch_attendance add column if not exists action text;
+-- وقت الوصول للتأخير الصباحي (يُحسب التأخير من بعد 7:15)
+alter table public.sch_attendance add column if not exists arrive_at text;
 create table if not exists public.sch_behavior (
   id text primary key default gen_random_uuid()::text,
   student_id text not null references public.sch_students(id) on delete cascade,

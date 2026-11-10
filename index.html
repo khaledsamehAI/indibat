@@ -9,7 +9,7 @@
    من Supabase: Project Settings ← API ← Project URL و anon public key
    ====================================================================== */
 window.ATHAR_CONFIG = {
-  url: "https://YOUR-PROJECT.supabase.co",
+  url: "https://rulkaebkxljqqnzqzplj.supabase.co",
   anonKey: "YOUR-ANON-PUBLIC-KEY",
   domains: ["moe.sch.ae"]   // نطاق البريد الوزاري المسموح به للتسجيل
 };
@@ -436,6 +436,10 @@ input.otp{font-size:26px;letter-spacing:10px;text-align:center;font-family:var(-
 .notice-i b{font-size:16px;color:var(--ink)}
 .notice-i p{margin:6px 0 4px}
 
+.arr{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--muted)}
+.arr input{max-width:140px;min-height:36px}
+.late-min{display:inline-flex;align-items:center;padding:0 12px;border-radius:999px;background:var(--amber-soft);color:var(--amber);font-weight:700;font-size:13px;min-height:32px}
+
 /* official print */
 @media screen{.paper{overflow-x:auto}}
 .paper{background:#fff;color:#111;max-width:820px;margin:0 auto;padding:26px 28px;border:1px solid var(--line);border-radius:var(--r-md);font-family:var(--body)}
@@ -543,6 +547,10 @@ const gradeName = g => "الصف " + (GN[g] || g);
 const normGrade = g => { g = String(g || "").replace(/^الصف\s*/, "").trim(); for(const [n, w] of Object.entries(GN)) if(g.includes(w)) return n; const m = g.match(/\d+/); return m ? m[0] : g; };
 const normSec = x => { x = String(x || "").trim(); const n = (x.match(/\d+/) || [""])[0]; if(/^(a\b|a\d|adv|advanced|متقدم)/i.test(x)) return "متقدم"; if(/^(g\b|g\d|gen|general|عام)/i.test(x)) return n ? "عام " + n : "عام"; return x; };
 const secRank = x => x === "متقدم" ? 0 : 1;
+const nowHM = () => { const d = new Date(); return pad(d.getHours()) + ":" + pad(d.getMinutes()); };
+const fmtT = hm => { const [h, m] = String(hm || "").split(":").map(Number); if(isNaN(h) || isNaN(m)) return ""; return (h % 12 || 12) + ":" + pad(m) + (h < 12 ? " ص" : " م"); };
+const lateMin = hm => { const [h, m] = String(hm || "").split(":").map(Number); if(isNaN(h) || isNaN(m)) return null; const [h0, m0] = String((typeof S !== "undefined" && S.lateStart) || "07:15").split(":").map(Number); return Math.max(0, h * 60 + m - (h0 * 60 + m0)); };
+const lateTxt = r => r.status !== "late" ? "" : (r.arrive_at ? "وصل " + fmtT(r.arrive_at) : "") + (r.minutes ? (r.arrive_at ? " · " : "") + "متأخر " + r.minutes + " دقيقة" : "");
 const STATUS = {absent:["غياب بدون عذر","ab","A"], late:["تأخير صباحي","la","L"], excused:["غياب بعذر","ex","E"], early:["انصراف مبكر","br","O"]};
 const ICON = {
   plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
@@ -645,7 +653,7 @@ let sb = null;
 const me = {user:null, staff:null};
 const ui = {route:"home"};
 const DEF = {
-  termStart:"2026-08-25", schoolDays:[1,2,3,4,5], warn:[5,10,15], positivePoints:2, alertAbs:5,
+  termStart:"2026-08-25", lateStart:"07:15", schoolDays:[1,2,3,4,5], warn:[5,10,15], positivePoints:2, alertAbs:5,
   degrees:{1:{label:"الدرجة الأولى", points:4}, 2:{label:"الدرجة الثانية", points:8}, 3:{label:"الدرجة الثالثة", points:12}, 4:{label:"الدرجة الرابعة", points:15}},
   catalog:{1:["التأخير الصباحي","عدم الالتزام بالزي المدرسي","إحضار الهاتف دون إذن","النوم داخل الحصة","عدم إحضار الكتب والأدوات","الأكل أثناء الحصة"],
     2:["التغيب عن الحصص دون إذن","استخدام ألفاظ غير لائقة","العبث بممتلكات المدرسة","الغش في الاختبارات","إثارة الفوضى في الحافلة أو الفصل"],
@@ -659,7 +667,7 @@ const DEF = {
 };
 let S = JSON.parse(JSON.stringify(DEF));
 const D = {students:[], byId:{}, classes:[], loadedAt:0};
-function dbErr(e){ const m = (e && (e.message || e.details)) || ""; if(/column/i.test(m) && /job/i.test(m)) return "عمود «الصفة الوظيفية» غير موجود. شغّل ملف indibat-setup.sql المحدَّث في Supabase."; if(/column/i.test(m) && /action/i.test(m)) return "عمود «الإجراء المتخذ» غير موجود. شغّل ملف indibat-setup.sql المحدَّث في Supabase."; if(e && e.code === "23505") return "الرقم المدرسي مستخدم لطالب آخر."; if(/Failed to fetch/i.test(m)) return "لا يوجد اتصال بالإنترنت."; if(/relation .* does not exist|schema cache/i.test(m)) return "جداول «انضباط» غير موجودة. شغّل ملف indibat-setup.sql في Supabase."; if(e && e.code === "42501") return "ليست لديك صلاحية لهذا الإجراء."; return "حدث خطأ" + (m ? ": " + m : "."); }
+function dbErr(e){ const m = (e && (e.message || e.details)) || ""; if(/column/i.test(m) && /arrive_at/i.test(m)) return "عمود «وقت الوصول» غير موجود. شغّل ملف indibat-setup.sql المحدَّث في Supabase."; if(/column/i.test(m) && /job/i.test(m)) return "عمود «الصفة الوظيفية» غير موجود. شغّل ملف indibat-setup.sql المحدَّث في Supabase."; if(/column/i.test(m) && /action/i.test(m)) return "عمود «الإجراء المتخذ» غير موجود. شغّل ملف indibat-setup.sql المحدَّث في Supabase."; if(e && e.code === "23505") return "الرقم المدرسي مستخدم لطالب آخر."; if(/Failed to fetch/i.test(m)) return "لا يوجد اتصال بالإنترنت."; if(/relation .* does not exist|schema cache/i.test(m)) return "جداول «انضباط» غير موجودة. شغّل ملف indibat-setup.sql في Supabase."; if(e && e.code === "42501") return "ليست لديك صلاحية لهذا الإجراء."; return "حدث خطأ" + (m ? ": " + m : "."); }
 async function fetchAll(q){ const out = []; for(let from = 0;; from += 1000){ const {data, error} = await q().range(from, from + 999); if(error) throw error; out.push(...data); if(data.length < 1000) break; } return out; }
 async function loadSettings(){ const {data} = await sb.from("app_settings").select("value").eq("key", "indibat").maybeSingle(); S = JSON.parse(JSON.stringify(DEF)); if(data && data.value){ const v = data.value; Object.assign(S, v); S.sign = Object.assign({}, DEF.sign); const OLD = ["مدير المدرسة","الأخصائي الاجتماعي","نائب المدير","رئيسة وحدة شؤون الطلبة"]; Object.entries(v.sign || {}).forEach(([k, x]) => { if(x && !(/Title$/.test(k) && OLD.includes(x))) S.sign[k] = x; }); if(!(v.classes && Object.keys(v.classes).length)) S.classes = JSON.parse(JSON.stringify(DEF.classes)); if(!(v.absActions || []).length) S.absActions = DEF.absActions.slice(); if(!(v.vioActions || []).length) S.vioActions = DEF.vioActions.slice(); S.degrees = Object.assign({}, DEF.degrees, v.degrees || {}); S.catalog = Object.assign({}, DEF.catalog, v.catalog || {}); } paintLetterhead(); }
 function paintLetterhead(){
@@ -757,7 +765,7 @@ const HI = {
 function absentMsg(s, r, date){
   return r.status === "absent"
     ? `السلام عليكم ولي أمر الطالب ${s.name}،\nنحيطكم علمًا بأن ابنكم تغيّب عن المدرسة اليوم ${DAYS[dOf(date).getDay()]} ${fmt(date)}.\nنرجو التواصل مع المدرسة لتوضيح سبب الغياب، وتقديم العذر إن وُجد.\n${S.sign.school}`
-    : `السلام عليكم ولي أمر الطالب ${s.name}،\nنحيطكم علمًا بأن ابنكم تأخّر عن الحضور اليوم ${fmt(date)}${r.minutes ? " بمقدار " + r.minutes + " دقيقة" : ""}.\nنأمل الحرص على الحضور في الموعد.\n${S.sign.school}`;
+    : `السلام عليكم ولي أمر الطالب ${s.name}،\nنحيطكم علمًا بأن ابنكم تأخّر عن الحضور اليوم ${fmt(date)}${r.minutes ? " بمقدار " + r.minutes + " دقيقة" : ""}${r.arrive_at ? "، حيث وصل الساعة " + fmtT(r.arrive_at) : ""}.\nنأمل الحرص على الحضور في الموعد.\n${S.sign.school}`;
 }
 async function refreshBell(){
   try { const tal = await absenceAlerts(); const n = Object.values(tal).filter(x => x > (S.alertAbs || 5)).length; const b = $("#bellBadge"); if(b){ b.textContent = n; b.hidden = !n; } const bl = $("#bell"); if(bl) bl.title = n ? n + " طالب تجاوز غيابه " + (S.alertAbs || 5) + " أيام بدون عذر" : "لا توجد تنبيهات"; } catch(e){}
@@ -765,7 +773,7 @@ async function refreshBell(){
 async function viewHome(t){
   const v = $("#view"); const day = today(), from = addDays(day, -42);
   const [att, regs, beh, termAbs] = await Promise.all([
-    fetchAll(() => sb.from("sch_attendance").select("id,student_id,date,status,minutes,notified").gte("date", from).lte("date", day)),
+    fetchAll(() => sb.from("sch_attendance").select("id,student_id,date,status,minutes,arrive_at,notified").gte("date", from).lte("date", day)),
     fetchAll(() => sb.from("sch_registers").select("date,grade,section").gte("date", from).lte("date", day)),
     fetchAll(() => sb.from("sch_behavior").select("*").gte("date", S.termStart).lte("date", day).order("date", {ascending:false})),
     fetchAll(() => sb.from("sch_attendance").select("student_id").eq("status", "absent").gte("date", S.termStart).lte("date", day))]);
@@ -812,7 +820,7 @@ async function viewHome(t){
   <div class="dgrid">
     <section class="panel"><div class="ph"><h2>جدول اليوم النشط</h2><div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><button class="btn sm" data-act="abs-new" data-st="absent">${ICON.plus}غياب</button><button class="btn sm" data-act="abs-new" data-st="late">${ICON.plus}تأخير صباحي</button><a href="#notify-${day}" style="margin-inline-start:6px">إشعار الجميع ←</a></div></div>
       ${todayList.length ? `<div class="tbl"><table class="t dt"><thead><tr><th>اسم الطالب</th><th>الصف</th><th>الحالة</th><th>إرسال إشعار فوري</th></tr></thead><tbody>${todayList.slice(0, 8).map(r => { const s = D.byId[r.student_id];
-        return `<tr><td><a href="#st-${s.id}">${esc(s.name)}</a></td><td>${esc(clsName(s.grade, s.section))}</td><td><span class="tag ${STATUS[r.status][1]}">${STATUS[r.status][0]}</span>${r.notified ? ' <span class="tag ok">أُرسل</span>' : ""}</td><td><div style="display:flex;gap:6px" data-row="${r.id}">${r.status === "excused" ? '<span class="muted" style="font-size:13px">لا يلزم</span>' : waLinks(s, absentMsg(s, r, day))}</div></td></tr>`; }).join("")}</tbody></table></div>${todayList.length > 8 ? `<p class="muted" style="margin:10px 0 0;font-size:13px">و${todayList.length - 8} آخرون في صفحة الإشعارات.</p>` : ""}` : `<div class="empty">${takenN ? "لا يوجد غياب أو تأخير اليوم حتى الآن." : "لم يُرصد الحضور اليوم بعد."}</div>`}</section>
+        return `<tr><td><a href="#st-${s.id}">${esc(s.name)}</a></td><td>${esc(clsName(s.grade, s.section))}</td><td><span class="tag ${STATUS[r.status][1]}">${STATUS[r.status][0]}</span>${r.status === "late" && lateTxt(r) ? ` <span class="muted" style="font-size:12.5px">${esc(lateTxt(r))}</span>` : ""}${r.notified ? ' <span class="tag ok">أُرسل</span>' : ""}</td><td><div style="display:flex;gap:6px" data-row="${r.id}">${r.status === "excused" ? '<span class="muted" style="font-size:13px">لا يلزم</span>' : waLinks(s, absentMsg(s, r, day))}</div></td></tr>`; }).join("")}</tbody></table></div>${todayList.length > 8 ? `<p class="muted" style="margin:10px 0 0;font-size:13px">و${todayList.length - 8} آخرون في صفحة الإشعارات.</p>` : ""}` : `<div class="empty">${takenN ? "لا يوجد غياب أو تأخير اليوم حتى الآن." : "لم يُرصد الحضور اليوم بعد."}</div>`}</section>
     <section class="panel"><div class="ph"><h2>إجراءات سريعة</h2></div>
       <div class="qa">
         <a class="btn primary" href="#take">${HI.take}رصد الحضور</a>
@@ -876,7 +884,7 @@ async function viewTakeClass(key, t){
     const [rows, reg] = await Promise.all([fetchAll(() => sb.from("sch_attendance").select("*").eq("date", REG.date).in("student_id", c.ids)), sb.from("sch_registers").select("*").eq("date", REG.date).eq("grade", c.grade).eq("section", c.section).maybeSingle()]);
     if(t !== tok) return;
     REG.key = key; REG.loadedDate = REG.date; REG.existing = rows; REG.reg = reg.data; REG.marks = {}; REG.extra = {}; REG.dirty = false;
-    rows.forEach(r => { REG.marks[r.student_id] = r.status; REG.extra[r.student_id] = {minutes:r.minutes || "", reason:r.reason || ""}; });
+    rows.forEach(r => { REG.marks[r.student_id] = r.status; REG.extra[r.student_id] = {minutes:r.minutes || "", reason:r.reason || "", arrive:r.arrive_at || ""}; });
   }
   const ss = c.ids.map(id => D.byId[id]).sort((a, b) => a.name.localeCompare(b.name, "ar"));
   const counts = k => ss.filter(s => REG.marks[s.id] === k).length;
@@ -886,7 +894,7 @@ async function viewTakeClass(key, t){
   <div class="panel" style="padding:6px 14px"><ul class="roster">${ss.map((s, i) => { const m = REG.marks[s.id] || "present", x = REG.extra[s.id] || {};
     return `<li class="st-${m}" id="r-${s.id}"><span class="n num">${i + 1}</span><div class="nm"><b>${esc(s.name)}</b><span class="num">${esc(s.school_no)}</span></div>
       <div class="seg" role="radiogroup" aria-label="حالة ${esc(s.name)}">${[["present","حاضر","P"],["absent","بدون عذر","A"],["excused","بعذر","E"],["late","تأخير صباحي","L"],["early","انصراف","O"]].map(([k, l, cl]) => `<button type="button" class="${cl}" role="radio" aria-checked="${m === k}" aria-pressed="${m === k}" data-act="mark" data-sid="${s.id}" data-k="${k}">${l}</button>`).join("")}</div>
-      ${m !== "present" ? `<div class="extra">${m === "late" || m === "early" ? `<input type="number" min="1" placeholder="${m === "late" ? "دقائق التأخير" : "وقت الانصراف (دقيقة قبل النهاية)"}" data-x="minutes" data-sid="${s.id}" value="${esc(x.minutes || "")}" aria-label="الدقائق">` : ""}<input type="text" placeholder="السبب (اختياري)" data-x="reason" data-sid="${s.id}" value="${esc(x.reason || "")}" aria-label="السبب"></div>` : ""}</li>`; }).join("")}</ul></div>
+      ${m !== "present" ? `<div class="extra">${m === "late" ? `<label class="arr"><span>وصل الساعة</span><input type="time" data-x="arrive" data-sid="${s.id}" value="${esc(x.arrive || "")}" aria-label="وقت الوصول"></label><span class="late-min" id="lm-${s.id}">${x.minutes ? "متأخر " + x.minutes + " دقيقة" : "في الموعد"}</span>` : m === "early" ? `<input type="number" min="1" placeholder="وقت الانصراف (دقيقة قبل النهاية)" data-x="minutes" data-sid="${s.id}" value="${esc(x.minutes || "")}" aria-label="الدقائق">` : ""}<input type="text" placeholder="السبب (اختياري)" data-x="reason" data-sid="${s.id}" value="${esc(x.reason || "")}" aria-label="السبب"></div>` : ""}</li>`; }).join("")}</ul></div>
   <div class="savebar"><span class="num">حاضر ${ss.length - counts("absent") - counts("excused")} · بدون عذر ${counts("absent")} · بعذر ${counts("excused")} · تأخير صباحي ${counts("late")}</span><span class="sp"></span><button class="btn brass" data-act="reg-save">${REG.reg ? "حفظ التعديلات" : "حفظ الرصد"}</button></div>`;
 }
 async function saveRegister(btn){
@@ -896,7 +904,7 @@ async function saveRegister(btn){
     const keep = c.ids.filter(id => REG.marks[id] && REG.marks[id] !== "present");
     const dels = REG.existing.filter(r => !keep.includes(r.student_id)).map(r => r.id);
     if(dels.length){ const {error} = await sb.from("sch_attendance").delete().in("id", dels); if(error) throw error; }
-    if(keep.length){ const {error} = await sb.from("sch_attendance").upsert(keep.map(id => ({student_id:id, date:REG.date, status:REG.marks[id], minutes:Number((REG.extra[id] || {}).minutes) || null, reason:(REG.extra[id] || {}).reason || ""})), {onConflict:"student_id,date"}); if(error) throw error; }
+    if(keep.length){ const {error} = await sb.from("sch_attendance").upsert(keep.map(id => ({student_id:id, date:REG.date, status:REG.marks[id], minutes:Number((REG.extra[id] || {}).minutes) || null, arrive_at:REG.marks[id] === "late" ? ((REG.extra[id] || {}).arrive || null) : null, reason:(REG.extra[id] || {}).reason || ""})), {onConflict:"student_id,date"}); if(error) throw error; }
     const {error} = await sb.from("sch_registers").upsert({date:REG.date, grade:c.grade, section:c.section, taken_by_name:(me.staff && me.staff.name) || "", taken_at:new Date().toISOString()}, {onConflict:"date,grade,section"}); if(error) throw error;
     const ab = keep.filter(id => REG.marks[id] === "absent").length;
     REG.key = null;
@@ -918,13 +926,14 @@ function openAbsForm(status, date){
     fields:[{name:"sids", label:"الطلاب", type:"students", full:true},
       {name:"status", label:"الحالة", type:"select", options:[["absent","غياب بدون عذر"],["excused","غياب بعذر"],["late","تأخير صباحي"],["early","انصراف مبكر"]]},
       {name:"date", label:"التاريخ", type:"date", required:true},
-      {name:"minutes", label:"عدد الدقائق", type:"number", hint:"للتأخير الصباحي أو الانصراف المبكر (اختياري)."},
+      {name:"arrive", label:"وقت الوصول (للتأخير الصباحي)", type:"time", hint:"يظهر الوقت الحالي تلقائيًا، وعدّله إن لزم."}, {name:"minutes", label:"دقائق التأخير", type:"number", hint:`تُحسب تلقائيًا من بعد ${fmtT(S.lateStart || "07:15")}. للانصراف المبكر اكتب الدقائق يدويًا.`},
       {name:"reason", label:"السبب أو العذر (اختياري)", full:true}],
-    values:{status:status || "absent", date:date || today()},
+    values:{status:status || "absent", date:date || today(), arrive:nowHM(), minutes:(status === "late" ? lateMin(nowHM()) : "") || ""},
+    onInput:(v, form, e) => { if((e.target.name === "arrive" || e.target.name === "status") && v.status === "late"){ form.elements.minutes.value = lateMin(v.arrive) || 0; } },
     validate:v => v.sids ? {} : {sids:"أضف طالبًا واحدًا على الأقل."},
     onSave: async v => {
       const ids = v.sids.split(",").filter(Boolean);
-      const rows = ids.map(id => ({student_id:id, date:v.date, status:v.status, minutes:Number(v.minutes) || null, reason:v.reason || ""}));
+      const rows = ids.map(id => ({student_id:id, date:v.date, status:v.status, minutes:Number(v.minutes) || null, arrive_at:v.status === "late" ? (v.arrive || null) : null, reason:v.reason || ""}));
       const {error} = await sb.from("sch_attendance").upsert(rows, {onConflict:"student_id,date"}); if(error){ toast(dbErr(error)); return; }
       closeModal(); REG.key = null;
       toast("سُجّل " + (ids.length === 1 ? "طالب واحد" : ids.length === 2 ? "طالبان" : ids.length + (ids.length < 11 ? " طلاب" : " طالبًا")) + ": " + STATUS[v.status][0] + ".", v.status === "absent" || v.status === "late" ? {label:"إشعار أولياء الأمور", fn:() => go("notify-" + v.date)} : null);
@@ -939,10 +948,10 @@ async function viewNotify(date, t){
   const list = rows.filter(r => D.byId[r.student_id]).sort((a, b) => a.status.localeCompare(b.status) || D.byId[a.student_id].grade.localeCompare(D.byId[b.student_id].grade));
   const msg = (s, r) => r.status === "absent"
     ? `السلام عليكم ولي أمر الطالب ${s.name}،\nنحيطكم علمًا بأن ابنكم تغيّب عن المدرسة اليوم ${DAYS[dOf(date).getDay()]} ${fmt(date)}.\nنرجو التواصل مع المدرسة لتوضيح سبب الغياب، وتقديم العذر إن وُجد.\n${S.sign.school}`
-    : `السلام عليكم ولي أمر الطالب ${s.name}،\nنحيطكم علمًا بأن ابنكم تأخّر عن الحضور اليوم ${fmt(date)}${r.minutes ? " بمقدار " + r.minutes + " دقيقة" : ""}.\nنأمل الحرص على الحضور في الموعد.\n${S.sign.school}`;
+    : `السلام عليكم ولي أمر الطالب ${s.name}،\nنحيطكم علمًا بأن ابنكم تأخّر عن الحضور اليوم ${fmt(date)}${r.minutes ? " بمقدار " + r.minutes + " دقيقة" : ""}${r.arrive_at ? "، حيث وصل الساعة " + fmtT(r.arrive_at) : ""}.\nنأمل الحرص على الحضور في الموعد.\n${S.sign.school}`;
   v.innerHTML = `<div class="crumbs"><a href="#take">رصد الحضور</a> / إشعار أولياء الأمور</div><div class="sec-h" style="margin-top:0"><h1 style="margin:0">إشعار أولياء الأمور</h1><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="abs-new" data-st="absent" data-date="${date}">${ICON.plus}إضافة طالب غائب</button><button class="btn" data-act="abs-new" data-st="late" data-date="${date}">${ICON.plus}إضافة تأخير صباحي</button></div></div>
   <p class="muted">${DAYS[dOf(date).getDay()]} ${esc(fmt(date))} · ${list.filter(r => r.status === "absent").length} غائب بدون عذر · ${list.filter(r => r.status === "late").length} تأخير صباحي. يفتح كل زر واتساب برسالة جاهزة، وتُعلَّم الرسالة «أُرسلت».</p>
-  <div class="panel"><ul class="list">${list.map(r => { const s = D.byId[r.student_id]; return `<li><span class="av">${esc(initials(s.name))}</span><div class="grow"><div class="who">${esc(s.name)}</div><div class="what">${esc(clsName(s.grade, s.section))} · <span class="tag ${STATUS[r.status][1]}">${STATUS[r.status][0]}</span>${r.notified ? ' <span class="tag ok">أُرسلت</span>' : ""}</div></div><div style="display:flex;gap:6px;flex-wrap:wrap" data-row="${r.id}">${waLinks(s, msg(s, r))}</div></li>`; }).join("") || '<li class="empty">لا يوجد غائبون أو متأخرون في هذا اليوم.</li>'}</ul></div>`;
+  <div class="panel"><ul class="list">${list.map(r => { const s = D.byId[r.student_id]; return `<li><span class="av">${esc(initials(s.name))}</span><div class="grow"><div class="who">${esc(s.name)}</div><div class="what">${esc(clsName(s.grade, s.section))} · <span class="tag ${STATUS[r.status][1]}">${STATUS[r.status][0]}</span>${r.status === "late" && lateTxt(r) ? ` <span class="muted" style="font-size:12.5px">${esc(lateTxt(r))}</span>` : ""}${r.notified ? ' <span class="tag ok">أُرسلت</span>' : ""}</div></div><div style="display:flex;gap:6px;flex-wrap:wrap" data-row="${r.id}">${waLinks(s, msg(s, r))}</div></li>`; }).join("") || '<li class="empty">لا يوجد غائبون أو متأخرون في هذا اليوم.</li>'}</ul></div>`;
 }
 /* ---------- behavior ---------- */
 const BF = {range:"week", kind:"all", deg:"all", q:""};
@@ -1065,7 +1074,7 @@ async function viewStudent(id, t){
   <div class="kpis num"><div class="kpi ok"><b>${rate}%</b><span>نسبة الحضور (${days} يومًا مرصودًا)</span></div><div class="kpi ab"><b>${absent}</b><span>غياب بدون عذر</span></div><div class="kpi ex"><b>${exc}</b><span>غياب بعذر</span></div><div class="kpi la"><b>${n("late")}</b><span>تأخير صباحي</span></div><div class="kpi br"><b>${score}</b><span>درجة السلوك من 100</span></div></div>
   <section class="panel"><div class="sec-h" style="margin-top:0"><h2>سجل الحضور منذ ${esc(fmt(S.termStart))}</h2><div class="legend"><span><i style="background:var(--sage-soft)"></i>حاضر</span><span><i style="background:var(--maroon)"></i>بدون عذر</span><span><i style="background:var(--sky)"></i>بعذر</span><span><i style="background:var(--amber)"></i>تأخير صباحي</span><span><i style="background:var(--ink)"></i>انصراف مبكر</span></div></div>
     <div class="cal" aria-label="تقويم الحضور، كل عمود أسبوع">${weeks.join("")}</div>
-    ${att.length ? `<ul class="list" style="margin-top:10px">${att.slice().reverse().slice(0, 40).map(a => `<li><span class="tag ${STATUS[a.status][1]}">${STATUS[a.status][0]}</span><div class="grow"><b class="num">${esc(fmt(a.date))}</b>${a.minutes ? ` <span class="muted">· ${a.minutes} دقيقة</span>` : ""}${a.reason ? ` <span class="muted">· ${esc(a.reason)}</span>` : ""}${a.action ? `<div class="what">الإجراء المتخذ: ${esc(a.action)}</div>` : ""}</div><button class="btn sm" data-act="att-act" data-id="${a.id}">${ICON.edit}${a.action ? "تعديل الإجراء" : "تسجيل إجراء"}</button></li>`).join("")}</ul>` : ""}</section>
+    ${att.length ? `<ul class="list" style="margin-top:10px">${att.slice().reverse().slice(0, 40).map(a => `<li><span class="tag ${STATUS[a.status][1]}">${STATUS[a.status][0]}</span><div class="grow"><b class="num">${esc(fmt(a.date))}</b>${a.status === "late" && lateTxt(a) ? ` <span class="muted">· ${esc(lateTxt(a))}</span>` : a.minutes ? ` <span class="muted">· ${a.minutes} دقيقة</span>` : ""}${a.reason ? ` <span class="muted">· ${esc(a.reason)}</span>` : ""}${a.action ? `<div class="what">الإجراء المتخذ: ${esc(a.action)}</div>` : ""}</div><button class="btn sm" data-act="att-act" data-id="${a.id}">${ICON.edit}${a.action ? "تعديل الإجراء" : "تسجيل إجراء"}</button></li>`).join("")}</ul>` : ""}</section>
   <section class="panel" style="margin-top:16px"><h2>السلوك</h2>${beh.length ? `<ul class="timeline">${beh.map(b => `<li class="${b.kind}"><b>${b.kind === "positive" ? "سلوك إيجابي" : esc(S.degrees[b.degree] ? S.degrees[b.degree].label : "")}: ${esc(b.category || "")}</b> <span class="muted num">· ${esc(fmt(b.date))}${b.kind === "violation" ? " · −" + b.points : " · +" + b.points}</span>${b.description ? `<div>${esc(b.description)}</div>` : ""}${b.action ? `<div class="muted">الإجراء: ${esc(b.action)}</div>` : ""}<div style="margin-top:4px"><a class="btn sm" href="#notice-${b.id}">${ICON.print}الإشعار</a> <button class="btn sm ghost" data-act="beh-edit" data-id="${b.id}">${ICON.edit}تعديل</button></div></li>`).join("")}</ul>` : '<div class="empty">لا توجد سجلات سلوك هذا الفصل.</div>'}</section>
   <section class="panel" style="margin-top:16px"><h2>التواصل مع ولي الأمر</h2><div style="display:flex;gap:8px;flex-wrap:wrap">${waLinks(s, "السلام عليكم ولي أمر الطالب " + s.name + "،\n", "")}</div></section>`;
   window.__beh = beh; window.__att = att;
@@ -1116,7 +1125,7 @@ async function viewStudentReport(id, t, from, to){
   v.innerHTML = tools("#st-" + s.id) + paper("تقرير الحضور والسلوك", "من " + esc(fmt(from)) + " إلى " + esc(fmt(to)),
     `<table><tr><th>اسم الطالب</th><td>${esc(s.name)}</td><th>الرقم المدرسي</th><td>${esc(s.school_no)}</td><th>الصف</th><td>${esc(clsName(s.grade, s.section))}</td></tr></table>
      <table><tr><th>الأيام المرصودة</th><th>غياب بدون عذر</th><th>غياب بعذر</th><th>تأخير صباحي</th><th>نسبة الحضور</th><th>درجة السلوك</th></tr><tr class="num"><td>${days}</td><td>${st.absent.length}</td><td>${st.exc.length}</td><td>${st.late.length}</td><td>${rate}%</td><td>${behaviorScore(st.beh)} / 100</td></tr></table>
-     <h3>أيام الغياب والتأخير</h3><table><thead><tr><th>التاريخ</th><th>الحالة</th><th>السبب</th><th>الإجراء المتخذ</th></tr></thead><tbody>${st.att.map(a => `<tr><td class="num">${DAYS[dOf(a.date).getDay()]} ${esc(fmt(a.date))}</td><td>${STATUS[a.status][0]}${a.minutes ? " (" + a.minutes + " د)" : ""}</td><td>${esc(a.reason || "")}</td><td>${esc(a.action || "")}</td></tr>`).join("") || '<tr><td colspan="4">لا يوجد.</td></tr>'}</tbody></table>
+     <h3>أيام الغياب والتأخير</h3><table><thead><tr><th>التاريخ</th><th>الحالة</th><th>السبب</th><th>الإجراء المتخذ</th></tr></thead><tbody>${st.att.map(a => `<tr><td class="num">${DAYS[dOf(a.date).getDay()]} ${esc(fmt(a.date))}</td><td>${STATUS[a.status][0]}${a.status === "late" && lateTxt(a) ? " (" + lateTxt(a) + ")" : a.minutes ? " (" + a.minutes + " د)" : ""}</td><td>${esc(a.reason || "")}</td><td>${esc(a.action || "")}</td></tr>`).join("") || '<tr><td colspan="4">لا يوجد.</td></tr>'}</tbody></table>
      <h3>السلوك</h3><table><thead><tr><th>التاريخ</th><th>النوع / الدرجة</th><th>التفاصيل</th><th>الإجراء المتخذ</th></tr></thead><tbody>${st.beh.map(b => `<tr><td class="num">${esc(fmt(b.date))}</td><td>${b.kind === "positive" ? "إيجابي" : esc(S.degrees[b.degree].label)}</td><td>${esc(b.category || "")}${b.description ? " — " + esc(b.description) : ""}</td><td>${esc(b.action || "")}</td></tr>`).join("") || '<tr><td colspan="4">لا يوجد.</td></tr>'}</tbody></table>${signs("affairs", "head")}`);
 }
 
@@ -1204,6 +1213,7 @@ function viewSettings(){
     <div class="field"><label for="sTerm">بداية الفصل الدراسي الحالي</label><input type="date" id="sTerm" name="termStart" value="${esc(S.termStart)}"><span class="hint">تُحسب الإحصاءات والإنذارات من هذا التاريخ.</span></div>
     <div class="field"><span class="lab">أيام الدراسة</span><div class="chips">${SD.map(([d, l]) => `<label class="chip" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" name="day" value="${d}" ${S.schoolDays.includes(d) ? "checked" : ""}>${l}</label>`).join("")}</div></div>
     <div class="field"><label for="sWarn">حدود إنذارات الغياب (أيام بدون عذر)</label><input type="text" id="sWarn" name="warn" dir="ltr" value="${esc(S.warn.join(", "))}"><span class="hint">مثال: 5, 10, 15 للإنذار الأول والثاني والثالث. اضبطها حسب اللائحة المعتمدة.</span></div>
+    <div class="field"><label for="sLate">بداية احتساب التأخير الصباحي</label><input type="time" id="sLate" name="lateStart" value="${esc(S.lateStart || "07:15")}"><span class="hint">يُحسب التأخير بالدقائق من بعد هذا الوقت (الافتراضي 7:15 صباحًا).</span></div>
     <div class="field"><label for="sAlert">تحذير التقارير: عدد أيام الغياب بدون عذر</label><input type="number" id="sAlert" name="alertAbs" min="1" value="${esc(S.alertAbs || 5)}"><span class="hint">يظهر تحذير في التقارير لكل طالب غاب أكثر من هذا العدد منذ بداية الفصل.</span></div></div></section>
   <section class="panel" style="margin-top:14px"><h2>درجات المخالفات</h2><p class="muted" style="margin-top:-4px">درجة السلوك تبدأ من 100، وتُخصم منها درجات المخالفة. القيم والقوائم التالية قابلة للتعديل لتطابق لائحة إدارة السلوك المعتمدة لديكم.</p>
     <div class="grid2">${[1,2,3,4].map(g => `<div class="field"><label for="sP${g}">${esc(S.degrees[g].label)}: الدرجات المخصومة</label><input type="number" id="sP${g}" name="p${g}" min="0" value="${esc(S.degrees[g].points)}"></div>`).join("")}
@@ -1220,7 +1230,7 @@ function viewSettings(){
 }
 async function saveSettings(form){
   const fd = new FormData(form);
-  const v = {termStart:fd.get("termStart") || DEF.termStart, schoolDays:fd.getAll("day").map(Number), warn:String(fd.get("warn") || "").split(/[,،\s]+/).map(Number).filter(n => n > 0).sort((a, b) => a - b).slice(0, 3),
+  const v = {termStart:fd.get("termStart") || DEF.termStart, lateStart:fd.get("lateStart") || DEF.lateStart, schoolDays:fd.getAll("day").map(Number), warn:String(fd.get("warn") || "").split(/[,،\s]+/).map(Number).filter(n => n > 0).sort((a, b) => a - b).slice(0, 3),
     positivePoints:Number(fd.get("pos")) || 0, alertAbs:Number(fd.get("alertAbs")) || 5, degrees:{}, catalog:{}, positive:String(fd.get("cp") || "").split("\n").map(x => x.trim()).filter(Boolean), sign:{}};
   [1,2,3,4].forEach(g => { v.degrees[g] = {label:DEF.degrees[g].label, points:Number(fd.get("p" + g)) || 0}; v.catalog[g] = String(fd.get("c" + g) || "").split("\n").map(x => x.trim()).filter(Boolean); });
   Object.keys(DEF.sign).forEach(k => v.sign[k] = String(fd.get("sg_" + k) || "").trim());
@@ -1488,7 +1498,7 @@ document.addEventListener("click", e => {
     case "usr": usrSet(t.dataset.id, t.dataset.f, t.dataset.v); break;
     case "rerender": render(); break;
     case "print": window.print(); break;
-    case "mark": { REG.marks[t.dataset.sid] = t.dataset.k; REG.dirty = true; const y = window.scrollY; render(); window.scrollTo(0, y); const b = $(`[data-act="mark"][data-sid="${t.dataset.sid}"][data-k="${t.dataset.k}"]`); if(b) b.focus({preventScroll:true}); break; }
+    case "mark": { REG.marks[t.dataset.sid] = t.dataset.k; if(t.dataset.k === "late"){ const x = REG.extra[t.dataset.sid] = REG.extra[t.dataset.sid] || {}; if(!x.arrive){ x.arrive = nowHM(); x.minutes = lateMin(x.arrive); } } REG.dirty = true; const y = window.scrollY; render(); window.scrollTo(0, y); const b = $(`[data-act="mark"][data-sid="${t.dataset.sid}"][data-k="${t.dataset.k}"]`); if(b) b.focus({preventScroll:true}); break; }
     case "reg-all": { const c = D.classes.find(x => x.key === REG.key); if(c) c.ids.forEach(id => REG.marks[id] = "present"); render(); break; }
     case "reg-nums": regByNumbers(); break;
     case "reg-save": saveRegister(t); break;
@@ -1509,7 +1519,7 @@ document.addEventListener("click", e => {
 document.addEventListener("input", e => {
   if(e.target.dataset && e.target.dataset.ac){ acRender(e.target); if(e.target.id === "gq") return; }
   const tg = e.target;
-  if(tg.dataset && tg.dataset.x){ const o = REG.extra[tg.dataset.sid] = REG.extra[tg.dataset.sid] || {}; o[tg.dataset.x] = tg.value; return; }
+  if(tg.dataset && tg.dataset.x){ const o = REG.extra[tg.dataset.sid] = REG.extra[tg.dataset.sid] || {}; o[tg.dataset.x] = tg.value; if(tg.dataset.x === "arrive"){ o.minutes = lateMin(tg.value); const l = document.getElementById("lm-" + tg.dataset.sid); if(l) l.textContent = o.minutes ? "متأخر " + o.minutes + " دقيقة" : "في الموعد"; } return; }
   if(tg.id === "sfQ"){ SF.q = tg.value; const pos = tg.selectionStart; render(); const n = $("#sfQ"); n.focus(); n.setSelectionRange(pos, pos); }
   if(tg.id === "bfQ"){ BF.q = tg.value; render(); setTimeout(() => { const n = $("#bfQ"); if(n){ n.focus(); n.setSelectionRange(n.value.length, n.value.length); } }, 0); }
 });
